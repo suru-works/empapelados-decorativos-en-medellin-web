@@ -45,7 +45,18 @@ class Header extends Component {
                         <NavbarBrand className="mr-auto" href="/"><img src='assets/images/logo.png' height="30" width="41" alt='Ristorante Con Fusion' /></NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
-                                
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/inicio'><span className="fa fa-home fa-lg"></span> inicio</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/galeria'><span className="fa fa-info fa-lg"></span> galeria</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/acerca-de-nosotros'><span className="fa fa-list fa-lg"></span> acerca-de-nosotros</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/contacto'><span className="fa fa-address-card fa-lg"></span> contacto</NavLink>
+                                </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
