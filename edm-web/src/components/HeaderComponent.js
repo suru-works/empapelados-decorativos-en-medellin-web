@@ -42,20 +42,20 @@ class Header extends Component {
                 <Navbar dark expand="md">
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
-                        <NavbarBrand className="mr-auto" href="/"><img src='assets/images/logo.png' height="30" width="41" alt='Ristorante Con Fusion' /></NavbarBrand>
+                        <NavbarBrand className="mr-auto" href="/"><img src='' height="" width="" alt='' /></NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/inicio'><span className="fa fa-home fa-lg"></span> inicio</NavLink>
+                                    <NavLink className="nav-link" to='/inicio'><span className="fa fa-home fa-lg"></span> Inicio </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/galeria'><span className="fa fa-info fa-lg"></span> galeria</NavLink>
+                                    <NavLink className="nav-link" to='/galeria'><span className="fa fa-info fa-lg"></span> Galeria </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/acerca-de-nosotros'><span className="fa fa-list fa-lg"></span> acerca-de-nosotros</NavLink>
+                                    <NavLink className="nav-link" to='/acerca-de-nosotros'><span className="fa fa-list fa-lg"></span> Acerca de Nosotros </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/contacto'><span className="fa fa-address-card fa-lg"></span> contacto</NavLink>
+                                    <NavLink className="nav-link" to='/contacto'><span className="fa fa-address-card fa-lg"></span> Contactenos </NavLink>
                                 </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>
@@ -68,7 +68,8 @@ class Header extends Component {
                         </Collapse>
                     </div>
                 </Navbar>
-                <Jumbotron>
+
+                <Jumbotron jumbo>
                     <div className="container">
                         <div className="row row-header">
                             <div className="col-12 col-sm-6">
@@ -78,8 +79,10 @@ class Header extends Component {
                         </div>
                     </div>
                 </Jumbotron>
+
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                    
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
@@ -87,11 +90,13 @@ class Header extends Component {
                                 <Input type="text" id="username" name="username"
                                     innerRef={(input) => this.username = input} />
                             </FormGroup>
+
                             <FormGroup>
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" id="password" name="password"
                                     innerRef={(input) => this.password = input} />
                             </FormGroup>
+
                             <FormGroup check>
                                 <Label check>
                                     <Input type="checkbox" name="remember"
@@ -99,6 +104,7 @@ class Header extends Component {
                                     Remember me
                                 </Label>
                             </FormGroup>
+
                             <Button type="submit" value="submit" color="primary">Login</Button>
                         </Form>
                     </ModalBody>
