@@ -18,18 +18,18 @@ class Main extends Component {
 
         const HomePage = () => {
             return (
-                <Home                  
-                />
+                <Home />
             );
         }
+
         return (
             <div>
                 <Header/>
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
-                    <Route exact path="/galeria" component={<Gallery></Gallery>} />
-                    <Route exact path='/acerca-de-nosotros' component={<About></About>} />
-                    <Route exact path='/contacto' component={<Contact></Contact>} />
+                    <Route path="/galeria" component={() => <Gallery />} />
+                    <Route exact path='/acerca-de-nosotros' component={() => <About />} />
+                    <Route exact path='/contacto' component={() => <Contact />} />
                     <Redirect to="/inicio"></Redirect>
                 </Switch>
                 <Footer />
