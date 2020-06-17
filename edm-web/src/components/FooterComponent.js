@@ -7,9 +7,12 @@ function Footer(props) {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-4 offset-1 col-sm-2">
-                        <h5>Links</h5>
+                        <h5>Navegar</h5>
                         <ul className="list-unstyled">
-                            
+                            <li><a href="#">Inicio</a></li>
+                            <li><a href="#">Galeria</a></li>
+                            <li><a href="#">Acerca de Nosotros</a></li>
+                            <li><a href="#"></a>Contactanos</li>
                         </ul>
                     </div>
                     <div className="col-7 col-sm-5">
