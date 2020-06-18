@@ -4,7 +4,7 @@ import {
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label
 } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 class Header extends Component {
     constructor(props) {
@@ -68,13 +68,13 @@ class Header extends Component {
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     <Button outline style={{ margin: 10 }} onClick={this.toggleModal}>
-                                        <span className="fa fa-sign-in fa-lg"> Login </span>
+                                        <span className="fa fa-sign-in"> Login </span>
                                     </Button>
                                 </NavItem>
 
                                 <NavItem>
                                     <Button variant="contained" style={{ margin: 10 }} color="secondary">
-                                        Sign In
+                                        <span className="fa fa-user-circle-o" aria-hidden="true"> Sign In </span>
                                     </Button>
                                 </NavItem>
                             </Nav>
@@ -90,9 +90,12 @@ class Header extends Component {
                                 <p>Venta e instalación de empapelados decorativos, cortinas y pinturas.</p>
                                 <h3>Tenemos mas de 30 años de experiencia.</h3>
                                 <br></br>
-                                <Button variant="contained" color="primary">
-                                    Aprende más
-                                </Button>
+
+                                <Link to='/acerca-de-nosotros'>
+                                    <Button variant="contained" color="primary" >
+                                        Aprende más
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>
