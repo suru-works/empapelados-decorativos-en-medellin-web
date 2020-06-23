@@ -1,33 +1,44 @@
+// Basic imports
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Router imports
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRouter = require('./routes/productRouter');
 
+// MongoDB initialization
 const config = require('./config')
 const mongoose = require('mongoose');
+const passport = require('passport');
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 connect.then((db) => {
     console.log("Connected correctly to server");
 }, (err) => { console.log(err); });
 
+// Express initialization
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// Unidentified Express shenanigans
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Router initialization
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
