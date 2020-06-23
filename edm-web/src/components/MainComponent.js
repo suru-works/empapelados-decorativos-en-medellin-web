@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
 import Header from './HeaderComponent'
 import Footer from './FooterComponent';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Home from './HomeComponent';
 import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../redux/ActionCreators';
+
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    fetchProducts: () => dispatch(fetchProducts())
+});
 
 class Main extends Component {
 
 
     componentDidMount() {
-
+        this.props.fetchProducts();
     }
 
     render() {
 
         const HomePage = () => {
             return (
-                <Home />
+                <Home
+                    products={this.props.products.products}
+                    productsLoading={this.props.products.isLoading}
+                    productsErrMess={this.props.products.errMess}
+                />
             );
         }
 
@@ -39,4 +55,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

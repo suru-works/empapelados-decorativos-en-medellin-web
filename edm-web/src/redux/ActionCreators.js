@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../shared/baseUrl';
+import { baseBackUrl } from '../shared/baseUrl';
 
 export const addProducts = (products) => ({
     type: ActionTypes.ADD_PRODUCTS,
@@ -18,7 +18,7 @@ export const productsFailed = (errmess) => ({
 export const fetchProducts = () => (dispatch) => {
     dispatch(productsLoading());
 
-    return fetch(baseUrl + 'products')
+    return fetch(baseBackUrl + 'products')
     .then(response => {
         if (response.ok) {
             return response;

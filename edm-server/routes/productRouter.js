@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('./cors');
 
 const Products = require('../models/product');
 
@@ -20,6 +21,7 @@ productRouter.route('/')
 });
 
 productRouter.route('/:productId')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200) })
 .get((req, res, next) => {
     Products.findById(req.params.productId)
     .then((product) => {
