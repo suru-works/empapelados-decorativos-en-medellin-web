@@ -54,3 +54,18 @@ address{
   transform: translateX(100%);
   transition: all 300ms ease-out;
 }
+
+a {
+  color: black;
+}
+
+a:hover {
+   color: #00F
+}
+
+.link {
+  color: black;
+}
+.link:hover {
+   color: #00F
+}
