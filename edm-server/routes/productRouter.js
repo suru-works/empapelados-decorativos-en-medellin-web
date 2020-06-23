@@ -22,7 +22,7 @@ productRouter.route('/')
 
 productRouter.route('/:productId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200) })
-.get((req, res, next) => {
+.get(cors.cors, (req, res, next) => {
     Products.findById(req.params.productId)
     .then((product) => {
         res.statusCode = 200;
