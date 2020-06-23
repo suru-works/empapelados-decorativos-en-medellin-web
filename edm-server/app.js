@@ -1,17 +1,19 @@
 // Basic imports
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+// Config import
+const config = require('./config');
 
 // Router imports
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productRouter = require('./routes/productRouter');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const productRouter = require('./routes/productRouter');
 
 // MongoDB initialization
-const config = require('./config')
 const mongoose = require('mongoose');
 const passport = require('passport');
 const url = config.mongoUrl;
@@ -33,6 +35,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Generate authentication key
+config.generateKey();
 
 // Passport initialization
 app.use(passport.initialize());
