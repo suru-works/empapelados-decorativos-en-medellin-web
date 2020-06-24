@@ -28,11 +28,11 @@ function About() {
                     <Card>
                         <CardHeader className="bg-primary text-white">Cualidades que nos distinguen</CardHeader>
                         <CardBody>
-                            <h6> <i class="fa fa-check-square-o" aria-hidden="true"></i> Asesorias personalizadas. </h6>
+                            <h6> <i className="fa fa-check-square-o" aria-hidden="true"></i> Asesorias personalizadas. </h6>
                             <br></br>
-                            <h6> <i class="fa fa-check-square-o" aria-hidden="true"></i> Más de 30 años de experiencia.</h6>
+                            <h6> <i className="fa fa-check-square-o" aria-hidden="true"></i> Más de 30 años de experiencia.</h6>
                             <br></br>
-                            <h6> <i class="fa fa-check-square-o" aria-hidden="true"></i> Gran variedad de diseños.</h6>
+                            <h6> <i className="fa fa-check-square-o" aria-hidden="true"></i> Gran variedad de diseños.</h6>
                         </CardBody>
                     </Card>
                 </div>

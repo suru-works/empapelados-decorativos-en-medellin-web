@@ -5,6 +5,8 @@ import {
     Form, FormGroup, Input, Label
 } from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
+import { baseFrontUrl } from '../shared/baseUrl';
+
 
 class Header extends Component {
     constructor(props) {
@@ -44,7 +46,7 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
 
-                        <NavbarBrand className="mr-auto" href="/"><img src='' height="" width="" alt='' /></NavbarBrand>
+                        <NavbarBrand className="mr-auto" href="/"><img src={baseFrontUrl + "/public/logo/shortwhiteLogoTransparent.png"} height="46" width="41" alt="small-company-logo" /></NavbarBrand>
 
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
@@ -97,23 +99,39 @@ class Header extends Component {
                                     </Button>
                                 </Link>
                             </div>
+                            <div className="ml-auto">
+
+                                {window.innerWidth > 768 && (
+                                    <img className="float-right" height="312" width="163" src={baseFrontUrl + "/public/logo/blackLogo.png"} alt="company-logo"></img>
+                                )
+                                }
+
+                                
+                                {/*   
+                                    <img src = {baseFrontUrl +"/public/logo/shortBlackLogoTransparent.png"}></img>
+                                    <img src = {baseFrontUrl +"/public/logo/shortLogoFont.png"}></img>
+                                    <img src = {baseFrontUrl +"/public/logo/logoFont.png"}></img>
+                                */}
+
+                            </div>
                         </div>
+
                     </div>
                 </Jumbotron>
 
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Ingresar</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">Usuario</Label>
                                 <Input type="text" id="username" name="username"
                                     innerRef={(input) => this.username = input} />
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">Contraseña</Label>
                                 <Input type="password" id="password" name="password"
                                     innerRef={(input) => this.password = input} />
                             </FormGroup>
