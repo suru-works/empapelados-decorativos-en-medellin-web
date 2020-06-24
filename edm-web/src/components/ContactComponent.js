@@ -76,30 +76,30 @@ class Contact extends Component {
                         <h3>Preguntas frecuentes</h3>
 
                         <Card style={{ marginBottom: '1rem' }}>
-                            <CardHeader id="toggler0"><h4>Por que tu madre es tan puta?</h4></CardHeader>
+                            <CardHeader id="toggler0"><h4>¿Cuales son los métodos de pago?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler0'>
-                                <CardBody>Por que me la cogí anoche.</CardBody>
+                                <CardBody></CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
-                            <CardHeader id="toggler1"><h4>Por que tu madre es tan perra?</h4></CardHeader>
+                            <CardHeader id="toggler1"><h4>¿Cómo es el envío?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler1'>
-                                <CardBody>Por que me la cogí anoche.</CardBody>
+                                <CardBody></CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
-                            <CardHeader id="toggler2"><h4>Por que tu madre es tan zorra?</h4></CardHeader>
+                            <CardHeader id="toggler2"><h4>¿Como son las instalaciones?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler2'>
-                                <CardBody>Por que me la cogí anoche.</CardBody>
+                                <CardBody></CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
-                            <CardHeader id="toggler3"><h4>Por que tu madre es tan ramera?</h4></CardHeader>
+                            <CardHeader id="toggler3"><h4>Vivo fuera de la ciudad de Medellín, ¿cuales son las areas de cobertura del servicio?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler3'>
-                                <CardBody>Por que me la cogí anoche.</CardBody>
+                                <CardBody></CardBody>
                             </UncontrolledCollapse>
                         </Card>
                     </div>
@@ -109,7 +109,7 @@ class Contact extends Component {
 
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="firstname" md={2}>Name</Label>
+                                <Label htmlFor="firstname" md={2}>Nombre</Label>
                                 <Col md={10}>
                                     <Control.text model=".firstname" id="firstname" name="firstname"
                                         placeholder="First Name"
@@ -133,7 +133,7 @@ class Contact extends Component {
                             </Row>
 
                             <Row className="form-group">
-                                <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                                <Label htmlFor="telnum" md={2}>Contacto Tel.</Label>
 
                                 <Col md={10}>
                                     <Control.text model=".telnum" id="telnum" name="telnum"
@@ -191,7 +191,7 @@ class Contact extends Component {
                                             />
 
                                             {' '}
-                                            <strong>May we contact you?</strong>
+                                            <strong>¿Deberiamos contactarte?</strong>
                                         </Label>
                                     </div>
                                 </Col>
@@ -206,7 +206,7 @@ class Contact extends Component {
                             </Row>
 
                             <Row className="form-group">
-                                <Label htmlFor="message" md={2}>Your Feedback</Label>
+                                <Label htmlFor="message" md={2}>Tu recomendacion o duda</Label>
 
                                 <Col md={10}>
                                     <Control.textarea model=".message" id="message" name="message"
@@ -218,7 +218,7 @@ class Contact extends Component {
                             <Row className="form-group">
                                 <Col md={{ size: 10, offset: 2 }}>
                                     <Button type="submit" color="primary">
-                                        Send Feedback
+                                        Enviar
                                     </Button>
                                 </Col>
                             </Row>

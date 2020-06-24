@@ -68,11 +68,10 @@ class ImageCarousel extends Component {
                 </div>
             );
         } else {
-            console.log(this.props.products);
             const images = this.props.products.map((item) => {
                 return(
                     <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item}>
-                        <img src={baseFrontUrl + item.imageUrl} alt="puto el que lo lea" />
+                        <img src={baseFrontUrl + item.imageUrl} alt="featured products" />
                     </CarouselItem>
                 );
             });

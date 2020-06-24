@@ -63,20 +63,20 @@ class Header extends Component {
                                 </NavItem>
 
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/contacto'><span className="fa fa-address-card fa-lg"></span> Contactenos </NavLink>
+                                    <NavLink className="nav-link" to='/contacto'><span className="fa fa-address-card fa-lg"></span> Contáctanos </NavLink>
                                 </NavItem>
                             </Nav>
 
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     <Button outline style={{ margin: 10 }} onClick={this.toggleModal}>
-                                        <span className="fa fa-sign-in"> Login </span>
+                                        <span className="fa fa-sign-in"> Iniciar sesión </span>
                                     </Button>
                                 </NavItem>
 
                                 <NavItem>
                                     <Button variant="contained" style={{ margin: 10 }} color="secondary">
-                                        <span className="fa fa-user-circle-o" aria-hidden="true"> Sign In </span>
+                                        <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
                                     </Button>
                                 </NavItem>
                             </Nav>
