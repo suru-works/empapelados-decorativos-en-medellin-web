@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Carousel, CarouselItem, CarouselIndicators, CarouselControl, Card, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
+import { Carousel, CarouselItem, CarouselIndicators, CarouselControl, Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import { baseFrontUrl } from '../shared/baseUrl';
+import { NavLink, Link } from 'react-router-dom';
 
 class ImageCarousel extends Component {
     
@@ -55,7 +56,7 @@ class ImageCarousel extends Component {
             return (
                 <div className="container">
                     <div className="row">
-                        <h1>Puto el que lo lea</h1>
+                        <h1></h1>
                     </div>
                 </div>
             );
@@ -98,6 +99,12 @@ function Home(props) {
                     productsErrMess={props.errMess}
                 />
             </div>
+            <div className="row col-12 align-items-center justify-content-center">
+                <Link to='/galeria'>
+                    <Button color="warning">Ordena ahora!</Button>{' '}
+                </Link>
+                    
+            </div>
             <div className="row align-items-center">
                 <div className="col-12 col-md-9">
                     <Card>
@@ -110,9 +117,6 @@ function Home(props) {
                             <CardText>Guzmalsito is here</CardText>
                         </CardBody>
                     </Card>
-                </div>
-                <div className="col-12 col-md">
-                    
                 </div>
             </div>
         </div>

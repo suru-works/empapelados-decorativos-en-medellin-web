@@ -11,7 +11,7 @@
 }
 
 .footer {
-  background-color: #ff6d60;
+  background-color: #ff6f60;
   margin:0px auto;
   padding: 20px 0px 20px 0px;
 }
@@ -20,8 +20,9 @@
   padding:70px 30px 70px 30px;
   margin:0px auto;
   background-color: #bf360c !important;
-  color:floralwhite;
+  color:#ffffff;
 }
+
 
 address{
   font-size:80%;

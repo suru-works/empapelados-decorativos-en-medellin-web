@@ -8,6 +8,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -40,6 +41,9 @@ class Header extends Component {
     }
 
     render() {
+        const colors = {
+            primary: '#870000'
+        };
         return (
             <div>
                 <Navbar dark expand="md">
@@ -55,11 +59,11 @@ class Header extends Component {
                                 </NavItem>
 
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/galeria'><span className="fa fa-info fa-lg"></span> Galeria </NavLink>
+                                    <NavLink className="nav-link" to='/galeria'><span className="fa fa-list fa-lg"></span> Galeria </NavLink>
                                 </NavItem>
 
                                 <NavItem>
-                                    <NavLink className="nav-link" to='/acerca-de-nosotros'><span className="fa fa-list fa-lg"></span> Acerca de Nosotros </NavLink>
+                                    <NavLink className="nav-link" to='/acerca-de-nosotros'><span className="fa fa-info fa-lg"></span> Acerca de Nosotros </NavLink>
                                 </NavItem>
 
                                 <NavItem>
@@ -69,13 +73,13 @@ class Header extends Component {
 
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <Button outline style={{ margin: 10 }} onClick={this.toggleModal}>
+                                    <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleModal}>
                                         <span className="fa fa-sign-in"> Iniciar sesión </span>
                                     </Button>
                                 </NavItem>
 
                                 <NavItem>
-                                    <Button variant="contained" style={{ margin: 10 }} color="secondary">
+                                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary">
                                         <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
                                     </Button>
                                 </NavItem>
@@ -94,7 +98,7 @@ class Header extends Component {
                                 <br></br>
 
                                 <Link to='/acerca-de-nosotros'>
-                                    <Button variant="contained" color="primary" >
+                                    <Button style={{ backgroundColor: '#f9683a', color: '#ffffff'}} variant="contained">
                                         Aprende más
                                     </Button>
                                 </Link>
@@ -140,7 +144,7 @@ class Header extends Component {
                                 <Label check>
                                     <Input type="checkbox" name="remember"
                                         innerRef={(input) => this.remember = input} />
-                                    Remember me
+                                    Recuerdame
                                 </Label>
                             </FormGroup>
 
