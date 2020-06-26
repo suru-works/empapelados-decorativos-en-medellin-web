@@ -1,15 +1,16 @@
 import React from 'react';
-import {GoogleMap,withScriptjs, withGoogleMap, Marker} from 'react-google-maps';
+import { GoogleMap, withScriptjs, withGoogleMap, Marker } from 'react-google-maps';
 
 
 
-const Map = (props)=>{
+const Map = ({withMarker, zoom, center}) => {
+
     return (
-        <GoogleMap zoom={props.zoom} center={props.center}>
-            {props.withMarker ? null :(
-                <Marker position={props.center}/>
-            )
-        }
+        <GoogleMap zoom={zoom} center={center}>
+
+            {
+                withMarker && (<Marker position={center} />)
+            }
         </GoogleMap>
     )
 }

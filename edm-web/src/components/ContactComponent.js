@@ -11,7 +11,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.28&key=${credentials.mapsKey}`;
+const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}`;
 
 class Contact extends Component {
 
