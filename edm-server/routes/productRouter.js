@@ -118,6 +118,8 @@ productRouter.route('/:productId/comments/:commentId')
         $set: {
             "comments.$.comment": req.body.comment
         }
+    }, {
+        new: true
     })
     .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));

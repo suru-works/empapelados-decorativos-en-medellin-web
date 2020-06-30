@@ -5,6 +5,7 @@ const User = require('../models/user');
 const passport = require('passport');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
+const { token } = require('morgan');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -32,7 +33,7 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
         passport.authenticate('local')(req, res, () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
-          res.json({success: true, status: 'Registration Successful!'});
+          res.json({success: true, token: authenticate.getToken({_id: req.user._id}), status: 'Registration Successful!'});
         });
       })
     }
