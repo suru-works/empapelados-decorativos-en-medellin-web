@@ -149,3 +149,23 @@ export const logoutFailed = (errmess) => ({
     type: ActionTypes.LOGOUT_FAILED,
     payload: errmess
 });
+
+export const logout = () => (dispatch) => {
+    dispatch(logoutRequest());
+
+    return fetch(baseBackUrl + 'users/logout')
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(logoutSuccess(response)))
+    .catch(error => dispatch(logoutFailed(error.message)));
+}

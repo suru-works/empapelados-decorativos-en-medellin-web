@@ -47,4 +47,9 @@ router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req
   res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
+router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
+  req.logout();
+  res.json({success: true, status: 'You have successfully logged out!'});
+});
+
 module.exports = router;
