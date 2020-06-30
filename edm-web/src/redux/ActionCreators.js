@@ -40,9 +40,9 @@ export const registerRequest = () => ({
     type: ActionTypes.REGISTER_REQUEST
 });
 
-export const registerSuccess = (user) => ({
+export const registerSuccess = (result) => ({
     type: ActionTypes.REGISTER_SUCCESS,
-    payload: user
+    payload: result
 });
 
 export const registerFailed = (errmess) => ({
@@ -73,7 +73,79 @@ export const register = (user) => (dispatch) => {
         throw error;
     })
     .then(response => response.json())
-    .then(response => dispatch(registerSuccess(response)))
+    .then(response => {
+        if (response.success) {
+            localStorage.setItem('token', response.token);
+            dispatch(registerSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
     .catch(error => dispatch(registerFailed(error.message)));
 }
 
+export const loginRequest = () => ({
+    type: ActionTypes.LOGIN_REQUEST
+});
+
+export const loginSuccess = (result) => ({
+    type: ActionTypes.LOGIN_SUCCESS,
+    payload: result
+});
+
+export const loginFailed = (errmess) => ({
+    type: ActionTypes.LOGIN_FAILED,
+    payload: errmess
+});
+
+export const login = (credentials) => (dispatch) => {
+    dispatch(loginRequest());
+
+    return fetch(baseBackUrl + 'users/login', {
+        method: "POST",
+        body: JSON.stringify(credentials),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.success) {
+            localStorage.setItem('token', response.token);
+            dispatch(loginSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
+    .catch(error => dispatch(loginFailed(error.message)));
+}
+
+export const logoutRequest = () => ({
+    type: ActionTypes.LOGOUT_REQUEST
+});
+
+export const logoutSuccess = (result) => ({
+    type: ActionTypes.LOGOUT_SUCCESS,
+    payload: result
+});
+
+export const logoutFailed = (errmess) => ({
+    type: ActionTypes.LOGOUT_FAILED,
+    payload: errmess
+});
