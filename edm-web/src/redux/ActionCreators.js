@@ -36,6 +36,40 @@ export const fetchProducts = () => (dispatch) => {
     .catch(error => dispatch(productsFailed(error.message)));
 }
 
+
+export const addMaps = (maps) => ({
+    type: ActionTypes.ADD_MAPS,
+    payload: products
+});
+export const mapsLoading = () => ({
+    type: ActionTypes.MAPS_LOADING
+});
+export const mapsFailed = (errmess) => ({
+    type: ActionTypes.MAPS_FAILED,
+    payload: errmess
+});
+
+export const fetchMapsKey = () => (dispatch) => {
+    dispatch(mapsLoading());
+
+    return fetch(baseBackUrl + 'maps')
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(maps => dispatch(addMaps(maps)))
+    .catch(error => dispatch(mapsFailed(error.message)));
+}
+
 export const registerRequest = () => ({
     type: ActionTypes.REGISTER_REQUEST
 });

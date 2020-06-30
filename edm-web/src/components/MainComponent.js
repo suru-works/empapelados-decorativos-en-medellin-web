@@ -7,8 +7,7 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../redux/ActionCreators';
-
+import { fetchProducts, fetchMapsKey } from '../redux/ActionCreators';
 const mapStateToProps = state => {
     return {
         products: state.products
@@ -16,7 +15,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: () => dispatch(fetchProducts()),
+    fetchMapsKey: () => dispatch(fetchMapsKey())
 });
 
 class Main extends Component {
@@ -24,6 +24,7 @@ class Main extends Component {
 
     componentDidMount() {
         this.props.fetchProducts();
+        this.props.fetchMapsKey();
     }
 
     render() {
@@ -47,6 +48,13 @@ class Main extends Component {
                 />
             );
         }
+        const AboutPage = () => {
+            return (
+                <About 
+                    mapsKey={this.props.maps.key}
+                />
+            )
+        }
 
         return (
             <div>
@@ -54,7 +62,7 @@ class Main extends Component {
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
                     <Route path="/galeria" component={GalleryPage} />
-                    <Route exact path='/acerca-de-nosotros' component={() => <About />} />
+                    <Route exact path='/acerca-de-nosotros' component={() => <AboutPage />} />
                     <Route exact path='/contacto' component={() => <Contact />} />
                     <Redirect to="/inicio"></Redirect>
                 </Switch>

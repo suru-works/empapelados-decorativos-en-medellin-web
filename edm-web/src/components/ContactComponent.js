@@ -3,7 +3,6 @@ import { Breadcrumb, BreadcrumbItem, Button, Row, Label, Col, Card, CardBody, Ca
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
-import credentials from '../shared/credentials';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -11,13 +10,14 @@ const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}`;
+const mapUrl = ``;
 
 class Contact extends Component {
 
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.maps}`
     }
 
     toggle(e) {

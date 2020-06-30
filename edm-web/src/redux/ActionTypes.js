@@ -15,3 +15,8 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILED = 'LOGOUT_FAILED';
+
+// Maps API keys
+export const MAPS_LOADING = 'MAPS_LOADING';
+export const MAPS_FAILED = 'MAPS_FAILED';
+export const ADD_MAPS = 'ADD_MAPS';
