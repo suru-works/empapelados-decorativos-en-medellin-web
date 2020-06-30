@@ -9,7 +9,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const key = require('./config').getKey();
+const key = process.env.JWT_KEY;
 
 exports.getToken = function(user) {
     return jwt.sign(user, key, {expiresIn: 3600});

@@ -15,10 +15,12 @@ class Header extends Component {
 
         this.state = {
             isNavOpen: false,
-            isModalOpen: false
+            isLoginModalOpen: false,
+            isRegisterModalOpen: false
         };
         this.toggleNav = this.toggleNav.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
+        this.toggleLoginModal = this.toggleLoginModal.bind(this);
+        this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }
 
@@ -28,14 +30,26 @@ class Header extends Component {
         });
     }
 
-    toggleModal() {
+    toggleRegisterModal() {
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isRegisterModalOpen: !this.state.isRegisterModalOpen
         });
     }
 
+    toggleLoginModal() {
+        this.setState({
+            isLoginModalOpen: !this.state.isLoginModalOpen
+        });
+    }
+
+    handleRegister(event) {
+        this.toggleRegisterModal();
+        alert("Registered");
+        event.preventDefault();
+    }
+
     handleLogin(event) {
-        this.toggleModal();
+        this.toggleLoginModal();
         alert("Username: " + this.username.value + "Password: " + this.password.value + " Remember" + this.remember.checked)
         event.preventDefault();
     }
@@ -73,13 +87,13 @@ class Header extends Component {
 
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleModal}>
+                                    <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleLoginModal}>
                                         <span className="fa fa-sign-in"> Iniciar sesión </span>
                                     </Button>
                                 </NavItem>
 
                                 <NavItem>
-                                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary">
+                                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
                                         <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
                                     </Button>
                                 </NavItem>
@@ -123,8 +137,54 @@ class Header extends Component {
                     </div>
                 </Jumbotron>
 
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Ingresar</ModalHeader>
+                <Modal isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}>
+                    <ModalHeader toggle={this.toggleRegisterModal}>Registro</ModalHeader>
+
+                    <ModalBody>
+                        <Form onSubmit={this.handleRegister}>
+                            <FormGroup>
+                                <Label htmlFor="username">Usuario*</Label>
+                                <Input type="text" id="username" name="username"
+                                    innerRef={(input) => this.username = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="password">Contraseña*</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={(input) => this.password = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="name">Nombre</Label>
+                                <Input type="text" id="name" name="name"
+                                    innerRef={(input) => this.name = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="address">Dirección</Label>
+                                <Input type="text" id="address" name="address"
+                                    innerRef={(input) => this.address = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="email">Correo electrónico</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="phoneNumber">Número de teléfono</Label>
+                                <Input type="text" id="phoneNumber" name="phoneNumber"
+                                    innerRef={(input) => this.phoneNumber = input} />
+                            </FormGroup>
+
+                            <Button type="submit" value="submit" color="primary">Registrarse</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal}>
+                    <ModalHeader toggle={this.toggleLoginModal}>Ingresar</ModalHeader>
 
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
