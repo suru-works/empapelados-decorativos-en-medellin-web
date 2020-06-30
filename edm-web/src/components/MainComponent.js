@@ -38,12 +38,22 @@ class Main extends Component {
             );
         }
 
+        const GalleryPage = () => {
+            return (
+                <Gallery
+                    products={this.props.products.products}
+                    productsLoading={this.props.products.isLoading}
+                    productsErrMess={this.props.products.errMess}
+                />
+            );
+        }
+
         return (
             <div>
                 <Header/>
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
-                    <Route path="/galeria" component={() => <Gallery />} />
+                    <Route path="/galeria" component={GalleryPage} />
                     <Route exact path='/acerca-de-nosotros' component={() => <About />} />
                     <Route exact path='/contacto' component={() => <Contact />} />
                     <Redirect to="/inicio"></Redirect>
