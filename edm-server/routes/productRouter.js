@@ -110,88 +110,29 @@ productRouter.route('/:productId/comments/:commentId')
     .then((product) => res.json(product.comments[0]), (err) => next(err))
     .catch((err) => next(err));
 })
-/*.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     Products.findOneAndUpdate({
         _id: req.params.productId,
         "comments._id": req.params.commentId
     }, {
         $set: {
-            "comments.$": {
-                $set: req.body
-            }
+            "comments.$.comment": req.body.comment
         }
     })
-    .then((product) => {
-        if (product != null && product.comments.id(req.params.commentId) != null && product.comments.id(req.params.commentId).author.equals(req.user.id)) {
-            if (req.body.rating) {
-                product.comments.id(req.params.commentId).rating = req.body.rating;
-            }
-            if (req.body.comment) {
-                product.comments.id(req.params.commentId).comment = req.body.comment;                
-            }
-            product.save()
-            .then((product) => {
-                Products.findById(product._id)
-                .populate('comments.author')
-                .then((product) => {
-                    res.statusCode = 200;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.json(product);  
-                })              
-            }, (err) => next(err));
-        }
-        else if (product == null) {
-            err = new Error('product ' + req.params.productId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-        else if (!product.comments.id(req.params.commentId).author.equals(req.user.id)) {
-            err = new Error('You are not authorized to delete this comment!');
-            err.status = 403;
-            return next(err);
-        }
-        else {
-            err = new Error('Comment ' + req.params.commentId + ' not found');
-            err.status = 404;
-            return next(err);            
-        }
-    }, (err) => next(err))
     .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
-})*/
+})
 .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    Products.findById(req.params.productId)
-    .then((product) => {
-        if (product != null && product.comments.id(req.params.commentId) != null && product.comments.id(req.params.commentId).author.equals(req.user.id)) {
-
-            product.comments.id(req.params.commentId).remove();
-            product.save()
-            .then((product) => {
-                Products.findById(product._id)
-                .populate('comments.author')
-                .then((product) => {
-                    res.statusCode = 200;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.json(product);  
-                })               
-            }, (err) => next(err));
+    Products.findByIdAndUpdate(req.params.productId, {
+        $pull: {
+            comments: {
+                _id: req.params.commentId
+            }
         }
-        else if (product == null) {
-            err = new Error('product ' + req.params.productId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-        else if (!product.comments.id(req.params.commentId).author.equals(req.user.id)) {
-            err = new Error('You are not authorized to delete this comment!');
-            err.status = 403;
-            return next(err);
-        }
-        else {
-            err = new Error('Comment ' + req.params.commentId + ' not found');
-            err.status = 404;
-            return next(err);            
-        }
-    }, (err) => next(err))
+    }, {
+        new: true
+    })
+    .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
 });
 
