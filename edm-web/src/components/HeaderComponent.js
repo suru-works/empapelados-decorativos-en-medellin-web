@@ -93,7 +93,7 @@ class Header extends Component {
                                 </NavItem>
 
                                 <NavItem>
-                                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary">
+                                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
                                         <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
                                     </Button>
                                 </NavItem>
@@ -143,26 +143,42 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleRegister}>
                             <FormGroup>
-                                <Label htmlFor="username">Usuario</Label>
+                                <Label htmlFor="username">Usuario*</Label>
                                 <Input type="text" id="username" name="username"
                                     innerRef={(input) => this.username = input} />
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor="password">Contraseña</Label>
+                                <Label htmlFor="password">Contraseña*</Label>
                                 <Input type="password" id="password" name="password"
                                     innerRef={(input) => this.password = input} />
                             </FormGroup>
 
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"
-                                        innerRef={(input) => this.remember = input} />
-                                    Recuerdame
-                                </Label>
+                            <FormGroup>
+                                <Label htmlFor="name">Nombre</Label>
+                                <Input type="text" id="name" name="name"
+                                    innerRef={(input) => this.name = input} />
                             </FormGroup>
 
-                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <FormGroup>
+                                <Label htmlFor="address">Dirección</Label>
+                                <Input type="text" id="address" name="address"
+                                    innerRef={(input) => this.address = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="email">Correo electrónico</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="phoneNumber">Número de teléfono</Label>
+                                <Input type="text" id="phoneNumber" name="phoneNumber"
+                                    innerRef={(input) => this.phoneNumber = input} />
+                            </FormGroup>
+
+                            <Button type="submit" value="submit" color="primary">Registrarse</Button>
                         </Form>
                     </ModalBody>
                 </Modal>
