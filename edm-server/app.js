@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Generate authentication key
-config.generateKey();
+//config.generateKey();
 
 // Passport initialization
 app.use(passport.initialize());
