@@ -48,7 +48,9 @@ productRouter.route('/:productId')
 .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Products.findByIdAndUpdate(req.params.productId, {
         $set: req.body
-    }, { new: true })
+    }, {
+        new: true
+    })
     .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
 })
@@ -77,6 +79,8 @@ productRouter.route('/:productId/comments')
         $push: {
             comments: req.body
         }
+    }, {
+        new: true
     })
     .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
@@ -86,6 +90,8 @@ productRouter.route('/:productId/comments')
         $set: {
             comments: []
         }
+    }, {
+        new: true
     })
     .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
@@ -150,6 +156,7 @@ productRouter.route('/:productId/comments/:commentId')
             return next(err);            
         }
     }, (err) => next(err))
+    .then((product) => res.json(product), (err) => next(err))
     .catch((err) => next(err));
 })*/
 .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
