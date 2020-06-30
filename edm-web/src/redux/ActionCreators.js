@@ -39,7 +39,7 @@ export const fetchProducts = () => (dispatch) => {
 
 export const addMaps = (maps) => ({
     type: ActionTypes.ADD_MAPS,
-    payload: products
+    payload: maps
 });
 export const mapsLoading = () => ({
     type: ActionTypes.MAPS_LOADING
