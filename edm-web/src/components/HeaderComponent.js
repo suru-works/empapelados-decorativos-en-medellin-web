@@ -64,7 +64,7 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
 
-                        <NavbarBrand className="mr-auto" href="/"><img src={baseFrontUrl + "/public/logo/shortwhiteLogoTransparent.png"} height="46" width="41" alt="small-company-logo" /></NavbarBrand>
+                        <NavbarBrand className="mr-auto" href="/"><img src={require(baseFrontUrl + "/public/logo/shortwhiteLogoTransparent.png")} height="46" width="41" alt="small-company-logo" /></NavbarBrand>
 
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
@@ -120,7 +120,7 @@ class Header extends Component {
                             <div className="ml-auto">
 
                                 {window.innerWidth > 768 && (
-                                    <img className="float-right" height="312" width="163" src={baseFrontUrl + "/public/logo/blackLogo.png"} alt="company-logo"></img>
+                                    <img className="float-right" height="312" width="163" src={require(baseFrontUrl + "/public/logo/blackLogo.png")} alt="company-logo"></img>
                                 )
                                 }
 
