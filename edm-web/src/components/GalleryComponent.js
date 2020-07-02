@@ -19,7 +19,7 @@ function RenderGallery ({product}) {
                 <CardText>  Precio: {product.price}  </CardText>
                 <CardText>  Unidades: {product.units}  </CardText>
                 <CardText>  CÓMPRALO YA ANTES DE QUE HAYA INFLACIÓN  </CardText>
-                <CardText>  "{product.comments}"</CardText>
+                
             </CardBody>
         </Card>
     );
@@ -35,28 +35,6 @@ const Gallery = (props) => {
         );
     });
 
-    if (props.products.isLoading) {
-        return(
-            <div className="container">
-                <div className="row">            
-                    <Loading />
-                </div>
-            </div>
-        );
-    }
-    else if (props.products.errMess) {
-        return(
-            <div className="container">
-                <div className="row"> 
-                    <div className="col-12">
-                        <h4>{props.products.errMess}</h4>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    else
-
     return (
         <div className="container">
             <div className="row">
@@ -71,6 +49,8 @@ const Gallery = (props) => {
         </div>
 
     );
+
+    
 }
 
 export default Gallery;   
