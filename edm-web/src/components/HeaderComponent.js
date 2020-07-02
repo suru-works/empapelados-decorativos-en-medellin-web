@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
+import { login } from '../redux/ActionCreators';
 
 
 
@@ -50,7 +51,12 @@ class Header extends Component {
 
     handleLogin(event) {
         this.toggleLoginModal();
-        alert("Username: " + this.username.value + "Password: " + this.password.value + " Remember" + this.remember.checked)
+        alert("Email: " + this.email.value + "Password: " + this.password.value + " Remember" + this.remember.checked);
+        var loginOptions = {
+            username: this.email.value,
+            password: this.password.value
+        }
+        login(loginOptions);
         event.preventDefault();
     }
 
@@ -124,13 +130,6 @@ class Header extends Component {
                                 )
                                 }
 
-                                
-                                {/*   
-                                    <img src = {baseFrontUrl +"/public/logo/shortBlackLogoTransparent.png"}></img>
-                                    <img src = {baseFrontUrl +"/public/logo/shortLogoFont.png"}></img>
-                                    <img src = {baseFrontUrl +"/public/logo/logoFont.png"}></img>
-                                */}
-
                             </div>
                         </div>
 
@@ -143,9 +142,9 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleRegister}>
                             <FormGroup>
-                                <Label htmlFor="username">Usuario*</Label>
-                                <Input type="text" id="username" name="username"
-                                    innerRef={(input) => this.username = input} />
+                                <Label htmlFor="email">Correo electrónico</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
                             </FormGroup>
 
                             <FormGroup>
@@ -167,12 +166,6 @@ class Header extends Component {
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor="email">Correo electrónico</Label>
-                                <Input type="text" id="email" name="email"
-                                    innerRef={(input) => this.email = input} />
-                            </FormGroup>
-
-                            <FormGroup>
                                 <Label htmlFor="phoneNumber">Número de teléfono</Label>
                                 <Input type="text" id="phoneNumber" name="phoneNumber"
                                     innerRef={(input) => this.phoneNumber = input} />
@@ -189,9 +182,9 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Usuario</Label>
-                                <Input type="text" id="username" name="username"
-                                    innerRef={(input) => this.username = input} />
+                                <Label htmlFor="email">Correo electrónico</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
                             </FormGroup>
 
                             <FormGroup>

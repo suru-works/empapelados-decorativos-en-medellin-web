@@ -13,9 +13,6 @@ const User = new Schema({
     addresses: [{
         type: String
     }],
-    email: {
-        type: String
-    },
     phoneNumber: {
         type: String
     }
