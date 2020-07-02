@@ -29,6 +29,7 @@ class Main extends Component {
     }
 
     render() {
+        console.log(this.props.maps.key);
 
         const HomePage = () => {
             return (

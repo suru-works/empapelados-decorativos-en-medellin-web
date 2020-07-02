@@ -17,7 +17,7 @@ class Contact extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.maps}`
+        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.mapsKey}`
     }
 
     toggle(e) {
@@ -68,7 +68,7 @@ class Contact extends Component {
                         <h5>Mapa de nuestra localización</h5>
                         <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
                             withMarker={true}
-                            googleMapURL={mapUrl}
+                            googleMapURL={this.mapURL}
                             containerElement={<div style={{ height: `100%` }} />}
                             mapElement={<div style={{ height: `100%` }} />}
                             mapType= 'roadmap'
