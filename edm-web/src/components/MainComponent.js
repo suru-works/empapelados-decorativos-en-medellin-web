@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 import { fetchProducts, fetchMapsKey } from '../redux/ActionCreators';
 const mapStateToProps = state => {
     return {
-        products: state.products
+        products: state.products,
+        maps: state.maps
     }
 }
 
@@ -48,9 +49,9 @@ class Main extends Component {
                 />
             );
         }
-        const AboutPage = () => {
+        const ContactPage = () => {
             return (
-                <About 
+                <Contact 
                     mapsKey={this.props.maps.key}
                 />
             )
@@ -62,8 +63,8 @@ class Main extends Component {
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
                     <Route path="/galeria" component={GalleryPage} />
-                    <Route exact path='/acerca-de-nosotros' component={() => <AboutPage />} />
-                    <Route exact path='/contacto' component={() => <Contact />} />
+                    <Route exact path='/acerca-de-nosotros' component={() => <About />} />
+                    <Route exact path='/contacto' component={ContactPage} />
                     <Redirect to="/inicio"></Redirect>
                 </Switch>
                 <Footer />
