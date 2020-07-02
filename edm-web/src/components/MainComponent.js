@@ -29,8 +29,6 @@ class Main extends Component {
     }
 
     render() {
-        console.log(this.props.maps.key);
-
         const HomePage = () => {
             return (
                 <Home
@@ -53,7 +51,7 @@ class Main extends Component {
         const ContactPage = () => {
             return (
                 <Contact 
-                    mapsKey={this.props.maps.key}
+                    mapsKey={this.props.maps.maps.key}
                 />
             )
         }
