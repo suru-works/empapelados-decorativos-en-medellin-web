@@ -49,14 +49,17 @@ class Header extends Component {
         event.preventDefault();
     }
 
+    testLogin(loginOptions){
+        login(loginOptions);
+    }
+
     handleLogin(event) {
         this.toggleLoginModal();
-        alert("Email: " + this.email.value + "Password: " + this.password.value + " Remember" + this.remember.checked);
         var loginOptions = {
             username: this.email.value,
             password: this.password.value
         }
-        login(loginOptions);
+        this.testLogin(loginOptions);
         event.preventDefault();
     }
 
