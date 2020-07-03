@@ -188,7 +188,11 @@ export const logoutFailed = (errmess) => ({
 export const logout = () => (dispatch) => {
     dispatch(logoutRequest());
 
-    return fetch(baseBackUrl + 'users/logout')
+    return fetch(baseBackUrl + 'users/logout', {
+        headers: {
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+        }
+    })
     .then(response => {
         if (response.ok) {
             return response;
@@ -201,6 +205,15 @@ export const logout = () => (dispatch) => {
         throw error;
     })
     .then(response => response.json())
-    .then(response => dispatch(logoutSuccess(response)))
+    .then(response => {
+        if (response.success) {
+            localStorage.removeItem('token');
+            dispatch(logoutSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
     .catch(error => dispatch(logoutFailed(error.message)));
 }
