@@ -6,7 +6,6 @@ import {
 } from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
-import { login } from '../redux/ActionCreators';
 
 
 
@@ -44,14 +43,22 @@ class Header extends Component {
     }
 
     handleRegister(event) {
+        var registerOptions = {
+            username: this.email.value,
+            password: this.password.value,
+            admin: false,
+            name: this.name.value,
+            addresses: [],
+            phoneNumber: this.phoneNumber.value
+
+        }
+        this.props.registerFunction(registerOptions);
         this.toggleRegisterModal();
         alert("Registered");
         event.preventDefault();
     }
 
-    testLogin(loginOptions){
-        login(loginOptions);
-    }
+    
 
     handleLogin(event) {
         var loginOptions = {
@@ -59,7 +66,7 @@ class Header extends Component {
             password: this.password.value
         }
         //this.testLogin(loginOptions);
-        login(loginOptions);
+        this.props.loginFunction(loginOptions);
         this.toggleLoginModal();
         event.preventDefault();
     }

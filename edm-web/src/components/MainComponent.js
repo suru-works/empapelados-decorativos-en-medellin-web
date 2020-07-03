@@ -7,7 +7,7 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchMapsKey } from '../redux/ActionCreators';
+import { fetchProducts, fetchMapsKey, login, register } from '../redux/ActionCreators';
 const mapStateToProps = state => {
     return {
         products: state.products,
@@ -17,7 +17,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProducts()),
-    fetchMapsKey: () => dispatch(fetchMapsKey())
+    fetchMapsKey: () => dispatch(fetchMapsKey()),
+    login: () => dispatch(login()),
+    register:() => dispatch(register())
 });
 
 class Main extends Component {
@@ -58,7 +60,7 @@ class Main extends Component {
 
         return (
             <div>
-                <Header/>
+                <Header loginFunction={this.props.login} registerFunction={this.props.register}/>
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
                     <Route path="/galeria" component={GalleryPage} />
