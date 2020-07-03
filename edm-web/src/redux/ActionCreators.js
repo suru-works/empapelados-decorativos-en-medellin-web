@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
+import axios  from 'axios';
 
 export const addProducts = (products) => ({
     type: ActionTypes.ADD_PRODUCTS,
@@ -83,7 +84,35 @@ export const registerFailed = (errmess) => ({
     type: ActionTypes.REGISTER_FAILED,
     payload: errmess
 });
+export const register = (user) => (dispatch) => {
+    dispatch(registerRequest());
 
+    return axios.post(baseBackUrl + 'users/signup', user)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.success) {
+            localStorage.setItem('token', response.token);
+            dispatch(registerSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
+    .catch(error => dispatch(registerFailed(error.message)));
+}
+/*
 export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
 
@@ -91,8 +120,7 @@ export const register = (user) => (dispatch) => {
         method: "POST",
         body: JSON.stringify(user),
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ${hash}'
+            'Content-Type': 'application/json'
         }
     })
     .then(response => {
@@ -118,7 +146,7 @@ export const register = (user) => (dispatch) => {
         }
     })
     .catch(error => dispatch(registerFailed(error.message)));
-}
+}*/
 
 export const loginRequest = () => ({
     type: ActionTypes.LOGIN_REQUEST
