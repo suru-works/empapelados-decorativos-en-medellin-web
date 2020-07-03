@@ -52,6 +52,8 @@ class Header extends Component {
             phoneNumber: this.phoneNumber.value
 
         }
+        console.log("estas son las register options");
+        console.log(registerOptions);
         this.props.registerFunction(registerOptions);
         this.toggleRegisterModal();
         event.preventDefault();

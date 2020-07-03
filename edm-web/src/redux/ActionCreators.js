@@ -84,7 +84,7 @@ export const registerFailed = (errmess) => ({
     type: ActionTypes.REGISTER_FAILED,
     payload: errmess
 });
-export const register2 = (user) => (dispatch) => {
+export const registerObsoleto = (user) => (dispatch) => {
     dispatch(registerRequest());
 
     //return axios.post(baseBackUrl + 'users/signup', user)
@@ -93,7 +93,11 @@ export const register2 = (user) => (dispatch) => {
         withCredentials: true,
         crossdomain: true,    
     headers: { 
-      "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'Host': 'www.empapeladosdecorativosenmedellin.com:3443',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Length': '192'
     }
     })
     .then(response => {
@@ -123,16 +127,17 @@ export const register2 = (user) => (dispatch) => {
 
 export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
-
+    console.log("este es el usuario");
+    console.log(user);
     return fetch(baseBackUrl + 'users/signup', {
         method: "POST",
-        body: JSON.stringify(user),
+        body: user,
         headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*',
             'Host': 'www.empapeladosdecorativosenmedellin.com:3443',
             'Accept-Encoding': 'gzip, deflate, br',
-            'Content-Length': '192'
+            'Connection': 'keep-alive'
         },
         credentials: 'same-origin'
     })
