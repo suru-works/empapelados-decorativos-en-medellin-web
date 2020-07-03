@@ -13,7 +13,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/signup', cors.corsWithOptions, (req, res, next) => {
-  console.log(req);
   User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
     if (err) {
       res.statusCode = 500;
