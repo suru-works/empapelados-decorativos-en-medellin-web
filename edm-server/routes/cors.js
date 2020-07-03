@@ -2,7 +2,8 @@ const cors = require('cors');
 
 const whitelist = [
     'https://www.empapeladosdecorativosenmedellin.com:3443/',
-    'https://www.empapeladosdecorativosenmedellin.com/'
+    'https://www.empapeladosdecorativosenmedellin.com/',
+    'http://localhost:3000'
 ];
 var corsOptionsDelegate = (req, callback) => {
     var corsOptions;
