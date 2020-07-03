@@ -8,17 +8,17 @@ import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
 import { fetchProducts, fetchMapsKey, login, register } from '../redux/ActionCreators';
+
 const mapStateToProps = state => {
     return {
         products: state.products,
         maps: state.maps
     }
-}
-
+};
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProducts()),
     fetchMapsKey: () => dispatch(fetchMapsKey()),
-    login: () => dispatch(login()),
+    login: (credentials) => dispatch(login(credentials)),
     register:(user) => dispatch(register(user))
 });
 

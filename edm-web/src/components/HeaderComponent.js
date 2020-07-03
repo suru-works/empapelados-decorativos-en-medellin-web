@@ -8,9 +8,7 @@ import { NavLink, Link, withRouter} from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 class Header extends Component {
-
     
-
     constructor(props) {
         super(props);
 
@@ -45,32 +43,22 @@ class Header extends Component {
     }
 
     handleRegister(event) {
-        var registerOptions = {
+        this.props.registerFunction({
             username: this.email.value,
             password: this.password.value,
             admin: false,
             name: this.name.value,
             phoneNumber: this.phoneNumber.value
-
-        }
-       
-        console.log("estas son las register options");
-        console.log(registerOptions);
-
-        this.props.registerFunction(registerOptions);
+        });
         this.toggleRegisterModal();
         event.preventDefault();
     }
 
-    
-
     handleLogin(event) {
-        var loginOptions = {
+        this.props.loginFunction({
             username: this.email.value,
             password: this.password.value
-        }
-        //this.testLogin(loginOptions);
-        this.props.loginFunction(loginOptions);
+        });
         this.toggleLoginModal();
         event.preventDefault();
     }
@@ -155,7 +143,7 @@ class Header extends Component {
                     <ModalHeader toggle={this.toggleRegisterModal}>Registro</ModalHeader>
 
                     <ModalBody>
-                        <Form onSubmit={(values)=>this.handleRegister(values)}>
+                        <Form onSubmit={this.handleRegister}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico</Label>
                                 <Input type="text" id="email" name="email"
