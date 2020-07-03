@@ -22,6 +22,7 @@ class Header extends Component {
         this.toggleLoginModal = this.toggleLoginModal.bind(this);
         this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
     }
 
     toggleNav() {
@@ -54,7 +55,6 @@ class Header extends Component {
         }
         this.props.registerFunction(registerOptions);
         this.toggleRegisterModal();
-        alert("Registered");
         event.preventDefault();
     }
 
