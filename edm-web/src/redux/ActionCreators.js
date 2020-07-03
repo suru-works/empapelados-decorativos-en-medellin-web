@@ -87,7 +87,15 @@ export const registerFailed = (errmess) => ({
 export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
 
-    return axios.post(baseBackUrl + 'users/signup', user)
+    //return axios.post(baseBackUrl + 'users/signup', user)
+
+    return axios.post(baseBackUrl + 'users/signup',user,{
+        withCredentials: true,
+        crossdomain: true,    
+    headers: { 
+      "Content-Type": "application/json"
+    }
+    })
     .then(response => {
         if (response.ok) {
             return response;
@@ -112,8 +120,8 @@ export const register = (user) => (dispatch) => {
     })
     .catch(error => dispatch(registerFailed(error.message)));
 }
-/*
-export const register = (user) => (dispatch) => {
+
+export const register1 = (user) => (dispatch) => {
     dispatch(registerRequest());
 
     return fetch(baseBackUrl + 'users/signup', {
@@ -146,7 +154,7 @@ export const register = (user) => (dispatch) => {
         }
     })
     .catch(error => dispatch(registerFailed(error.message)));
-}*/
+}
 
 export const loginRequest = () => ({
     type: ActionTypes.LOGIN_REQUEST
@@ -162,12 +170,12 @@ export const loginFailed = (errmess) => ({
     payload: errmess
 });
 
-export const login = (credentials) => (dispatch) => {
+export const login = (user) => (dispatch) => {
     dispatch(loginRequest());
 
     return fetch(baseBackUrl + 'users/login', {
         method: "POST",
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(user),
         
         credentials: "same-origin"
     })
