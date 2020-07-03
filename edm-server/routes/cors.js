@@ -10,10 +10,14 @@ var corsOptionsDelegate = (req, callback) => {
     var corsOptions;
     console.log(req.header('Origin'));
     if(whitelist.indexOf(req.header('Origin')) !== -1) {
-        corsOptions = { origin: true };
+        corsOptions = { origin: true,
+                        methods: ['GET', 'PUT', 'POST']
+                     };
     }
     else {
-        corsOptions = { origin: false };
+        corsOptions = { origin: false,
+                        methods: ['GET', 'PUT', 'POST'] 
+                      };
     }
     callback(null, corsOptions);
 };

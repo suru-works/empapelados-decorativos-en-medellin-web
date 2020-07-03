@@ -90,7 +90,10 @@ export const register = (user) => (dispatch) => {
     return fetch(baseBackUrl + 'users/signup', {
         method: "POST",
         body: JSON.stringify(user),
-        
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ${hash}'
+        }
     })
     .then(response => {
         if (response.ok) {
@@ -136,8 +139,9 @@ export const login = (credentials) => (dispatch) => {
 
     return fetch(baseBackUrl + 'users/login', {
         method: "POST",
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(credentials),
         
+        credentials: "same-origin"
     })
     .then(response => {
         if (response.ok) {
