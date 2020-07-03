@@ -1,6 +1,4 @@
-const express = require('express');
 const cors = require('cors');
-const app = express();
 
 const whitelist = [
     'https://www.empapeladosdecorativosenmedellin.com:3443/',

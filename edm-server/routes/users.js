@@ -20,7 +20,6 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
       res.json({err: err});
     } else {
       if (req.body.name) user.name = req.body.name;
-      if (req.body.addresses) user.addresses = req.body.addresses;
       if (req.body.email) user.email = req.body.email;
       if (req.body.phoneNumber) user.phoneNumber = req.body.phoneNumber;
       user.save((err, user) => {

@@ -10,9 +10,6 @@ const User = new Schema({
     name: {
         type: String
     },
-    addresses: [{
-        type: String
-    }],
     phoneNumber: {
         type: String
     }
