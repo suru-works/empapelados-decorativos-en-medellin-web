@@ -4,12 +4,13 @@ import {
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label
 } from 'reactstrap';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter} from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 
-
-
 class Header extends Component {
+
+    
+
     constructor(props) {
         super(props);
 
@@ -52,8 +53,10 @@ class Header extends Component {
             phoneNumber: this.phoneNumber.value
 
         }
+       
         console.log("estas son las register options");
         console.log(registerOptions);
+
         this.props.registerFunction(registerOptions);
         this.toggleRegisterModal();
         event.preventDefault();
@@ -152,7 +155,7 @@ class Header extends Component {
                     <ModalHeader toggle={this.toggleRegisterModal}>Registro</ModalHeader>
 
                     <ModalBody>
-                        <Form onSubmit={this.handleRegister}>
+                        <Form onSubmit={(values)=>this.handleRegister(values)}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico</Label>
                                 <Input type="text" id="email" name="email"
@@ -215,4 +218,4 @@ class Header extends Component {
         );
     }
 }
-export default Header;
+export default Header ;

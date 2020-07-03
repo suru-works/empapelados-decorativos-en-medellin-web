@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProducts()),
     fetchMapsKey: () => dispatch(fetchMapsKey()),
     login: () => dispatch(login()),
-    register:() => dispatch(register())
+    register:(user) => dispatch(register(user))
 });
 
 class Main extends Component {

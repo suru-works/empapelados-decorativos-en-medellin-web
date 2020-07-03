@@ -125,13 +125,20 @@ export const registerObsoleto = (user) => (dispatch) => {
     .catch(error => dispatch(registerFailed(error.message)));
 }
 
+export const register1 = (user) => (dispatch) => {
+    console.log("este es el usuario");
+    console.log(user);
+    return true;
+}
+
+
 export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
     console.log("este es el usuario");
     console.log(user);
     return fetch(baseBackUrl + 'users/signup', {
         method: "POST",
-        body: user,
+        body: JSON.stringify(user),
         headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*',
