@@ -84,7 +84,7 @@ export const registerFailed = (errmess) => ({
     type: ActionTypes.REGISTER_FAILED,
     payload: errmess
 });
-export const register = (user) => (dispatch) => {
+export const register2 = (user) => (dispatch) => {
     dispatch(registerRequest());
 
     //return axios.post(baseBackUrl + 'users/signup', user)
@@ -121,15 +121,20 @@ export const register = (user) => (dispatch) => {
     .catch(error => dispatch(registerFailed(error.message)));
 }
 
-export const register1 = (user) => (dispatch) => {
+export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
 
     return fetch(baseBackUrl + 'users/signup', {
         method: "POST",
         body: JSON.stringify(user),
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+            'Accept': '*/*',
+            'Host': 'www.empapeladosdecorativosenmedellin.com:3443',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Content-Length': '192'
+        },
+        credentials: 'same-origin'
     })
     .then(response => {
         if (response.ok) {
