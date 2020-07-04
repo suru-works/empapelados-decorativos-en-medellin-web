@@ -20,6 +20,7 @@ productRouter.route('/')
     Products.find({})
     .then((products) => res.json(products), (err) => next(err))
     .catch((err) => next(err));
+    return;
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     req.body.publisher = req.user._id;
