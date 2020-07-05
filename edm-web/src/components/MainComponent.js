@@ -7,7 +7,7 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchMapsKey, login, register, logout } from '../redux/ActionCreators';
+import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -20,7 +20,8 @@ const mapDispatchToProps = dispatch => ({
     fetchMapsKey: () => dispatch(fetchMapsKey()),
     login: (credentials) => dispatch(login(credentials)),
     register: (user) => dispatch(register(user)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    postFeedback: (feedback) => dispatch(postFeedback(feedback))
 });
 
 class Main extends Component {
@@ -55,6 +56,7 @@ class Main extends Component {
             return (
                 <Contact 
                     mapsKey={this.props.maps.maps.key}
+                    feedbackSubmitFunction={this.props.postFeedback}
                 />
             )
         }

@@ -17,7 +17,14 @@ class Contact extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.mapsKey}`
+        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.mapsKey}`;
+        this.name = React.createRef();
+        this.phoneNumber = React.createRef();
+        this.email = React.createRef();
+        this.agree = React.createRef();
+        this.feedback = React.createRef();
+        this.contactType = React.createRef();
+        
     }
 
     toggle(e) {
@@ -25,10 +32,17 @@ class Contact extends Component {
         this.setState({ collapse: this.state.collapse === Number(event) ? 0 : Number(event) });
     }
 
-    handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        // event.preventDefault();
+    handleSubmit() {
+        const feedbackData={
+            feedback: this.feedback.value,
+            name: this.name.value,
+            phoneNumber: this.phoneNumber.value,
+            email: this.email.value,
+            agree: this.agree.value,
+            contactType: this.contactType.value
+        }
+        console.log(feedbackData);
+        this.props.feedbackSubmitFunction(feedbackData);
     }
 
 
@@ -123,13 +137,14 @@ class Contact extends Component {
                     <div className="col-12 col-md-6">
                         <h3>Envíanos tus comentarios</h3>
 
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <LocalForm onSubmit={this.handleSubmit}>
                             <Row className="form-group">
-                                <Label htmlFor="firstname" md={2}>Nombre</Label>
+                                <Label htmlFor="name" md={2}>Nombre</Label>
                                 <Col md={10}>
-                                    <Control.text model=".firstname" id="firstname" name="firstname"
-                                        placeholder="First Name"
+                                    <Control.text model=".name" id="name" name="name"
+                                        placeholder="Nombre"
                                         className="form-control"
+                                        ref={this.name}
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
@@ -137,24 +152,25 @@ class Contact extends Component {
 
                                     <Errors
                                         className="text-danger"
-                                        model=".firstname"
+                                        model=".name"
                                         show="touched"
                                         messages={{
-                                            required: 'Required',
-                                            minLength: 'Must be greater than 2 characters',
-                                            maxLength: 'Must be 15 characters or less'
+                                            required: 'Obligatorio',
+                                            minLength: 'Tiene que ser mayor a 3 caracteres',
+                                            maxLength: 'Tiene que ser maximo 15 caracteres'
                                         }}
                                     />
                                 </Col>
                             </Row>
 
                             <Row className="form-group">
-                                <Label htmlFor="telnum" md={2}>Contacto Tel.</Label>
+                                <Label htmlFor="phoneNumber" md={2}>Contacto Tel.</Label>
 
                                 <Col md={10}>
-                                    <Control.text model=".telnum" id="telnum" name="telnum"
-                                        placeholder="Tel. Number"
+                                    <Control.text model=".phoneNumber" id="phoneNumber" name="phoneNumber"
+                                        placeholder="Telefono"
                                         className="form-control"
+                                        ref={this.phoneNumber}
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15), isNumber
                                         }}
@@ -162,13 +178,13 @@ class Contact extends Component {
 
                                     <Errors
                                         className="text-danger"
-                                        model=".telnum"
+                                        model=".phoneNumber"
                                         show="touched"
                                         messages={{
-                                            required: 'Required',
-                                            minLength: 'Must be greater than 2 numbers',
-                                            maxLength: 'Must be 15 numbers or less',
-                                            isNumber: 'Must be a number'
+                                            required: 'Obligatorio',
+                                            minLength: 'tiene que ser mayor a 2 caracteres',
+                                            maxLength: 'Tiene que ser maximo 15 caracteres',
+                                            isNumber: 'tiene que ser un numero valido'
                                         }}
                                     />
                                 </Col>
@@ -180,6 +196,7 @@ class Contact extends Component {
                                 <Col md={10}>
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Email"
+                                        ref={this.Email}
                                         className="form-control"
                                         validators={{
                                             required, validEmail
@@ -191,8 +208,8 @@ class Contact extends Component {
                                         model=".email"
                                         show="touched"
                                         messages={{
-                                            required: 'Required',
-                                            validEmail: 'Invalid Email Address'
+                                            required: 'Obligatorio.',
+                                            validEmail: 'Es necesaria una direccion de correo valida.'
                                         }}
                                     />
                                 </Col>
@@ -204,6 +221,7 @@ class Contact extends Component {
                                         <Label check>
                                             <Control.checkbox model=".agree" name="agree"
                                                 className="form-check-input"
+                                                ref={this.agree}
                                             />
 
                                             {' '}
@@ -214,7 +232,8 @@ class Contact extends Component {
 
                                 <Col md={{ size: 3, offset: 1 }}>
                                     <Control.select model=".contactType" name="contactType"
-                                        className="form-control">
+                                        className="form-control"
+                                        ref={this.contactType}>
                                         <option>Tel.</option>
                                         <option>Email</option>
                                     </Control.select>
@@ -222,10 +241,11 @@ class Contact extends Component {
                             </Row>
 
                             <Row className="form-group">
-                                <Label htmlFor="message" md={2}>Tu recomendacion o duda</Label>
+                                <Label htmlFor="feedback" md={2}>Tu recomendacion o duda</Label>
 
                                 <Col md={10}>
-                                    <Control.textarea model=".message" id="message" name="message"
+                                    <Control.textarea model=".feedback" id="feedback" name="feedback"
+                                        ref={this.feedback}
                                         rows="12"
                                         className="form-control" />
                                 </Col>

@@ -217,3 +217,46 @@ export const logout = () => (dispatch) => {
     })
     .catch(error => dispatch(logoutFailed(error.message)));
 }
+
+
+export const postFeedbackRequest = () => ({
+    type: ActionTypes.FEEDBACK_REQUEST
+});
+
+export const postFeedbackSuccess = (result) => ({
+    type: ActionTypes.FEEDBACK_SUCCESS,
+    payload: result
+});
+
+export const postFeedbackFailed = (errmess) => ({
+    type: ActionTypes.FEEDBACK_FAILED,
+    payload: errmess
+});
+
+export const postFeedback= (feedback) => (dispatch) => {
+    dispatch(logoutRequest());
+    feedback.date = new Date().toISOString();
+  
+    return fetch(baseBackUrl + 'feedback', {
+      method: "POST",
+      body: JSON.stringify(feedback),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "same-origin"
+    })
+      .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+        error => {
+          throw error;
+        })
+      .then(response => response.json())
+      .catch(error => { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: ' + error.message); });
+  };
