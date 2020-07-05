@@ -143,7 +143,7 @@ export const login = (user) => (dispatch) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        credentials: "include",
+        credentials: "same-origin",
         body: JSON.stringify(user)
     })
     .then(response => {
@@ -235,7 +235,7 @@ export const authenticated = () => (dispatch) => {
     dispatch(authenticatedQuery());
 
     return fetch(baseBackUrl + 'users/authenticated', {
-        credentials: "include"
+        credentials: "same-origin"
     })
     .then(response => {
         if (response.ok) {
