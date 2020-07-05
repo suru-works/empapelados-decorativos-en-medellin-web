@@ -85,7 +85,7 @@ router.get('/verify/:token', cors.corsWithOptions,(req, res) => {
     });
 });
 
-router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
+router.post('/login', cors.corsWithOptions, authenticate.userIsVerified, passport.authenticate('local'), (req, res) => {
   var token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');

@@ -4,6 +4,7 @@ const User = require('./models/user');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const User = require('../models/user');
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -32,6 +33,19 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => 
         }
     });
 }));
+
+exports.userIsVerified = function(req, res, next) {
+    User.findOne(req.body.username)
+    .then((user) => {
+        if (user.verified) {
+            next();
+        } else {
+            var err = new Error('You are not verified, check your email');
+            err.status = 403;
+            next(err);
+        }
+    })
+}
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
 
