@@ -32,16 +32,15 @@ class Contact extends Component {
         this.setState({ collapse: this.state.collapse === Number(event) ? 0 : Number(event) });
     }
 
-    handleSubmit() {
+    handleSubmit(values) {
         const feedbackData={
-            feedback: this.feedback.value,
-            name: this.name.value,
-            phoneNumber: this.phoneNumber.value,
-            email: this.email.value,
-            agree: this.agree.value,
-            contactType: this.contactType.value
+            feedback: values.feedback,
+            name: values.name,
+            phoneNumber: values.phoneNumber,
+            email: values.email,
+            agree: values.agree,
+            contactType: values.contactType
         }
-        console.log(feedbackData);
         this.props.feedbackSubmitFunction(feedbackData);
     }
 
@@ -137,7 +136,7 @@ class Contact extends Component {
                     <div className="col-12 col-md-6">
                         <h3>Envíanos tus comentarios</h3>
 
-                        <LocalForm onSubmit={this.handleSubmit}>
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="name" md={2}>Nombre</Label>
                                 <Col md={10}>

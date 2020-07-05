@@ -235,7 +235,7 @@ export const postFeedbackFailed = (errmess) => ({
 
 export const postFeedback= (feedback) => (dispatch) => {
     dispatch(logoutRequest());
-    feedback.date = new Date().toISOString();
+    
   
     return fetch(baseBackUrl + 'feedback', {
       method: "POST",
