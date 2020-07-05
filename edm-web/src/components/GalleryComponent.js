@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import Product from './ProductComponent';
 import { Loading } from './LoadingComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
@@ -8,37 +9,8 @@ class Gallery extends Component {
 
 
     constructor(props) {
-
         super(props);
-        this.state = {
-            isModalOpen: false,
-            selectedProduct: {}
-        };
-
-        this.toggleModal = this.toggleModal.bind(this);
-        this.showProduct = this.showProduct.bind(this);
     }
-
-    componentWillMount(){
-        this.setState({
-            selectedProduct: this.props.products[0]
-        });
-    }
-
-    showProduct(product) {
-        console.log(product);
-        this.setState({
-            selectedProduct: product
-        });
-        this.toggleModal();
-    }
-
-    toggleModal() {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
-    }
-
 
     render() {
 
@@ -46,21 +18,7 @@ class Gallery extends Component {
             try {
                 
                 return (
-                    <div className="col-12 col-lg-3 col-md-4 col-sm-6" key={product._id}>
-                        <Card onClick={product => {this.showProduct(product)}}>
-                        
-                            <CardBody>
-                                <CardTitle>{product.name}</CardTitle>
-
-                                <CardImg width="100%" src={baseFrontUrl + product.imageUrl} alt={product.name} />
-
-                                <CardText>  {product.description}  </CardText>
-                                <CardText>  Precio: {product.price}  </CardText>
-                                <CardText>  Unidades: {product.units}  </CardText>
-
-                            </CardBody>
-                        </Card>
-                    </div>
+                    <Product product={product}/>
                 );
             }
             catch (err) {
@@ -82,29 +40,8 @@ class Gallery extends Component {
                 <div className="row col-12">
                     {galeria}
                 </div>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Ingresar</ModalHeader>
-
-                    <ModalBody>
-                        <div className="row">
-                            <div className="col-md-12 col-sm-12 col-xm-12 m-1">
-
-                                <Card key={this.state.selectedProduct._id}>
-                                    <CardImg top src={baseFrontUrl + this.state.selectedProduct.imageUrl} alt={this.state.selectedProduct.name} />
-
-                                    <CardBody>
-                                        <CardTitle>{this.state.selectedProduct.name}</CardTitle>
-                                        <CardText>{this.state.selectedProduct.description}</CardText>
-                                    </CardBody>
-                                </Card>
-
-                            </div>
-
-                        </div>
-
-
-                    </ModalBody>
-                </Modal>
+                
+                
 
             </div>
 
