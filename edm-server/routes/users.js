@@ -22,6 +22,7 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
   console.log(req.body);
   User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
     if (err) {
+      console.log(err);
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
       res.json({err: err});
@@ -47,6 +48,7 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
       mail.mail(mailData);
       user.save((err, user) => {
         if (err) {
+          
           res.statusCode = 500;
           res.setHeader('Content-Type', 'application/json');
           res.json({err: err});
@@ -63,7 +65,24 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
 });
 
 router.get('/verify/:token', cors.corsWithOptions,(req, res) => {
-   console.log('User verification attemp');
+  
+   console.log('User verification attempt');
+   const token=req.params.token.split(',');
+   console.log(token);
+   User.findByIdAndUpdate(token[0],{
+     $set: {
+       verified: true
+      }
+    },{new: true})
+   .then((user) => {
+     console.log(user);
+     res.redirect('https://www.empapeladosdecorativosenmedellin.com/');
+     return user;
+   }, (err) => next(err))
+   .catch((err) => {
+     console.log(err);
+      next(err)
+    });
 });
 
 router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
