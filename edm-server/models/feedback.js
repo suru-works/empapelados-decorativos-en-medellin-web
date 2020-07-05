@@ -10,10 +10,16 @@ const feedbackSchema = new Schema({
         type: String
     },
     phoneNumber: {
-        type: String,
+        type: String
     },
     email: {
         type: String
+    },
+    agree: {
+        type: Boolean
+    },
+    contactType: {
+        tyoe: String
     }
 }, {
     timestamps: true

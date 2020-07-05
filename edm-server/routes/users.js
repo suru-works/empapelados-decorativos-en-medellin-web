@@ -90,12 +90,13 @@ router.post('/login', cors.corsWithOptions, authenticate.userIsVerified, passpor
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   //res.json({success: true, token: token, status: 'You are successfully logged in!'});
-  res.json({success: true, status: 'You are successfully logged in!'});
   res.cookie('token', token, {
     httpOnly: true,
     secure: true,
     sameSite: true
   });
+  console.log(res);
+  res.json({success: true, status: 'You are successfully logged in!'});
 });
 
 router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
