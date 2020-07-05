@@ -13,7 +13,6 @@ const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-
 class Header extends Component {
     
     constructor(props) {
@@ -21,7 +20,6 @@ class Header extends Component {
 
         this.state = {
             isNavOpen: false,
-            isLoggedIn: localStorage.getItem('token') ? true : false,
             isLoginModalOpen: false,
             isRegisterModalOpen: false
         };
@@ -33,6 +31,7 @@ class Header extends Component {
         this.renderButtons = this.renderButtons.bind(this);
         this.renderLoggedInText = this.renderLoggedInText.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.renderAuth = this.renderAuth.bind(this);
     }
 
     toggleNav() {
@@ -69,9 +68,9 @@ class Header extends Component {
         this.props.loginFunction({
             username: this.email.value,
             password: this.password.value
-        });
-        this.setState({
-            isLoggedIn: true
+        })
+        .then(response => {
+            this.props.authenticatedFunction();
         });
         this.toggleLoginModal();
         event.preventDefault();
@@ -79,13 +78,9 @@ class Header extends Component {
 
     handleLogout() {
         this.props.logoutFunction();
-        this.setState({
-            isLoggedIn: false
-        });
     }
 
     renderButtons() {
-        console.log(this.state.isLoggedIn);
         return (
             <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -113,6 +108,16 @@ class Header extends Component {
                 </NavItem>
             </Nav>
         )
+    }
+
+    renderAuth() {
+        if (this.props.authLoading) {
+            return <p>Loading...</p>
+        } else if (this.props.authErrMess) {
+            return this.renderButtons();
+        } else {
+            return this.renderLoggedInText();
+        }
     }
 
     render() {
@@ -147,7 +152,7 @@ class Header extends Component {
                                 </NavItem>
                             </Nav>
 
-                            { this.state.isLoggedIn ? this.renderLoggedInText() : this.renderButtons() }
+                            { this.renderAuth() }
                         </Collapse>
                     </div>
                 </Navbar>

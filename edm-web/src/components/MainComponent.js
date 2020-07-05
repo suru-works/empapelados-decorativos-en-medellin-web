@@ -7,12 +7,14 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback } from '../redux/ActionCreators';
+import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback, authenticated } from '../redux/ActionCreators';
+import { baseBackUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
         products: state.products,
-        maps: state.maps
+        maps: state.maps,
+        auth: state.auth
     }
 };
 const mapDispatchToProps = dispatch => ({
@@ -21,15 +23,16 @@ const mapDispatchToProps = dispatch => ({
     login: (credentials) => dispatch(login(credentials)),
     register: (user) => dispatch(register(user)),
     logout: () => dispatch(logout()),
+    authenticated: () => dispatch(authenticated()),
     postFeedback: (feedback) => dispatch(postFeedback(feedback))
 });
 
 class Main extends Component {
 
-
     componentDidMount() {
         this.props.fetchProducts();
         this.props.fetchMapsKey();
+        this.props.authenticated();
     }
 
     render() {
@@ -63,7 +66,15 @@ class Main extends Component {
 
         return (
             <div>
-                <Header loginFunction={this.props.login} registerFunction={this.props.register} logoutFunction={this.props.logout}/>
+                <Header
+                    loginFunction={this.props.login}
+                    registerFunction={this.props.register}
+                    logoutFunction={this.props.logout}
+                    authenticatedFunction={this.props.authenticated}
+                    authenticated={this.props.auth.result}
+                    authLoading={this.props.auth.isLoading}
+                    authErrMess={this.props.auth.errMess}
+                />
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
                     <Route path="/galeria" component={GalleryPage} />
