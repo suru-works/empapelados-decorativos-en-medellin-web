@@ -4,7 +4,6 @@ const User = require('./models/user');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const User = require('../models/user');
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -35,7 +34,9 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => 
 }));
 
 exports.userIsVerified = function(req, res, next) {
-    User.findOne(req.body.username)
+    User.findOne({
+        username: req.body.username
+    })
     .then((user) => {
         if (user.verified) {
             next();
