@@ -1,7 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 
 export const Auth = (state = {
-    isLoading: true,
+    isLoading: false,
     errMess: null,
     result: null
 }, action) => {

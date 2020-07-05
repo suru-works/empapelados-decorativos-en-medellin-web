@@ -209,6 +209,7 @@ export const logout = () => (dispatch) => {
     .then(response => {
         if (response.success) {
             localStorage.removeItem('token');
+            localStorage.removeItem('username');
             dispatch(logoutSuccess(response));
         } else {
             var error = new Error('Error ' + response.status);

@@ -65,6 +65,7 @@ class Main extends Component {
         return (
             <div>
                 <Header
+                    auth={this.props.auth}
                     loginFunction={this.props.login}
                     registerFunction={this.props.register}
                     logoutFunction={this.props.logout}

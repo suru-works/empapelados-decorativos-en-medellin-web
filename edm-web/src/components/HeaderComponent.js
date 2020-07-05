@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import { NavLink, Link, withRouter} from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
+import { connect } from 'react-redux';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -20,7 +21,6 @@ class Header extends Component {
 
         this.state = {
             isNavOpen: false,
-            isAuthenticated: localStorage.getItem('token') ? true : false,
             isLoginModalOpen: false,
             isRegisterModalOpen: false
         };
@@ -29,8 +29,7 @@ class Header extends Component {
         this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
-        this.renderButtons = this.renderButtons.bind(this);
-        this.renderLogout = this.renderLogout.bind(this);
+        this.renderAuthOptions = this.renderAuthOptions.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }
 
@@ -68,9 +67,6 @@ class Header extends Component {
         this.props.loginFunction({
             username: this.email.value,
             password: this.password.value
-        })
-        this.setState({
-            isAuthenticated: true
         });
         this.toggleLoginModal();
         event.preventDefault();
@@ -80,37 +76,45 @@ class Header extends Component {
         this.props.logoutFunction();
     }
 
-    renderButtons() {
-        return (
-            <Nav className="ml-auto" navbar>
-                <NavItem>
-                    <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleLoginModal}>
-                        <span className="fa fa-sign-in"> Iniciar sesión </span>
-                    </Button>
-                </NavItem>
+    renderAuthOptions() {
+        if (this.props.auth.isLoading) {
+            return (
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                        <p>Cargando...</p>
+                    </NavItem>
+                </Nav>
+            );
+        } else if (localStorage.getItem('token')) {
+            return (
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                        <p>{localStorage.username}</p>
+                    </NavItem>
+                    <NavItem>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.handleLogout}>
+                            <span className="fa fa-sign-in"> Cerrar sesión </span>
+                        </Button>
+                    </NavItem>
+                </Nav>
+            );
+        } else {
+            return (
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleLoginModal}>
+                            <span className="fa fa-sign-in"> Iniciar sesión </span>
+                        </Button>
+                    </NavItem>
 
-                <NavItem>
-                    <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
-                        <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
-                    </Button>
-                </NavItem>
-            </Nav>
-        );
-    }
-
-    renderLogout() {
-        return (
-            <Nav className="ml-auto" navbar>
-                <NavItem>
-                    <p>{localStorage.username}</p>
-                </NavItem>
-                <NavItem>
-                    <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.handleLogout}>
-                        <span className="fa fa-sign-in"> Cerrar sesión </span>
-                    </Button>
-                </NavItem>
-            </Nav>
-        )
+                    <NavItem>
+                        <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
+                            <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
+                        </Button>
+                    </NavItem>
+                </Nav>
+            );
+        }
     }
 
     render() {
@@ -145,7 +149,7 @@ class Header extends Component {
                                 </NavItem>
                             </Nav>
 
-                            { this.state.isAuthenticated ? this.renderLogout() : this.renderButtons() }
+                            { this.renderAuthOptions() }
                         </Collapse>
                     </div>
                 </Navbar>
@@ -245,4 +249,4 @@ class Header extends Component {
         );
     }
 }
-export default Header ;
+export default Header;
