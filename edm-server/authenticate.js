@@ -15,10 +15,15 @@ exports.getToken = function(user) {
     return jwt.sign(user, key, {expiresIn: 3600});
 }
 
-var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = key;
+const getTokenCookie = function(req) {
+    var token = (req && req.cookies) ? req.cookies['token'] : null;
+    return token;
+}
 
+var opts = {};
+//opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = getTokenCookie;
+opts.secretOrKey = key;
 exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
     User.findOne({_id: jwt_payload._id}, (err, user) => {
         if (err) {
