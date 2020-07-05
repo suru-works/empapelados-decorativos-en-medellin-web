@@ -99,6 +99,11 @@ router.post('/login', cors.corsWithOptions, authenticate.userIsVerified, passpor
   res.json({success: true, status: 'You are successfully logged in!'});
 });
 
+router.get('/authenticated', cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
+  res.statusCode = 200;
+  res.json({authenticated: true});
+});
+
 router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
   req.logout();
   res.json({success: true, status: 'You have successfully logged out!'});
