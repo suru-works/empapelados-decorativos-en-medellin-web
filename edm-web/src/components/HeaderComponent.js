@@ -30,7 +30,7 @@ class Header extends Component {
         this.handleLogin = this.handleLogin.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
         this.renderButtons = this.renderButtons.bind(this);
-        this.renderLoggedInText = this.renderLoggedInText.bind(this);
+        this.renderLogout = this.renderLogout.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }
 
