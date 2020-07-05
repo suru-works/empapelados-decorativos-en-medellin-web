@@ -33,6 +33,21 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => 
     });
 }));
 
+exports.userIsVerified = function(req, res, next) {
+    User.findOne({
+        username: req.body.username
+    })
+    .then((user) => {
+        if (user.verified) {
+            next();
+        } else {
+            var err = new Error('You are not verified, check your email');
+            err.status = 403;
+            next(err);
+        }
+    })
+}
+
 exports.verifyUser = passport.authenticate('jwt', {session: false});
 
 exports.verifyAdmin = function(req, res, next) {

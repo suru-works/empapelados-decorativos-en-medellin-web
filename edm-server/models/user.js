@@ -12,6 +12,12 @@ const User = new Schema({
     },
     phoneNumber: {
         type: String
+    },
+    verifyToken: {
+        type: String
+    },
+    verified: {
+        type: Boolean
     }
 });
 
