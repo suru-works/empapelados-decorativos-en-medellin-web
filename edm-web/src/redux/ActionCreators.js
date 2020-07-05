@@ -160,6 +160,8 @@ export const login = (user) => (dispatch) => {
     .then(response => response.json())
     .then(response => {
         if (response.success) {
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('username', response.username);
             dispatch(loginSuccess(response));
         } else {
             var error = new Error('Error ' + response.status);
@@ -215,50 +217,6 @@ export const logout = () => (dispatch) => {
         }
     })
     .catch(error => dispatch(logoutFailed(error.message)));
-}
-
-export const authenticatedQuery = () => ({
-    type: ActionTypes.AUTHENTICATED_QUERY
-});
-
-export const isAuthenticated = (result) => ({
-    type: ActionTypes.IS_AUTHENTICATED,
-    payload: result
-});
-
-export const isNotAuthenticated = (errmess) => ({
-    type: ActionTypes.IS_NOT_AUTHENTICATED,
-    payload: errmess
-});
-
-export const authenticated = () => (dispatch) => {
-    dispatch(authenticatedQuery());
-
-    return fetch(baseBackUrl + 'users/authenticated', {
-        credentials: "same-origin"
-    })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }, (error) => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.authenticated) {
-            dispatch(isAuthenticated(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(isNotAuthenticated(error.message)));
 }
 
 export const postFeedbackRequest = () => ({

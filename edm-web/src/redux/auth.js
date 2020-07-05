@@ -18,12 +18,6 @@ export const Auth = (state = {
             return {...state, isLoading: false, errMess: null, result: action.payload};
         case ActionTypes.LOGOUT_FAILED:
             return {...state, isLoading: false, errMess: action.payload};
-        case ActionTypes.AUTHENTICATED_QUERY:
-            return {...state, isLoading: true, errMess: null, result: null};
-        case ActionTypes.IS_AUTHENTICATED:
-            return {...state, isLoading: false, errMess: null, result: action.payload};
-        case ActionTypes.IS_NOT_AUTHENTICATED:
-            return {...state, isLoading: false, errMess: action.payload};
         default:
             return state;
     }

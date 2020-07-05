@@ -15,14 +15,8 @@ exports.getToken = function(user) {
     return jwt.sign(user, key, {expiresIn: 3600});
 }
 
-const getTokenCookie = function(req) {
-    var token = (req && req.cookies) ? req.cookies['token'] : null;
-    return token;
-}
-
 var opts = {};
-//opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.jwtFromRequest = getTokenCookie;
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = key;
 exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
     User.findOne({_id: jwt_payload._id}, (err, user) => {
@@ -42,7 +36,7 @@ exports.userIsVerified = function(req, res, next) {
     User.findOne({
         username: req.body.username
     })
-    .then((user) => {
+    .then(user => {
         if (user.verified) {
             next();
         } else {

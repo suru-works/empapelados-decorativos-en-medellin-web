@@ -20,6 +20,7 @@ class Header extends Component {
 
         this.state = {
             isNavOpen: false,
+            isAuthenticated: localStorage.getItem('token') ? true : false,
             isLoginModalOpen: false,
             isRegisterModalOpen: false
         };
@@ -31,7 +32,6 @@ class Header extends Component {
         this.renderButtons = this.renderButtons.bind(this);
         this.renderLoggedInText = this.renderLoggedInText.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-        this.renderAuth = this.renderAuth.bind(this);
     }
 
     toggleNav() {
@@ -69,8 +69,8 @@ class Header extends Component {
             username: this.email.value,
             password: this.password.value
         })
-        .then(response => {
-            this.props.authenticatedFunction();
+        this.setState({
+            isAuthenticated: true
         });
         this.toggleLoginModal();
         event.preventDefault();
@@ -98,9 +98,12 @@ class Header extends Component {
         );
     }
 
-    renderLoggedInText() {
+    renderLogout() {
         return (
             <Nav className="ml-auto" navbar>
+                <NavItem>
+                    <p>{localStorage.username}</p>
+                </NavItem>
                 <NavItem>
                     <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.handleLogout}>
                         <span className="fa fa-sign-in"> Cerrar sesión </span>
@@ -108,16 +111,6 @@ class Header extends Component {
                 </NavItem>
             </Nav>
         )
-    }
-
-    renderAuth() {
-        if (this.props.authLoading) {
-            return <p>Loading...</p>
-        } else if (this.props.authErrMess) {
-            return this.renderButtons();
-        } else {
-            return this.renderLoggedInText();
-        }
     }
 
     render() {
@@ -152,7 +145,7 @@ class Header extends Component {
                                 </NavItem>
                             </Nav>
 
-                            { this.renderAuth() }
+                            { this.state.isAuthenticated ? this.renderLogout() : this.renderButtons() }
                         </Collapse>
                     </div>
                 </Navbar>
