@@ -23,7 +23,6 @@ const mapDispatchToProps = dispatch => ({
     login: (credentials) => dispatch(login(credentials)),
     register: (user) => dispatch(register(user)),
     logout: () => dispatch(logout()),
-    authenticated: () => dispatch(authenticated()),
     postFeedback: (feedback) => dispatch(postFeedback(feedback))
 });
 
@@ -32,7 +31,6 @@ class Main extends Component {
     componentDidMount() {
         this.props.fetchProducts();
         this.props.fetchMapsKey();
-        this.props.authenticated();
     }
 
     render() {
@@ -67,13 +65,10 @@ class Main extends Component {
         return (
             <div>
                 <Header
+                    auth={this.props.auth}
                     loginFunction={this.props.login}
                     registerFunction={this.props.register}
                     logoutFunction={this.props.logout}
-                    authenticatedFunction={this.props.authenticated}
-                    authenticated={this.props.auth.result}
-                    authLoading={this.props.auth.isLoading}
-                    authErrMess={this.props.auth.errMess}
                 />
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
