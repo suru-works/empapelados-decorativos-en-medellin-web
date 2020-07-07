@@ -8,6 +8,7 @@ import { NavLink, Link, withRouter} from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
 
+
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);

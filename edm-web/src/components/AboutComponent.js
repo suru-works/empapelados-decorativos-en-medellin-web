@@ -9,7 +9,7 @@ function About() {
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>Acerca de Noosotros</BreadcrumbItem>
+                    <BreadcrumbItem active>Acerca de Nosotros</BreadcrumbItem>
                 </Breadcrumb>
                 <div className="col-12">
                     <h3>Acerca de Nosotros</h3>

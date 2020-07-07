@@ -15,7 +15,7 @@ class Product extends Component {
         };
 
         this.toggleModal = this.toggleModal.bind(this);
- 
+
     }
 
     toggleModal() {
@@ -27,15 +27,8 @@ class Product extends Component {
 
     render() {
 
-        //console.log("Imprimeme un producto pls " + this.props.product)}
-
         return (
-
-            
-
             <div className="col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>
-
-
                 <Card onClick={this.toggleModal}>
                     <CardBody>
                         <CardTitle>{this.props.product.name}</CardTitle>
@@ -45,21 +38,21 @@ class Product extends Component {
                     </CardBody>
                 </Card>
 
-            
+
                 <Modal className="modal-lg" isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
 
                     <ModalHeader toggle={this.toggleModal}>{this.props.product.name}</ModalHeader>
 
                     <ModalBody>
 
-                        <div className="d-flex space-around">       
+                        <div className="d-flex space-around">
 
                             <Card className=" mr-2" key={this.props.product._id}>
                                 <CardImg top src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
                             </Card>
 
                             <Card key={this.props.product._id}>
-                                
+
                                 <CardBody>
                                     <CardTitle> Objeto Premium, futuro GOTY </CardTitle>
                                     <CardText>  {this.props.product.description}  </CardText>
@@ -72,7 +65,7 @@ class Product extends Component {
                                 </CardBody>
                             </Card>
 
-                        </div> 
+                        </div>
 
                     </ModalBody>
                 </Modal>
