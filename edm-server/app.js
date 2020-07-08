@@ -18,6 +18,7 @@ const productRouter = require('./routes/productRouter');
 const leaderRouter = require('./routes/leaderRouter');
 const feedbackRouter = require('./routes/feedbackRouter');
 const mapsRouter = require('./routes/mapsRouter');
+const mediaRouter = require('./routes/mediaRouter');
 
 // MongoDB initialization
 const mongoose = require('mongoose');
@@ -89,6 +90,7 @@ app.use('/products', productRouter);
 app.use('/leaders', leaderRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/maps', mapsRouter);
+app.use('/media', mediaRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
