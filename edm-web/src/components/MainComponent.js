@@ -7,7 +7,7 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback, authenticated } from '../redux/ActionCreators';
+import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback, authenticated,upload } from '../redux/ActionCreators';
 import { baseBackUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
@@ -23,7 +23,8 @@ const mapDispatchToProps = dispatch => ({
     login: (credentials) => dispatch(login(credentials)),
     register: (user) => dispatch(register(user)),
     logout: () => dispatch(logout()),
-    postFeedback: (feedback) => dispatch(postFeedback(feedback))
+    postFeedback: (feedback) => dispatch(postFeedback(feedback)),
+    upload: (media) => dispatch(upload(media))
 });
 
 class Main extends Component {
@@ -47,6 +48,7 @@ class Main extends Component {
         const GalleryPage = () => {
             return (
                 <Gallery
+                    upload={this.props.upload}
                     products={this.props.products.products}
                     productsLoading={this.props.products.isLoading}
                     productsErrMess={this.props.products.errMess}

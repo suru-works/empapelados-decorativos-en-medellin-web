@@ -64,7 +64,7 @@ class Gallery extends Component {
 
                     <ModalBody>
 
-                        <AddProduct></AddProduct>
+                        <AddProduct upload={this.props.upload} toggle={this.toggleAddProductModal}></AddProduct>
 
                     </ModalBody>
                 </Modal>

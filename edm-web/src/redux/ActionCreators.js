@@ -2,6 +2,56 @@ import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
 import axios  from 'axios';
 
+export const uploadRequest = () => ({
+    type: ActionTypes.UPLOAD_REQUEST
+});
+
+export const uploadSuccess = (result) => ({
+    type: ActionTypes.UPLOAD_SUCCESS,
+    payload: result
+});
+
+export const uploadFailed = (errmess) => ({
+    type: ActionTypes.UPLOAD_FAILED,
+    payload: errmess
+});
+
+export const upload = (media) => (dispatch) => {
+    dispatch(uploadRequest());
+
+    return fetch(baseBackUrl + 'media/image', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(media),
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('subio bien');
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.success) {
+            dispatch(uploadSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
+    .catch(error => dispatch(uploadFailed(error.message)));
+}
+
 export const addProducts = (products) => ({
     type: ActionTypes.ADD_PRODUCTS,
     payload: products
