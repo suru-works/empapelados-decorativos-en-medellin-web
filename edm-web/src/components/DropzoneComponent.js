@@ -1,7 +1,6 @@
 import React, { Component, useEffect, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import clienteAxios from 'axios';
-import { baseBackUrl } from '../shared/baseUrl';
+
 
 const thumbsContainer = {
     display: 'flex',
@@ -35,26 +34,43 @@ const img = {
 };
 
 
-const Dropzone = () =>{
-    const onDrop = useCallback( async (acceptedFiles) =>{
+const Dropzone = (props) => {
+    const [fileForPreview,setFileForPreview]= useState([]);
+    const onDrop = useCallback(async (acceptedFiles) => {
         console.log(acceptedFiles);
 
-        const formData = new FormData();
-        formData.append("file", acceptedFiles[0]);
+        props.updateImageFile(acceptedFiles[0]);
 
-        const resultado = await clienteAxios.post(baseBackUrl + 'media/image', formData);
-        console.log(resultado.data);
-    },[])
+        setFileForPreview(acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file)
+        })));
+        
+    }, []);
 
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles} = useDropzone({onDrop})
-
-    return(
-        <section className="container">
-        <div {...getRootProps({ className: 'dropzone' })}>
-            <input {...getInputProps()} />
-            <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
+    const thumbs = fileForPreview.map( file => (
+        <div style={thumb} key={file.name}>
+            <div style={thumbInner}>
+                <img
+                    src={file.preview}
+                    style={img}
+                />
+            </div>
         </div>
-    </section>
+    ));
+    
+
+    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop })
+
+    return (
+        <section className="container">
+            <div {...getRootProps({ className: 'dropzone' })}>
+                <input {...getInputProps()} />
+                <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
+            </div>
+            <aside style={thumbsContainer}>
+                {thumbs}
+            </aside>
+        </section>
     );
 }
 

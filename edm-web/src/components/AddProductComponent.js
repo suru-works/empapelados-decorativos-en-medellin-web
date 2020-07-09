@@ -5,7 +5,8 @@ import { useDropzone } from 'react-dropzone';
 
 import Dropzone from './DropzoneComponent';
 
-import axios from 'axios';
+import clienteAxios from 'axios';
+import { baseBackUrl } from '../shared/baseUrl';
 
 const thumbsContainer = {
     display: 'flex',
@@ -105,30 +106,42 @@ class AddProductComponent extends Component {
         };
         console.log('actualizando parent props');
         console.log(this.state.selectedFile);
+        
+    }
+
+    async uploadImageFile(productData){
+        const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
+        console.log(resultado.data);
+        productData.finalProductData.imageUrl=resultado.data.archivo;
+        console.log('estos son los datos que se subiran al final');
+        console.log(productData.finalProductData);
     }
 
     handleSubmit(event) {
-        /* const formData = new FormData();
-        formData.append('file', this.state.selectedFile); */
+        
         console.log('este es el archivo en el estado');
         console.log(this.state.selectedFile);
-        /* console.log('este es el archivo en el formData');
-        console.log(formData);
-        this.props.upload(formData); */
-        /* const mediaData ={
-            file: this.state.selectedFile
-        }
-        this.props.upload(mediaData); */
-        this.props.upload(this.state.selectedFile);
-        event.preventDefault();
+        
+        const formData = new FormData();
+        formData.append("file", this.state.selectedFile);
+
         const productData = {
-            
-            price: this.price.value,
-            units: this.units.value,
-            featured: this.featured.value,
-            name: this.name.value,
-            description: this.description.value
+            image: formData,
+            finalProductData:{
+                price: this.price.value,
+                units: this.units.value,
+                featured: this.featured.value,
+                name: this.name.value,
+                description: this.description.value
+            }
         }
+        
+        this.uploadImageFile(productData);
+
+        console.log('este es el nombre del archivo ya subido');
+        console.log(productData);
+        event.preventDefault();
+        
         this.props.toggle();
 
         
@@ -139,7 +152,7 @@ class AddProductComponent extends Component {
 
                 <Card className=" mr-2" >
                     <ImagePicker updateImageFile={this.updateImageFile}></ImagePicker>
-                    <Dropzone />
+                    <Dropzone  updateImageFile={this.updateImageFile} />
                 </Card>
 
                 <Card>
