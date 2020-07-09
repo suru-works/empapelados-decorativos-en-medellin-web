@@ -16,17 +16,20 @@ productRouter.route('/')
     res.setHeader('Content-Type', 'application/json');
     next();
 })
-.get(cors.cors, (req, res, next) => {
+.get(cors.cors,(req, res, next) => {
     Products.find({})
     .then((products) => res.json(products), (err) => next(err))
     .catch((err) => next(err));
     return;
 })
-.post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post(cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     req.body.publisher = req.user._id;
     Products.create(req.body)
     .then((product) => res.json(product), (err) => next(err))
-    .catch((err) => next(err));
+    .catch((err) => {
+        console.log(err);
+        next(err);
+    });
 })
 .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Products.remove({})
