@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import {  Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
-import { useDropzone } from 'react-dropzone';
-
 import Dropzone from './DropzoneComponent';
 
 import clienteAxios from 'axios';
@@ -40,51 +38,6 @@ const img = {
 };
 
 
-function ImagePicker(props) {
-    const [files, setFiles] = useState([]);
-    const make = (file) => {
-
-        props.updateImageFile(file);
-    }
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
-        onDrop: acceptedFiles => {
-            setFiles(acceptedFiles.map(file => Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            })));
-        }
-    });
-    
-    const thumbs = files.map(file => (
-        <div style={thumb} key={file.name}>
-            <div style={thumbInner}>
-                <img
-                    src={file.preview}
-                    style={img}
-                />
-            </div>
-        </div>
-    ));
-
-    useEffect(() => () => {
-        // Make sure to revoke the data uris to avoid memory leaks
-        
-        files.forEach(file => URL.revokeObjectURL(file.preview));
-    }, [files]);
-
-
-    return (
-        <section className="container">
-            <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
-            </div>
-            <aside style={thumbsContainer}>
-                {thumbs}
-            </aside>
-        </section>
-    );
-}
 
 
 class AddProductComponent extends Component {
@@ -104,17 +57,27 @@ class AddProductComponent extends Component {
         this.state = {
             selectedFile: imageFile
         };
-        console.log('actualizando parent props');
-        console.log(this.state.selectedFile);
         
     }
 
     async uploadImageFile(productData){
         const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
-        console.log(resultado.data);
-        productData.finalProductData.imageUrl=resultado.data.archivo;
-        console.log('estos son los datos que se subiran al final');
-        console.log(productData.finalProductData);
+        productData.finalProductData.imageUrl='/public/images/products/'+resultado.data.archivo;
+        if(productData.finalProductData.featured == 'on'){
+            productData.finalProductData.featured = true;
+        }
+        else{
+            productData.finalProductData.featured = false;
+        }
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+          }
+          
+        const resultadoFinal = await clienteAxios.post(baseBackUrl + 'products', productData.finalProductData,{
+            headers: headers
+          });
+        //this.props.postProduct(productData.finalProductData);
     }
 
     handleSubmit(event) {
@@ -151,7 +114,6 @@ class AddProductComponent extends Component {
             <div className="d-flex space-around">
 
                 <Card className=" mr-2" >
-                    <ImagePicker updateImageFile={this.updateImageFile}></ImagePicker>
                     <Dropzone  updateImageFile={this.updateImageFile} />
                 </Card>
 

@@ -29,7 +29,6 @@ export const upload = (media) => (dispatch) => {
     })
     .then(response => {
         if (response.ok) {
-            console.log('subio bien');
             return response;
         } else {
             var error = new Error('Error ' + response.status + ': ' + response.statusText);
@@ -85,6 +84,56 @@ export const fetchProducts = () => (dispatch) => {
     .then(response => response.json())
     .then(products => dispatch(addProducts(products)))
     .catch(error => dispatch(productsFailed(error.message)));
+}
+
+export const productRequest = () => ({
+    type: ActionTypes.PRODUCT_REQUEST
+});
+
+export const productSuccess = (result) => ({
+    type: ActionTypes.PRODUCT_SUCCESS,
+    payload: result
+});
+
+export const productFailed = (errmess) => ({
+    type: ActionTypes.PRODUCT_FAILED,
+    payload: errmess
+});
+
+export const postProduct = (product) => (dispatch) => {
+    dispatch(productRequest());
+
+    return fetch(baseBackUrl + 'products', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(product),
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.success) {
+            dispatch(productSuccess(response));
+        } else {
+            var error = new Error('Error ' + response.status);
+            error.response = response;
+            throw error;
+        }
+    })
+    .catch(error => dispatch(productFailed(error.message)));
 }
 
 
