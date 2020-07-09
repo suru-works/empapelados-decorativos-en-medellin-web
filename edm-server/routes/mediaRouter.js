@@ -25,7 +25,9 @@ const subirArchivo = async (req,res,next) =>{
     const upload = multer({
         storage: fileStorage = multer.diskStorage({
             destination: (req, file, cb) => {
-                cb(null, __dirname + '/../uploads')
+                //cb(null, __dirname + '/../uploads')
+                console.log(process.env.MEDIA_URL);
+                cb(null, process.env.MEDIA_URL+'images/products/')
             },
             filename: (req, file, cb) => {
                 const extension = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
