@@ -136,6 +136,34 @@ export const postProduct = (product) => (dispatch) => {
     .catch(error => dispatch(productFailed(error.message)));
 }
 
+export const deleteProduct = (productId) => (dispatch) => {
+    dispatch(productRequest());
+
+    return fetch(baseBackUrl + 'products/' + productId, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {
+        dispatch(productSuccess(response));
+    });
+}
+
 
 export const addMaps = (maps) => ({
     type: ActionTypes.ADD_MAPS,

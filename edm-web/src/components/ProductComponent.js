@@ -3,13 +3,12 @@ import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, M
 import { Loading } from './LoadingComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
-
 function RenderOptions (props) {
     if(props.areEditOptionsActived){
         return(
             <div className='mt-3'>
                         <Button>Editar</Button>
-                        <Button>Eliminar</Button>
+                        <Button onClick={() => props.toggleDeleteModal()}>Eliminar</Button>
             </div>
         );
     }
@@ -29,16 +28,58 @@ class Product extends Component {
 
         super(props);
         this.state = {
-            product: this.props.product
+            product: this.props.product,
+            isDetailsModalOpen: false,
+            isDeleteModalOpen: false,
+            isConfirmModalOpen: false,
+            isErrorModalOpen: false
         };
 
-        this.toggleModal = this.toggleModal.bind(this);
+        this.toggleDetailsModal = this.toggleDetailsModal.bind(this);
+        this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.toggleConfirmModal = this.toggleConfirmModal.bind(this);
+        this.toggleErrorModal = this.toggleErrorModal.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
     }
 
-    toggleModal() {
+    toggleDetailsModal() {
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isDetailsModalOpen: !this.state.isDetailsModalOpen
+        });
+    }
+
+    toggleDeleteModal() {
+        this.setState({
+            isDeleteModalOpen: !this.state.isDeleteModalOpen
+        });
+    }
+
+    toggleConfirmModal() {
+        console.log(this.state.isConfirmModalOpen);
+        this.setState({
+            isConfirmModalOpen: !this.state.isConfirmModalOpen
+        });
+        console.log(this.state.isConfirmModalOpen);
+    }
+
+    toggleErrorModal() {
+        this.setState({
+            isErrorModalOpen: !this.state.isErrorModalOpen
+        });
+    }
+
+    handleDelete(productId) {
+        this.props.deleteProduct(productId)
+        .then(response => {
+            console.log("santo el que lo lea");
+            this.toggleDeleteModal();
+            this.toggleConfirmModal();
+        })
+        .catch(error => {
+            console.log("puto el que lo lea");
+            this.toggleDeleteModal();
+            this.toggleErrorModal();
         });
     }
 
@@ -52,15 +93,15 @@ class Product extends Component {
                     <CardBody>
                         <CardTitle>{this.props.product.name}</CardTitle>
 
-                        <CardImg onClick={this.toggleModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
-                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived}></RenderOptions>
+                        <CardImg onClick={this.toggleDetailsModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
+                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDeleteModal={this.toggleDeleteModal}></RenderOptions>
                     </CardBody>
                 </Card>
 
 
-                <Modal className="modal-lg" isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                <Modal className="modal-lg" isOpen={this.state.isDetailsModalOpen} toggle={this.toggleDetailsModal}>
 
-                    <ModalHeader toggle={this.toggleModal}>{this.props.product.name}</ModalHeader>
+                    <ModalHeader toggle={this.toggleDetailsModal}>{this.props.product.name}</ModalHeader>
 
                     <ModalBody>
 
@@ -87,6 +128,52 @@ class Product extends Component {
                     </ModalBody>
                 </Modal>
 
+                <Modal className="modal-md" isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
+
+                    <ModalHeader toggle={this.toggleDeleteModal}>{this.props.product.name}</ModalHeader>
+
+                    <ModalBody>
+
+                        <div className="container">
+                            <div className="row justify-content-center">
+                                <div className="col">
+                                    <p className="text-center">¿Seguro que desea eliminar el producto?</p>
+                                </div>
+                            </div>
+                            <div className="row justify-content-center">
+                                <div className="col-3">
+                                    <Button onClick={() => this.handleDelete(this.props.product._id)}>Confirmar</Button>
+                                </div>
+                                <div className="col-3">
+                                    <Button>Cancelar</Button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ModalBody>
+                </Modal>
+
+                <Modal className="modal-md" isOpen={this.isConfirmModalOpen} toggle={this.toggleConfirmModal}>
+
+                    <ModalHeader toggle={this.toggleConfirmModal}>Eliminar</ModalHeader>
+
+                    <ModalBody>
+
+                        <p>Matarife</p>
+
+                    </ModalBody>
+                </Modal>
+
+                <Modal className="modal-md" isOpen={this.isErrorModalOpen} toggle={this.toggleErrorModal}>
+
+                    <ModalHeader toggle={this.toggleErrorModal}>Eliminar</ModalHeader>
+
+                    <ModalBody>
+
+                        <p>Task failed successfully</p>
+
+                    </ModalBody>
+                </Modal>
 
             </div>
         ) 
@@ -94,4 +181,4 @@ class Product extends Component {
 
 }
 
-export default Product;   
+export default Product;

@@ -41,7 +41,7 @@ class Gallery extends Component {
             try {
 
                 return (
-                    <Product product={product} areEditOptionsActived={this.state.areEditOptionsActived}/>
+                    <Product product={product} areEditOptionsActived={this.state.areEditOptionsActived} deleteProduct={this.props.deleteProduct}/>
                 );
             }
             catch (err) {
