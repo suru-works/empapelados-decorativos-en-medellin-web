@@ -16,7 +16,8 @@ class Gallery extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAddProductModalOpen: false
+            isAddProductModalOpen: false,
+            areEditOptionsActived: false
         }
         this.toggleAddProductModal = this.toggleAddProductModal.bind(this);
     }
@@ -28,13 +29,19 @@ class Gallery extends Component {
         });
     }
 
+    openEditOptions(){
+        this.setState({
+            areEditOptionsActived: !this.state.areEditOptionsActived
+        });
+    }
+
     render() {
 
         const galeria = this.props.products.map((product) => {
             try {
 
                 return (
-                    <Product product={product} />
+                    <Product product={product} areEditOptionsActived={this.state.areEditOptionsActived}/>
                 );
             }
             catch (err) {
@@ -71,18 +78,24 @@ class Gallery extends Component {
 
                 <FloatingButtonContainer>
 
-                    <FloatingButtonLink href="#"
-                        tooltip="Añadir un producto"
-                        icon="fa fa-plus"
-                        onClick={() => this.toggleAddProductModal()}
-                    />
+                    
+
+                    <FloatingButtonLink tooltip="Añadir un producto">
+                            <div onClick={() => this.toggleAddProductModal()} style={{width: 35, height: 35,marginRight:0,marginLeft:8,marginTop:5,  marginBottom:0}}>
+                                <i class="fa fa-plus fa-2x"></i>
+                            </div >
+                    </FloatingButtonLink> 
+                    <FloatingButtonLink tooltip="Editar">
+                            <div onClick={() => this.openEditOptions()} style={{width: 35, height: 35,marginRight:0,marginLeft:15,marginTop:6,  marginBottom:0}}>
+                                <i class="fa fa-pencil fa-1x"></i>
+                            </div >
+                    </FloatingButtonLink> 
 
                     <FloatingButton
                         tooltip="Editar galeria"
-                        icon="fa fa-pencil"
+                        icon="fa fa-pencil-square-o fa-2x"
                         rotate={true}
-                        styles={{ backgroundColor: darkColors.lighterRed, color: lightColors.white }}
-                        onClick={() => this.toggleAddProductModal()} />
+                        styles={{ backgroundColor: darkColors.lighterRed, color: lightColors.white }}/>
                 </FloatingButtonContainer>
 
             </div>
@@ -93,4 +106,6 @@ class Gallery extends Component {
     }
 
 }
+
+
 export default Gallery;   

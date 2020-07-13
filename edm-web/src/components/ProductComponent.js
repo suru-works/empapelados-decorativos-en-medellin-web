@@ -1,8 +1,26 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
+
+function RenderOptions (props) {
+    if(props.areEditOptionsActived){
+        return(
+            <div className='mt-3'>
+                        <Button>Editar</Button>
+                        <Button>Eliminar</Button>
+            </div>
+        );
+    }
+    else{
+        return(
+            <div>
+
+            </div>
+        );
+    }
+}
 
 class Product extends Component {
 
@@ -27,14 +45,15 @@ class Product extends Component {
 
     render() {
 
+        
         return (
-            <div className="col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>
-                <Card onClick={this.toggleModal}>
+            <div className="mt-3 col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>
+                <Card >
                     <CardBody>
                         <CardTitle>{this.props.product.name}</CardTitle>
 
-                        <CardImg width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
-
+                        <CardImg onClick={this.toggleModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
+                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived}></RenderOptions>
                     </CardBody>
                 </Card>
 
@@ -54,13 +73,11 @@ class Product extends Component {
                             <Card key={this.props.product._id}>
 
                                 <CardBody>
-                                    <CardTitle> Objeto Premium, futuro GOTY </CardTitle>
-                                    <CardText>  {this.props.product.description}  </CardText>
+                                    <CardTitle> Detalles del producto </CardTitle>                                    
                                     <CardText>  Precio: {this.props.product.price}  </CardText>
                                     <CardText>  Unidades: {this.props.product.units}  </CardText>
+                                    <CardText>  {this.props.product.description}  </CardText>
                                     <CardText>  Comentarios: {this.props.product.comments}  </CardText>
-                                    <CardText>      </CardText>
-                                    <CardText>  Mhhhh eres el primero en llegar. Para que no te sientas solo aqui esta una chika bailando  :V  </CardText>
                                     <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
                                 </CardBody>
                             </Card>
@@ -72,7 +89,7 @@ class Product extends Component {
 
 
             </div>
-        )
+        ) 
     }
 
 }
