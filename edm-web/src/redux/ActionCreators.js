@@ -161,7 +161,9 @@ export const deleteProduct = (productId) => (dispatch) => {
     .then(response => response.json())
     .then(response => {
         dispatch(productSuccess(response));
-    });
+        return(response);
+    })
+    .catch(error => dispatch(productFailed(error.message)));
 }
 
 

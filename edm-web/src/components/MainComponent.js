@@ -56,6 +56,7 @@ class Main extends Component {
                     productsLoading={this.props.products.isLoading}
                     productsErrMess={this.props.products.errMess}
                     deleteProduct={this.props.deleteProduct}
+                    reloadData={this.props.fetchProducts}
                 />
             );
         }
