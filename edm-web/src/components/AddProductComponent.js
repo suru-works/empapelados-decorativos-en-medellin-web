@@ -63,12 +63,6 @@ class AddProductComponent extends Component {
     async uploadImageFile(productData){
         const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
         productData.finalProductData.imageUrl='/public/images/products/'+resultado.data.archivo;
-        if(productData.finalProductData.featured == 'on'){
-            productData.finalProductData.featured = true;
-        }
-        else{
-            productData.finalProductData.featured = false;
-        }
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'bearer ' + localStorage.getItem('token')

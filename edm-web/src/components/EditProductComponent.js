@@ -47,25 +47,25 @@ class EditProductComponent extends Component {
 
         this.state = {
             selectedFile: null,
-            hasImageChanged: false
+            hasImageChanged: false,
+            price: props.product.price,
+            units: props.product.units,
+            featured: props.product.featured,
+            name: props.product.name,
+            description: props.product.description
         };
         this.updateImageFile = this.updateImageFile.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     updateImageFile(imageFile) {
         //getting the image data from imagePicker
         if (!this.state.hasImageChanged) {
-            /* this.state = {
-                hasImageChanged: true
-            }; */
             this.setState({
                 hasImageChanged: true
             });
         }
-        /* this.state = {
-            selectedFile: imageFile
-        }; */
         this.setState({
             selectedFile: imageFile
         });
@@ -74,26 +74,24 @@ class EditProductComponent extends Component {
 
     async uploadChanges(productData) {
         if (this.state.hasImageChanged) {
+            const imageId = this.props.product.imageUrl.split('/').slice(-1)[0];
+
+
+            await clienteAxios.delete(baseBackUrl + 'media/image/' + imageId);
             const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
             productData.finalProductData.imageUrl = '/public/images/products/' + resultado.data.archivo;
         }
-        else{
+         else{
             productData.finalProductData.imageUrl = this.props.product.imageUrl;
-        }
-        if (productData.finalProductData.featured == 'on') {
-            productData.finalProductData.featured = true;
-        }
-        else {
-            productData.finalProductData.featured = false;
         }
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'bearer ' + localStorage.getItem('token')
         }
 
-        const resultadoFinal = await clienteAxios.post(baseBackUrl + 'products', productData.finalProductData, {
+        const resultadoFinal = await clienteAxios.put(baseBackUrl + 'products/'+productData.finalProductData.productId , productData.finalProductData, {
             headers: headers
-        });
+        }); 
     }
 
     handleSubmit(event) {
@@ -103,20 +101,21 @@ class EditProductComponent extends Component {
         if (this.state.hasImageChanged) {
             console.log('este es el archivo en el estado');
             console.log(this.state.selectedFile);
-            
+
             formData.append("file", this.state.selectedFile);
-            
+
         }
 
 
         const productData = {
             image: formData,
             finalProductData: {
-                price: this.price.value,
-                units: this.units.value,
-                featured: this.featured.value,
-                name: this.name.value,
-                description: this.description.value
+                productId:this.props.product._id,
+                price: this.state.price,
+                units: this.state.units,
+                featured: this.state.featured,
+                name: this.state.name,
+                description: this.state.description
             }
         }
 
@@ -126,9 +125,15 @@ class EditProductComponent extends Component {
         console.log(productData);
         event.preventDefault();
 
-        
+    }
 
-
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
     }
     render() {
         return (
@@ -137,45 +142,33 @@ class EditProductComponent extends Component {
                 <Card className=" mr-2" >
                     <Dropzone updateImageFile={this.updateImageFile} />
                 </Card>
+                <Form onSubmit={this.handleSubmit}>
+                    <Card>
 
-                <Card>
+                        <CardBody>
+                            <CardTitle> Ingresa los datos del producto </CardTitle>
 
-                    <CardBody>
-                        <CardTitle> Ingresa los datos del producto </CardTitle>
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup>
-                                <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name"
-                                    innerRef={(input) => this.name = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="price">Precio</Label>
-                                <Input type="price" id="price" name="price"
-                                    innerRef={(input) => this.price = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="units">Unidades disponibles</Label>
-                                <Input type="text" id="units" name="units"
-                                    innerRef={(input) => this.units = input} />
-                            </FormGroup>
+                            <Label htmlFor="name">Nombre</Label>
+                            <Input type="text" id="name" name="name" value={this.state.name} onChange={event => this.handleInputChange(event)} />
+                            <Label htmlFor="price">Precio</Label>
+                            <Input type="number" id="price" name="price" value={this.state.price} onChange={event => this.handleInputChange(event)} />
+                            <Label htmlFor="units">Unidades disponibles</Label>
+                            <Input type="number" id="units" name="units" value={this.state.units} onChange={event => this.handleInputChange(event)} />
+                            <Label check>destacar</Label>
                             <FormGroup check>
                                 <Label check>
-                                    <Input type="checkbox" id="featured" name="featured" innerRef={(input) => this.featured = input} />
+                                    <Input type="checkbox" id="featured" name="featured" checked={this.state.featured} onChange={event => this.handleInputChange(event)} />
                                     {' '}
                                     destacar
                                 </Label>
                             </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="description">Descripcion del producto</Label>
-                                <Input type="text" id="description" name="description"
-                                    innerRef={(input) => this.description = input} />
-                            </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Añadir</Button>
-                        </Form>
-                    </CardBody>
-                </Card>
+                            <Label htmlFor="description">Descripcion del producto</Label>
+                            <Input type="text" id="description" name="description" value={this.state.description} onChange={event => this.handleInputChange(event)} />
+
+                        </CardBody>
+                    </Card>
+                    <Button type="submit" value="submit" color="primary">Guardar</Button>
+                </Form>
 
             </div>
         );

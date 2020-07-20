@@ -119,7 +119,7 @@ function RenderDeleteModal(props) {
 
                 <ModalBody>
 
-                    <EditProduct/>
+                    <p>Ha ocurrido un error eliminando el producto.</p>
 
                 </ModalBody>
             </Modal>
@@ -132,7 +132,7 @@ function RenderEditModal(props){
         return(
             <Modal className="modal-lg" isOpen={props.isEditModalOpen} toggle={props.toggleEditModal}>
 
-                    <ModalHeader toggle={props.EditModal}>{props.product.name}</ModalHeader>
+                    <ModalHeader toggle={props.EditModal}>Editar informacion de producto</ModalHeader>
 
                     <ModalBody>
 
@@ -200,7 +200,8 @@ class Product extends Component {
     handleDelete(productId) {
         
         this.props.deleteProduct(productId)
-        .then(() => {
+        .then((result) => {
+            console.log(result);
             if(this.props.productsErrMess){
                 this.setState({
                     deleteModalType: 'error'

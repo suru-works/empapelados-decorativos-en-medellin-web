@@ -291,13 +291,14 @@ export const login = (user) => (dispatch) => {
         if (response.success) {
             localStorage.setItem('token', response.token);
             localStorage.setItem('username', response.username);
+            localStorage.setItem('admin', response.admin);
             dispatch(loginSuccess(response));
         } else {
             var error = new Error('Error ' + response.status);
             error.response = response;
             throw error;
         }
-    })
+    }).then(() => {window.location.reload();})
     .catch(error => dispatch(loginFailed(error.message)));
 }
 
@@ -339,13 +340,14 @@ export const logout = () => (dispatch) => {
         if (response.success) {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
+            localStorage.removeItem('admin');
             dispatch(logoutSuccess(response));
         } else {
             var error = new Error('Error ' + response.status);
             error.response = response;
             throw error;
         }
-    })
+    }).then(() => {window.location.reload();})
     .catch(error => dispatch(logoutFailed(error.message)));
 }
 

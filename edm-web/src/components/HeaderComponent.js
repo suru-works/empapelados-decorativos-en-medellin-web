@@ -70,11 +70,13 @@ class Header extends Component {
             password: this.password.value
         });
         this.toggleLoginModal();
+
         event.preventDefault();
     }
 
     handleLogout() {
         this.props.logoutFunction();
+        
     }
 
     renderAuthOptions() {
