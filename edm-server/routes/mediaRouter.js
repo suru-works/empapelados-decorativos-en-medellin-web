@@ -58,34 +58,12 @@ const eliminarArchivo = async (req,res,next) => {
     
 }
 
-const actualizarArchivo = async (req,res,next) =>{
-    const upload = multer({
-        storage: fileStorage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                //cb(null, __dirname + '/../uploads')
-                console.log(process.env.MEDIA_URL);
-                cb(null, process.env.MEDIA_URL+'images/products/')
-            },
-            filename: (req, file, cb) => {
-                const extension = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
-                cb(null, `${shortid.generate()}${extension}`)
-            }
-        })
-    }).single('file');
-    upload(req, res, async (error) =>{
-        console.log(req.file);
-        res.json({archivo: req.file.filename});
-    })
-}
 
 
 router.post("/image", subirArchivo
 
 );
 
-router.put("/image/:fileId", actualizarArchivo
-
-);
 
 router.delete("/image/:fileId", eliminarArchivo
 
