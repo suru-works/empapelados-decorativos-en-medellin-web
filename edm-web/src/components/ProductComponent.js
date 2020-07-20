@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
-import { Loading } from './LoadingComponent';
+import  EditProduct  from './EditProductComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
         return (
             <div className='mt-3'>
-                <Button>Editar</Button>
+                <Button onClick={() => props.toggleEditModal()}>Editar</Button>
                 <Button onClick={() => props.toggleDeleteModal()}>Eliminar</Button>
             </div>
         );
@@ -119,18 +119,7 @@ function RenderDeleteModal(props) {
 
                 <ModalBody>
 
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col">
-                                <p className="text-center">Ocurrio un error al intentar eliminar el producto, verifica que tengas permisos para hacerlo o informa de esto al servicio tecnico.</p>
-                            </div>
-                        </div>
-                        <div className="row justify-content-center">
-                            <div className="col-3">
-                                <Button onClick = {props.toggleDeleteModal}>Aceptar</Button>
-                            </div>
-                        </div>
-                    </div>
+                    <EditProduct/>
 
                 </ModalBody>
             </Modal>
@@ -138,6 +127,22 @@ function RenderDeleteModal(props) {
     }
 }
 
+function RenderEditModal(props){
+    if(props.type=='options'){
+        return(
+            <Modal className="modal-lg" isOpen={props.isEditModalOpen} toggle={props.toggleEditModal}>
+
+                    <ModalHeader toggle={props.EditModal}>{props.product.name}</ModalHeader>
+
+                    <ModalBody>
+
+                        <EditProduct product={props.product}/>
+
+                    </ModalBody>
+                </Modal>
+        );
+    }
+}
 
 class Product extends Component {
 
@@ -149,13 +154,17 @@ class Product extends Component {
             product: this.props.product,
             isDetailsModalOpen: false,
             isDeleteModalOpen: false,
+            isEditModalOpen: false,
             deleteModalType: 'options',
-            detailsModalType: 'options'
+            detailsModalType: 'options',
+            editModalType: 'options'
         };
 
         this.toggleDetailsModal = this.toggleDetailsModal.bind(this);
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.toggleEditModal = this.toggleEditModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.updateEditModalType =this.updateEditModalType.bind(this);
 
     }
 
@@ -173,7 +182,19 @@ class Product extends Component {
         this.resetDeleteModalState();    
     }
 
+    toggleEditModal() {
+        this.setState({
+            isEditModalOpen: !this.state.isEditModalOpen
+        });
+        this.resetEditModalState();    
+    }
 
+
+    updateEditModalType(type) {
+        this.setState({
+            editModalType: type
+        });
+    }
 
 
     handleDelete(productId) {
@@ -204,6 +225,12 @@ class Product extends Component {
             detailsModalType: 'options'
         });
     }
+    
+    resetEditModalState(){
+        this.setState({
+            editModalType: 'options'
+        });
+    }
 
     render() {
 
@@ -215,7 +242,7 @@ class Product extends Component {
                         <CardTitle>{this.props.product.name}</CardTitle>
 
                         <CardImg onClick={this.toggleDetailsModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
-                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDeleteModal={this.toggleDeleteModal}></RenderOptions>
+                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
                     </CardBody>
                 </Card>
 
@@ -235,6 +262,14 @@ class Product extends Component {
                     resetDeleteModalState={this.resetDeleteModalState}
                     reloadData={this.props.reloadData}
                 />
+                <RenderEditModal 
+                    type = {this.state.editModalType}
+                    isEditModalOpen={this.state.isEditModalOpen}
+                    updateEditModalType={this.updateEditModalType}
+                    toggleEditModal={this.toggleEditModal}
+                    product={this.props.product}
+                />
+                
 
 
             </div>
