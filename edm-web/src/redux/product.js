@@ -5,6 +5,7 @@ export const Product = (state = {
     errMess: null,
     product: null
 }, action) => {
+    console.log('Entrando al switch', state)
     switch (action.type) {
         case ActionTypes.PRODUCT_REQUEST:
             return { ...state, isLoading: true, errMess: null, product: null };

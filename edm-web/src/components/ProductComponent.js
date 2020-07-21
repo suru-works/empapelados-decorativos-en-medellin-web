@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
+import { useSelector } from 'react-redux'
 import  EditProduct  from './EditProductComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
@@ -57,6 +58,13 @@ function RenderDetailModal(props){
 }
 
 function RenderDeleteModal(props) {
+    const error = useSelector(state => state.product.errMess);
+    
+        /* useEffect(() => {
+            this.setState({
+                productDeleteError: error
+            })
+        }, [error]) */
     if (props.type == 'options') {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
@@ -86,7 +94,7 @@ function RenderDeleteModal(props) {
 
         );
     }
-    else if(props.type=='success'){
+    else if(error==null){
         return(
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
@@ -111,7 +119,7 @@ function RenderDeleteModal(props) {
             </Modal>
         );
     }
-    else if(props.type=='error'){
+    else if(error){
         return(
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
@@ -157,7 +165,8 @@ class Product extends Component {
             isEditModalOpen: false,
             deleteModalType: 'options',
             detailsModalType: 'options',
-            editModalType: 'options'
+            editModalType: 'options',
+            productDeleteError: null
         };
 
         this.toggleDetailsModal = this.toggleDetailsModal.bind(this);
@@ -200,9 +209,15 @@ class Product extends Component {
     handleDelete(productId) {
         
         this.props.deleteProduct(productId)
-        .then((result) => {
-            console.log(result);
-            if(this.props.productsErrMess){
+        .then(() => {
+                this.setState({
+                    deleteModalType: 'error'
+                });
+            }
+        )
+        
+        /* .then(() => {
+            if(this.state.productDeleteError){
                 this.setState({
                     deleteModalType: 'error'
                 });
@@ -212,7 +227,7 @@ class Product extends Component {
                     deleteModalType: 'success'
                 });
             }
-        })
+        }) */
     }
 
     resetDeleteModalState(){
@@ -235,6 +250,7 @@ class Product extends Component {
 
     render() {
 
+        
 
         return (
             <div className="mt-3 col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>

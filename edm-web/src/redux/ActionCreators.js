@@ -1,6 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
-import axios  from 'axios';
+import clienteAxios  from 'axios';
 
 export const uploadRequest = () => ({
     type: ActionTypes.UPLOAD_REQUEST
@@ -136,7 +136,27 @@ export const postProduct = (product) => (dispatch) => {
     .catch(error => dispatch(productFailed(error.message)));
 }
 
-export const deleteProduct = (productId) => (dispatch) => {
+export function deleteProduct(id) {
+    return async (dispatch) => {
+        dispatch( productRequest() );
+        
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + localStorage.getItem('token')
+            }
+            await clienteAxios.delete(`${baseBackUrl}products/${id}`, {
+                headers: headers
+            });
+            dispatch( productSuccess('Se ha eliminado') );
+        } catch (error) {
+            console.log(error.response.data);
+            dispatch( productFailed(error.response.data) );
+        }
+    }
+}
+
+/* export const deleteProduct = (productId) => (dispatch) => {
     dispatch(productRequest());
 
     return fetch(baseBackUrl + 'products/' + productId, {
@@ -164,7 +184,7 @@ export const deleteProduct = (productId) => (dispatch) => {
         return(response);
     })
     .catch(error => dispatch(productFailed(error.message)));
-}
+} */
 
 
 export const addMaps = (maps) => ({

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import Product from './ProductComponent';
 import AddProduct from './AddProductComponent';
@@ -10,7 +11,9 @@ import { baseFrontUrl } from '../shared/baseUrl';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 
 function RenderAdminOptions(props) {
-    if (localStorage.getItem('admin')) {
+    
+
+        if (localStorage.getItem('admin')) {
         return (
             <FloatingButtonContainer>
 
