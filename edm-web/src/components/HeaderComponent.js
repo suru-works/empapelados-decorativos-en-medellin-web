@@ -9,11 +9,6 @@ import { baseFrontUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
 
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => val && (val.length >= len);
-const isNumber = (val) => !isNaN(Number(val));
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Header extends Component {
     
@@ -192,7 +187,7 @@ class Header extends Component {
                         <Form onSubmit={this.handleRegister}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico</Label>
-                                <Input type="text" id="email" name="email"
+                                <Input type="email" id="email" name="email"
                                     innerRef={(input) => this.email = input} />
                             </FormGroup>
 
@@ -209,9 +204,11 @@ class Header extends Component {
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor="phoneNumber">Número de teléfono</Label>
-                                <Input type="text" id="phoneNumber" name="phoneNumber"
-                                    innerRef={(input) => this.phoneNumber = input} />
+                                <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
+                                <Input type="tel" id="phoneNumber" name="phoneNumber"
+                                    innerRef={(input) => this.phoneNumber = input} 
+                                    pattern="^\+[1-9]{1}[0-9]{3,14}$"
+                                />
                             </FormGroup>
 
                             <Button type="submit" value="submit" color="primary">Registrarse</Button>
@@ -226,7 +223,7 @@ class Header extends Component {
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
                                 <Label htmlFor="email">Correo electrónico</Label>
-                                <Input type="text" id="email" name="email"
+                                <Input type="email" id="email" name="email"
                                     innerRef={(input) => this.email = input} />
                             </FormGroup>
 
