@@ -47,7 +47,14 @@ exports.userIsVerified = function(req, res, next) {
     })
 }
 
+
+
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+
+/* exports.verifyUser = function(req, res, next) {
+    console.log(req.body);
+    console.log( passport.authenticate('jwt', {session: false}));
+} */
 
 exports.verifyAdmin = function(req, res, next) {
     if (req.user.admin) {

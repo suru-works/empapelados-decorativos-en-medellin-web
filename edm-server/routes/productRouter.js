@@ -23,6 +23,8 @@ productRouter.route('/')
     return;
 })
 .post(cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    console.log(req.body);
+    console.log(req.headers);
     req.body.publisher = req.user._id;
     Products.create(req.body)
     .then((product) => res.json(product), (err) => next(err))
@@ -78,6 +80,7 @@ productRouter.route('/:productId/comments')
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    
     req.body.user = req.user._id;
     Products.findByIdAndUpdate(req.params.productId, {
         $push: {
