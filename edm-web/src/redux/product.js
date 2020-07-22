@@ -7,6 +7,8 @@ export const Product = (state = {
 }, action) => {
     console.log('Entrando al switch', state)
     switch (action.type) {
+        case ActionTypes.PRODUCT_RESET:
+            return { ...state, isLoading: false, errMess: null, product: null };
         case ActionTypes.PRODUCT_REQUEST:
             return { ...state, isLoading: true, errMess: null, product: null };
         case ActionTypes.PRODUCT_SUCCESS:

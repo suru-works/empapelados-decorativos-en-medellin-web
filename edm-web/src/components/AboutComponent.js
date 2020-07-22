@@ -40,7 +40,7 @@ function About() {
 
             <div className="row row-content">
                 <div className="col-12">
-                    <h2>Corporate Leadership</h2>
+                    <h2>Lideres de nuestra compa­ñia</h2>
                 </div>
                 <div className="col-12">
                     <Media list>

@@ -6,6 +6,9 @@ import Dropzone from './DropzoneComponent';
 import clienteAxios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
 
+
+//dropzone image preview settings
+
 const thumbsContainer = {
     display: 'flex',
     flexDirection: 'row',
@@ -57,6 +60,8 @@ class EditProductComponent extends Component {
         this.updateImageFile = this.updateImageFile.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.form = React.createRef()
     }
 
     updateImageFile(imageFile) {
@@ -142,14 +147,14 @@ class EditProductComponent extends Component {
                 <Card className=" mr-2" >
                     <Dropzone updateImageFile={this.updateImageFile} />
                 </Card>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit} ref={this.form}>
                     <Card>
 
                         <CardBody>
                             <CardTitle> Ingresa los datos del producto </CardTitle>
 
                             <Label htmlFor="name">Nombre</Label>
-                            <Input type="text" id="name" name="name" value={this.state.name} onChange={event => this.handleInputChange(event)} />
+                            <Input type="text" id="name" name="name" value={this.state.name} onChange={event => this.handleInputChange(event)} required/>
                             <Label htmlFor="price">Precio</Label>
                             <Input type="number" id="price" name="price" value={this.state.price} onChange={event => this.handleInputChange(event)} />
                             <Label htmlFor="units">Unidades disponibles</Label>
@@ -163,11 +168,11 @@ class EditProductComponent extends Component {
                                 </Label>
                             </FormGroup>
                             <Label htmlFor="description">Descripcion del producto</Label>
-                            <Input type="text" id="description" name="description" value={this.state.description} onChange={event => this.handleInputChange(event)} />
+                            <Input type="textarea" id="description" name="description" value={this.state.description} onChange={event => this.handleInputChange(event)} />
 
                         </CardBody>
                     </Card>
-                    <Button type="submit" value="submit" color="primary">Guardar</Button>
+                    <Button type="submit" value="submit" color="primary" >Guardar</Button>
                 </Form>
 
             </div>

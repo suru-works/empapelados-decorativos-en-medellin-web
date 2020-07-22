@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
-import { useSelector } from 'react-redux'
-import  EditProduct  from './EditProductComponent';
+import { useSelector, useDispatch } from 'react-redux'
+import EditProduct from './EditProductComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 function RenderOptions(props) {
@@ -16,55 +16,62 @@ function RenderOptions(props) {
     else {
         return (
             <div className='mt-3'>
-                <Button onClick={() => props.toggleDeleteModal()}>Ver mas</Button>
+                <Button onClick={() => props.toggleDetailsModal()}>Ver mas</Button>
             </div>
         );
     }
 }
 
-function RenderDetailModal(props){
-    if(props.type=='options'){
-        return(
+function RenderDetailModal(props) {
+    if (props.type == 'options') {
+        return (
             <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
 
-                    <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
 
-                    <ModalBody>
+                <ModalBody>
 
-                        <div className="d-flex space-around">
+                    <div className="d-flex space-around">
 
-                            <Card className=" mr-2" key={props.product._id}>
-                                <CardImg top src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
-                            </Card>
+                        <Card className=" mr-2" key={props.product._id}>
+                            <CardImg top src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                        </Card>
 
-                            <Card key={props.product._id}>
+                        <Card key={props.product._id}>
 
-                                <CardBody>
-                                    <CardTitle> Detalles del producto </CardTitle>
-                                    <CardText>  Precio: {props.product.price}  </CardText>
-                                    <CardText>  Unidades: {props.product.units}  </CardText>
-                                    <CardText>  {props.product.description}  </CardText>
-                                    <CardText>  Comentarios: {props.product.comments}  </CardText>
-                                    <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
-                                </CardBody>
-                            </Card>
+                            <CardBody>
+                                <CardTitle> Detalles del producto </CardTitle>
+                                <CardText>  Precio: {props.product.price}  </CardText>
+                                <CardText>  Unidades: {props.product.units}  </CardText>
+                                <CardText>  {props.product.description}  </CardText>
+                                <CardText>  Comentarios: {props.product.comments}  </CardText>
+                                <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
+                            </CardBody>
+                        </Card>
 
-                        </div>
+                    </div>
 
-                    </ModalBody>
-                </Modal>
+                </ModalBody>
+            </Modal>
         );
     }
 }
 
 function RenderDeleteModal(props) {
-    const error = useSelector(state => state.product.errMess);
+    const dispatch = useDispatch();
     
-        /* useEffect(() => {
-            this.setState({
-                productDeleteError: error
-            })
-        }, [error]) */
+    const error = useSelector(state => state.product.errMess);
+
+    const resetTypeAndToggle = () => {
+        dispatch({ type: 'PRODUCT_RESET' });
+        props.toggleDeleteModal();
+    }
+
+    /* useEffect(() => {
+        this.setState({
+            productDeleteError: error
+        })
+    }, [error]) */
     if (props.type == 'options') {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
@@ -84,7 +91,7 @@ function RenderDeleteModal(props) {
                                 <Button onClick={() => props.handleDelete(props.product._id)}>Confirmar</Button>
                             </div>
                             <div className="col-3">
-                                <Button onClick = {props.toggleDeleteModal}>Cancelar</Button>
+                                <Button onClick={props.toggleDeleteModal}>Cancelar</Button>
                             </div>
                         </div>
                     </div>
@@ -94,8 +101,8 @@ function RenderDeleteModal(props) {
 
         );
     }
-    else if(error==null){
-        return(
+    else if (error == null) {
+        return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
                 <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
@@ -110,7 +117,7 @@ function RenderDeleteModal(props) {
                         </div>
                         <div className="row justify-content-center">
                             <div className="col-3">
-                                <Button onClick = {props.reloadData}>Aceptar</Button>
+                                <Button onClick={props.reloadData}>Aceptar</Button>
                             </div>
                         </div>
                     </div>
@@ -119,8 +126,8 @@ function RenderDeleteModal(props) {
             </Modal>
         );
     }
-    else if(error){
-        return(
+    else if (error) {
+        return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
                 <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
@@ -128,26 +135,26 @@ function RenderDeleteModal(props) {
                 <ModalBody>
 
                     <p>Ha ocurrido un error eliminando el producto.</p>
-
+                    <Button onClick={resetTypeAndToggle}>Aceptar</Button>
                 </ModalBody>
             </Modal>
         );
     }
 }
 
-function RenderEditModal(props){
-    if(props.type=='options'){
-        return(
+function RenderEditModal(props) {
+    if (props.type == 'options') {
+        return (
             <Modal className="modal-lg" isOpen={props.isEditModalOpen} toggle={props.toggleEditModal}>
 
-                    <ModalHeader toggle={props.EditModal}>Editar informacion de producto</ModalHeader>
+                <ModalHeader toggle={props.EditModal}>Editar informacion de producto</ModalHeader>
 
-                    <ModalBody>
+                <ModalBody>
 
-                        <EditProduct product={props.product}/>
+                    <EditProduct product={props.product} toggleEditModal={props.toggleEditModal}/>
 
-                    </ModalBody>
-                </Modal>
+                </ModalBody>
+            </Modal>
         );
     }
 }
@@ -173,7 +180,7 @@ class Product extends Component {
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
         this.toggleEditModal = this.toggleEditModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.updateEditModalType =this.updateEditModalType.bind(this);
+        this.updateEditModalType = this.updateEditModalType.bind(this);
 
     }
 
@@ -188,14 +195,14 @@ class Product extends Component {
         this.setState({
             isDeleteModalOpen: !this.state.isDeleteModalOpen
         });
-        this.resetDeleteModalState();    
+        this.resetDeleteModalState();
     }
 
     toggleEditModal() {
         this.setState({
             isEditModalOpen: !this.state.isEditModalOpen
         });
-        this.resetEditModalState();    
+        this.resetEditModalState();
     }
 
 
@@ -207,15 +214,15 @@ class Product extends Component {
 
 
     handleDelete(productId) {
-        
+
         this.props.deleteProduct(productId)
-        .then(() => {
+            .then(() => {
                 this.setState({
                     deleteModalType: 'error'
                 });
             }
-        )
-        
+            )
+
         /* .then(() => {
             if(this.state.productDeleteError){
                 this.setState({
@@ -230,19 +237,19 @@ class Product extends Component {
         }) */
     }
 
-    resetDeleteModalState(){
+    resetDeleteModalState() {
         this.setState({
             deleteModalType: 'options'
         });
     }
 
-    resetDetailModalState(){
+    resetDetailModalState() {
         this.setState({
             detailsModalType: 'options'
         });
     }
-    
-    resetEditModalState(){
+
+    resetEditModalState() {
         this.setState({
             editModalType: 'options'
         });
@@ -250,7 +257,7 @@ class Product extends Component {
 
     render() {
 
-        
+
 
         return (
             <div className="mt-3 col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>
@@ -259,18 +266,18 @@ class Product extends Component {
                         <CardTitle>{this.props.product.name}</CardTitle>
 
                         <CardImg onClick={this.toggleDetailsModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
-                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
+                        <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDetailsModal={this.toggleDetailsModal} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
                     </CardBody>
                 </Card>
 
 
-                <RenderDetailModal 
-                    type = {this.state.detailsModalType}
+                <RenderDetailModal
+                    type={this.state.detailsModalType}
                     isDetailsModalOpen={this.state.isDetailsModalOpen}
                     toggleDetailsModal={this.toggleDetailsModal}
                     product={this.props.product}
                 />
-                <RenderDeleteModal 
+                <RenderDeleteModal
                     type={this.state.deleteModalType}
                     isDeleteModalOpen={this.state.isDeleteModalOpen}
                     toggleDeleteModal={this.toggleDeleteModal}
@@ -279,14 +286,14 @@ class Product extends Component {
                     resetDeleteModalState={this.resetDeleteModalState}
                     reloadData={this.props.reloadData}
                 />
-                <RenderEditModal 
-                    type = {this.state.editModalType}
+                <RenderEditModal
+                    type={this.state.editModalType}
                     isEditModalOpen={this.state.isEditModalOpen}
                     updateEditModalType={this.updateEditModalType}
                     toggleEditModal={this.toggleEditModal}
                     product={this.props.product}
                 />
-                
+
 
 
             </div>

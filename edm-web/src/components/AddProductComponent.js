@@ -1,8 +1,9 @@
 import React, { Component, useEffect, useState } from 'react';
-import {  Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 
+import { useDispatch } from 'react-redux'
 import clienteAxios from 'axios';
 import { baseBackUrl } from '../shared/baseUrl';
 
@@ -57,98 +58,94 @@ class AddProductComponent extends Component {
         this.state = {
             selectedFile: imageFile
         };
-        
+
     }
 
-    async uploadImageFile(productData){
+    async uploadImageFile(productData) {
         const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
-        productData.finalProductData.imageUrl='/public/images/products/'+resultado.data.archivo;
+        productData.finalProductData.imageUrl = '/public/images/products/' + resultado.data.archivo;
+        console.log(productData);
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'bearer ' + localStorage.getItem('token')
-          }
-          
-        const resultadoFinal = await clienteAxios.post(baseBackUrl + 'products', productData.finalProductData,{
+        }
+
+        const resultadoFinal = await clienteAxios.post(baseBackUrl + 'products', productData.finalProductData, {
             headers: headers
-          });
+        });
         //this.props.postProduct(productData.finalProductData);
     }
 
     handleSubmit(event) {
-        
-        console.log('este es el archivo en el estado');
-        console.log(this.state.selectedFile);
-        
+
         const formData = new FormData();
         formData.append("file", this.state.selectedFile);
 
         const productData = {
             image: formData,
-            finalProductData:{
+            finalProductData: {
                 price: this.price.value,
                 units: this.units.value,
-                featured: this.featured.value,
+                featured: this.featured.checked,
                 name: this.name.value,
                 description: this.description.value
             }
         }
-        
-        this.uploadImageFile(productData);
 
-        console.log('este es el nombre del archivo ya subido');
-        console.log(productData);
+        if (productData.finalProductData.featured == 'on') {
+            productData.finalProductData.featured = true;
+        }
+        else {
+            productData.finalProductData.featured = false;
+        }
+
+        this.uploadImageFile(productData);
         event.preventDefault();
-        
+
         this.props.toggle();
 
-        
+
     }
     render() {
         return (
             <div className="d-flex space-around">
 
                 <Card className=" mr-2" >
-                    <Dropzone  updateImageFile={this.updateImageFile} />
+                    <Dropzone updateImageFile={this.updateImageFile} />
                 </Card>
+                <Form onSubmit={this.handleSubmit}>
+                    <Card>
 
-                <Card>
+                        <CardBody>
+                            <CardTitle> Ingresa los datos del producto </CardTitle>
 
-                    <CardBody>
-                        <CardTitle> Ingresa los datos del producto </CardTitle>
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup>
-                                <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name"
-                                    innerRef={(input) => this.name = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="price">Precio</Label>
-                                <Input type="price" id="price" name="price"
-                                    innerRef={(input) => this.price = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="units">Unidades disponibles</Label>
-                                <Input type="text" id="units" name="units"
-                                    innerRef={(input) => this.units = input} />
-                            </FormGroup>
+                            <Label htmlFor="name">Nombre</Label>
+                            <Input type="text" id="name" name="name"
+                                innerRef={(input) => this.name = input}
+                                required
+                            />
+                            <Label htmlFor="price">Precio</Label>
+                            <Input type="number" id="price" name="price"
+                                innerRef={(input) => this.price = input} />
+                            <Label htmlFor="units">Unidades disponibles</Label>
+                            <Input type="number" id="units" name="units"
+                                innerRef={(input) => this.units = input} />
                             <FormGroup check>
                                 <Label check>
                                     <Input type="checkbox" id="featured" name="featured" innerRef={(input) => this.featured = input} />
                                     {' '}
                                     destacar
                                 </Label>
-                            </FormGroup>
-                            <FormGroup>
                                 <Label htmlFor="description">Descripcion del producto</Label>
-                                <Input type="text" id="description" name="description"
-                                    innerRef={(input) => this.description = input} />
+
                             </FormGroup>
+                            <Input type="textarea" id="description" name="description"
+                                innerRef={(input) => this.description = input} />
                             <Button type="submit" value="submit" color="primary">Añadir</Button>
-                        </Form>
-                    </CardBody>
-                </Card>
+
+                        </CardBody>
+                    </Card>
+                </Form>
 
             </div>
         );
