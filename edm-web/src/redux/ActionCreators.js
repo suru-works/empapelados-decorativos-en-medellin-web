@@ -318,7 +318,7 @@ export const login = (user) => (dispatch) => {
             error.response = response;
             throw error;
         }
-    }).then(() => {window.location.reload();})
+    }).then(() => {window.location.href(window.location.hostname);})
     .catch(error => dispatch(loginFailed(error.message)));
 }
 
@@ -367,7 +367,7 @@ export const logout = () => (dispatch) => {
             error.response = response;
             throw error;
         }
-    }).then(() => {window.location.reload();})
+    }).then(() => {window.location.href(window.location.hostname)})
     .catch(error => dispatch(logoutFailed(error.message)));
 }
 
