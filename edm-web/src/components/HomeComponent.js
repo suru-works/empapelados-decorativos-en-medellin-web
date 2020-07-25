@@ -2,102 +2,31 @@ import React, { Component } from 'react';
 import { Carousel, CarouselItem, CarouselIndicators, CarouselControl, Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { NavLink, Link } from 'react-router-dom';
+import ImageGallery from 'react-image-gallery';      //Si esta linea no sirve pegue en el cmd:     npm install react-image-gallery
+import '../styles.css'; // Tell webpack that HomeComponent.js uses these styles
 
-class ImageCarousel extends Component {
-    
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            activeIndex: 0
-        }
-
-        this.next = this.next.bind(this);
-		this.previous = this.previous.bind(this);
-		this.goToIndex = this.goToIndex.bind(this);
-		this.onExiting = this.onExiting.bind(this);
-		this.onExited = this.onExited.bind(this);
-    }
-
-    onExiting() {
-		this.animating = true;
-    }
-
-    onExited() {
-		this.animating = false;
-	}
-
-	next() {
-		if (!this.animating) {
-            const nextIndex = this.state.activeIndex === this.props.products.length - 1 ? 0 : this.state.activeIndex + 1;
-            this.setState({ activeIndex: nextIndex });
-        }
-	}
-    
-    previous() {
-		if (!this.animating) {
-            const nextIndex = this.state.activeIndex === 0 ? this.props.products.length - 1 : this.state.activeIndex - 1;
-            this.setState({
-                activeIndex: nextIndex
-            });
-        }
-	}
-
-	goToIndex(newIndex) {
-		if (!this.animating) {
-            this.setState({
-                activeIndex: newIndex
-            });
-        }
-    }
-    
-    render() {
-        if (this.props.productsLoading) {
-            return (
-                <div className="container">
-                    <div className="row">
-                        <h1></h1>
-                    </div>
-                </div>
-            );
-        } else if (this.props.errMess) {
-            return (
-                <div className="container">
-                    <div className="row">
-                        <h1>No le compilo pinche n00b</h1>
-                    </div>
-                </div>
-            );
-        } else {
-            const images = this.props.products.map((item) => {
-                return(
-                    <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item}>
-                        <img src={baseFrontUrl + item.imageUrl} alt="featured products" />
-                    </CarouselItem>
-                );
-            });
-
-            return (
-                <Carousel activeIndex={this.state.activeIndex} next={this.next} previous={this.previous}>
-                    <CarouselIndicators items={this.props.products} activeIndex={this.state.activeIndex} onClickHandler={this.goToIndex} />
-                    {images}
-                    <CarouselControl direction='prev' directionText='Previous' onClickHandler={this.previous} />
-                    <CarouselControl direction='next' directionText='Next' onClickHandler={this.next} />
-                </Carousel>
-            );
-        }
-    }
-}
 
 function Home(props) {
+
+    const images = [
+        {
+          original: 'https://picsum.photos/id/1018/1000/600/',
+          thumbnail: 'https://picsum.photos/id/1018/250/150/',
+        },
+        {
+          original: 'https://picsum.photos/id/1015/1000/600/',
+          thumbnail: 'https://picsum.photos/id/1015/250/150/',
+        },
+        {
+          original: 'https://picsum.photos/id/1019/1000/600/',
+          thumbnail: 'https://picsum.photos/id/1019/250/150/',
+        },
+      ];
+
     return(
         <div className="container">
             <div className="row align-items-center justify-content-center">
-                <ImageCarousel
-                    products={props.products}
-                    productsLoading={props.isLoading}
-                    productsErrMess={props.errMess}
-                />
+                <ImageGallery items={images} />
             </div>
             <div className="row col-12 align-items-center justify-content-center">
                 <Link to='/galeria'>
