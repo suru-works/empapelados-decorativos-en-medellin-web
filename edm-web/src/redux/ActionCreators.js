@@ -220,6 +220,10 @@ export const fetchMapsKey = () => (dispatch) => {
     .catch(error => dispatch(mapsFailed(error.message)));
 }
 
+export const registerReset = () => ({
+    type: ActionTypes.REGISTER_RESET
+});
+
 export const registerRequest = () => ({
     type: ActionTypes.REGISTER_REQUEST
 });
@@ -325,6 +329,10 @@ export const login = (user) => (dispatch) => {
     })
     .catch(error => dispatch(loginFailed(error.message)));
 }
+
+export const logoutReset = () => ({
+    type: ActionTypes.LOGOUT_RESET
+});
 
 export const logoutRequest = () => ({
     type: ActionTypes.LOGOUT_REQUEST

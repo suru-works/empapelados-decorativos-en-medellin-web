@@ -2,21 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-    Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label
 } from 'reactstrap';
 
 import Loading from './LoginComponent';
-import { login, loginReset } from '../redux/ActionCreators'
-
-function handleLogin() {
-    this.props.loginFunction({
-        username: this.email.value,
-        password: this.password.value
-    });
-    this.toggleLoginModal();
-}
+import { login, loginReset } from '../redux/ActionCreators';
 
 
 const LoginComponent = (props) => {
@@ -28,10 +19,9 @@ const LoginComponent = (props) => {
 
     const error = useSelector(state => state.auth.errMess);
     const result = useSelector(state => state.auth.result);
-    const loading = useSelector(state => state.auth.loading);
+    const loading = useSelector(state => state.auth.isLoading);
 
     const toogleAndReset = () => {
-        console.log('Cerrando')
         dispatch(loginReset());
         props.toggle();
     }
@@ -46,7 +36,7 @@ const LoginComponent = (props) => {
     if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={props.toggle}>Ingresar</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
                 <ModalBody>
                     <p>Hubo un error ingresando</p>
                 </ModalBody>
@@ -56,7 +46,7 @@ const LoginComponent = (props) => {
     if(loading){
         return(
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={props.toggle}>Ingresar</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
                 <ModalBody>
                     <Loading/>
                 </ModalBody>
@@ -67,7 +57,7 @@ const LoginComponent = (props) => {
         if(result.success){
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={props.toggle}>Ingresar</ModalHeader>
+                    <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
                     <ModalBody>
                         <p>Ingreso exitoso</p>
                     </ModalBody>

@@ -14,7 +14,7 @@ export const Auth = (state = {
             return { ...state, isLoading: false, errMess: null, result: action.payload };
         case ActionTypes.LOGIN_FAILED:
             return { ...state, isLoading: false, errMess: action.payload };
-        case ActionTypes.LOGIN_RESET:
+        case ActionTypes.LOGOUT_RESET:
             return { ...state, isLoading: false, errMess: null, result: null }
         case ActionTypes.LOGOUT_REQUEST:
             return { ...state, isLoading: true, errMess: null, result: null }

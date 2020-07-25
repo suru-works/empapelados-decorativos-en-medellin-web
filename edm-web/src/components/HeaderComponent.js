@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import {
     Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
-    Button, Modal, ModalHeader, ModalBody,
-    Form, FormGroup, Input, Label
+    Button
 } from 'reactstrap';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
-import { connect } from 'react-redux';
 import Loading from './LoginComponent';
 import LoginComponent from './LoginComponent.js';
-import { loginReset } from '../redux/ActionCreators'
-
-function RenderLoginModal(props) {
-
-}
-function RenderLogoutModal(props) {
-
-}
+import LogOutComponent from './LogOutComponent.js';
+import RegisterComponent from './RegisterComponent.js';
 
 
 class Header extends Component {
@@ -27,15 +19,14 @@ class Header extends Component {
         this.state = {
             isNavOpen: false,
             isLoginModalOpen: false,
+            isLogoutModalOpen: false,
             isRegisterModalOpen: false
         };
         this.toggleNav = this.toggleNav.bind(this);
-        this.toggleLoginModal = this.toggleLoginModal.bind(this);
         this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleRegister = this.handleRegister.bind(this);
+        this.toggleLoginModal = this.toggleLoginModal.bind(this);
+        this.toggleLogoutModal = this.toggleLogoutModal.bind(this);
         this.renderAuthOptions = this.renderAuthOptions.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
     }
 
     toggleNav() {
@@ -56,31 +47,10 @@ class Header extends Component {
         });
     }
 
-    handleRegister(event) {
-        this.props.registerFunction({
-            username: this.email.value,
-            password: this.password.value,
-            admin: false,
-            name: this.name.value,
-            phoneNumber: this.phoneNumber.value
+    toggleLogoutModal() {
+        this.setState({
+            isLogoutModalOpen: !this.state.isLogoutModalOpen
         });
-        this.toggleRegisterModal();
-        event.preventDefault();
-    }
-
-    handleLogin(event) {
-        this.props.loginFunction({
-            username: this.email.value,
-            password: this.password.value
-        });
-        this.toggleLoginModal();
-
-        event.preventDefault();
-    }
-
-    handleLogout() {
-        this.props.logoutFunction();
-
     }
 
     renderAuthOptions() {
@@ -88,7 +58,7 @@ class Header extends Component {
             return (
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <p>Cargando...</p>
+                        <Loading></Loading>
                     </NavItem>
                 </Nav>
             );
@@ -99,7 +69,7 @@ class Header extends Component {
                         <p>{localStorage.username}</p>
                     </NavItem>
                     <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.handleLogout}>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLogoutModal}>
                             <span className="fa fa-sign-in"> Cerrar sesión </span>
                         </Button>
                     </NavItem>
@@ -188,43 +158,10 @@ class Header extends Component {
 
                     </div>
                 </Jumbotron>
-                <Modal isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}>
-                    <ModalHeader toggle={this.toggleRegisterModal}>Registro</ModalHeader>
-
-                    <ModalBody>
-                        <Form onSubmit={this.handleRegister}>
-                            <FormGroup>
-                                <Label htmlFor="email">Correo electrónico</Label>
-                                <Input type="email" id="email" name="email"
-                                    innerRef={(input) => this.email = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="password">Contraseña*</Label>
-                                <Input type="password" id="password" name="password"
-                                    innerRef={(input) => this.password = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name"
-                                    innerRef={(input) => this.name = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
-                                <Input type="tel" id="phoneNumber" name="phoneNumber"
-                                    innerRef={(input) => this.phoneNumber = input}
-                                    pattern="^\+[1-9]{1}[0-9]{3,14}$"
-                                />
-                            </FormGroup>
-
-                            <Button type="submit" value="submit" color="primary">Registrarse</Button>
-                        </Form>
-                    </ModalBody>
-                </Modal>
-
+                
+                <RegisterComponent isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}/>                             
                 <LoginComponent isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal}/>
+                <LogOutComponent isOpen={this.state.isLogoutModalOpen} toggle={this.toggleLogoutModal}/>
 
                 
             </div>
