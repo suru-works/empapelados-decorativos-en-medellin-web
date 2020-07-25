@@ -1,6 +1,6 @@
 import React, { Component, useEffect } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import EditProduct from './EditProductComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
@@ -222,19 +222,6 @@ class Product extends Component {
                 });
             }
             )
-
-        /* .then(() => {
-            if(this.state.productDeleteError){
-                this.setState({
-                    deleteModalType: 'error'
-                });
-            }
-            else {
-                this.setState({
-                    deleteModalType: 'success'
-                });
-            }
-        }) */
     }
 
     resetDeleteModalState() {

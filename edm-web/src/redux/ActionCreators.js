@@ -274,6 +274,10 @@ export const loginRequest = () => ({
     type: ActionTypes.LOGIN_REQUEST
 });
 
+export const loginReset = () => ({
+    type: ActionTypes.LOGIN_RESET
+});
+
 export const loginSuccess = (result) => ({
     type: ActionTypes.LOGIN_SUCCESS,
     payload: result
@@ -318,7 +322,7 @@ export const login = (user) => (dispatch) => {
             error.response = response;
             throw error;
         }
-    }).then(() => {window.location.href(window.location.hostname);})
+    })
     .catch(error => dispatch(loginFailed(error.message)));
 }
 
@@ -367,7 +371,7 @@ export const logout = () => (dispatch) => {
             error.response = response;
             throw error;
         }
-    }).then(() => {window.location.href(window.location.hostname)})
+    })
     .catch(error => dispatch(logoutFailed(error.message)));
 }
 

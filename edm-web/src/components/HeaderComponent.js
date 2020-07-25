@@ -4,14 +4,23 @@ import {
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label
 } from 'reactstrap';
-import { NavLink, Link, withRouter} from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
+import Loading from './LoginComponent';
+import LoginComponent from './LoginComponent.js';
+import { loginReset } from '../redux/ActionCreators'
 
+function RenderLoginModal(props) {
+
+}
+function RenderLogoutModal(props) {
+
+}
 
 
 class Header extends Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -71,7 +80,7 @@ class Header extends Component {
 
     handleLogout() {
         this.props.logoutFunction();
-        
+
     }
 
     renderAuthOptions() {
@@ -90,7 +99,7 @@ class Header extends Component {
                         <p>{localStorage.username}</p>
                     </NavItem>
                     <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.handleLogout}>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.handleLogout}>
                             <span className="fa fa-sign-in"> Cerrar sesión </span>
                         </Button>
                     </NavItem>
@@ -100,13 +109,13 @@ class Header extends Component {
             return (
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a',color: '#f9683a'  }} onClick={this.toggleLoginModal}>
+                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLoginModal}>
                             <span className="fa fa-sign-in"> Iniciar sesión </span>
                         </Button>
                     </NavItem>
 
                     <NavItem>
-                        <Button variant="contained" style={{ margin: 10,backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
+                        <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
                             <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
                         </Button>
                     </NavItem>
@@ -147,7 +156,7 @@ class Header extends Component {
                                 </NavItem>
                             </Nav>
 
-                            { this.renderAuthOptions() }
+                            {this.renderAuthOptions()}
                         </Collapse>
                     </div>
                 </Navbar>
@@ -162,7 +171,7 @@ class Header extends Component {
                                 <br></br>
 
                                 <Link to='/acerca-de-nosotros'>
-                                    <Button style={{ backgroundColor: '#f9683a', color: '#ffffff'}} variant="contained">
+                                    <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
                                         Aprende más
                                     </Button>
                                 </Link>
@@ -179,7 +188,6 @@ class Header extends Component {
 
                     </div>
                 </Jumbotron>
-
                 <Modal isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}>
                     <ModalHeader toggle={this.toggleRegisterModal}>Registro</ModalHeader>
 
@@ -206,7 +214,7 @@ class Header extends Component {
                             <FormGroup>
                                 <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
                                 <Input type="tel" id="phoneNumber" name="phoneNumber"
-                                    innerRef={(input) => this.phoneNumber = input} 
+                                    innerRef={(input) => this.phoneNumber = input}
                                     pattern="^\+[1-9]{1}[0-9]{3,14}$"
                                 />
                             </FormGroup>
@@ -216,35 +224,9 @@ class Header extends Component {
                     </ModalBody>
                 </Modal>
 
-                <Modal isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal}>
-                    <ModalHeader toggle={this.toggleLoginModal}>Ingresar</ModalHeader>
+                <LoginComponent isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal}/>
 
-                    <ModalBody>
-                        <Form onSubmit={this.handleLogin}>
-                            <FormGroup>
-                                <Label htmlFor="email">Correo electrónico</Label>
-                                <Input type="email" id="email" name="email"
-                                    innerRef={(input) => this.email = input} />
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="password">Contraseña</Label>
-                                <Input type="password" id="password" name="password"
-                                    innerRef={(input) => this.password = input} />
-                            </FormGroup>
-
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"
-                                        innerRef={(input) => this.remember = input} />
-                                    Recuerdame
-                                </Label>
-                            </FormGroup>
-
-                            <Button type="submit" value="submit" color="primary">Login</Button>
-                        </Form>
-                    </ModalBody>
-                </Modal>
+                
             </div>
         );
     }
