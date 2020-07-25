@@ -34,7 +34,7 @@ function RenderDetailModal(props) {
                     <div className="d-flex space-around">
 
                         <Card className=" mr-2" key={props.product._id}>
-                            <CardImg top src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                            <CardImg top className='detail-image' src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
                         </Card>
 
                         <Card key={props.product._id}>
@@ -252,7 +252,7 @@ class Product extends Component {
                     <CardBody>
                         <CardTitle>{this.props.product.name}</CardTitle>
 
-                        <CardImg onClick={this.toggleDetailsModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
+                        <CardImg className='display-image' onClick={this.toggleDetailsModal} src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
                         <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDetailsModal={this.toggleDetailsModal} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
                     </CardBody>
                 </Card>

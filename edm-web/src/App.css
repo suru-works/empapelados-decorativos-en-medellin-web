@@ -85,3 +85,13 @@ a:hover {
   width:100%;
   position:absolute;
 }
+
+.display-image {
+  width: 100px;
+  height: 250px;
+}
+
+.detail-image {
+  width: 380px;
+  height: 500px;
+}
