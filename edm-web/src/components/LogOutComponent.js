@@ -15,10 +15,16 @@ const LogOutComponent = (props) => {
 
     const dispatch = useDispatch();
 
-
     const toogleAndReset = () => {
         dispatch(logoutReset());
         props.toggle();
+    }
+
+    const toogleResetAndDeleteTokenInfo = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("admin");
+        localStorage.removeItem("username");
+        toogleAndReset();
     }
 
     const doLogout = () => dispatch(logout());
@@ -29,14 +35,31 @@ const LogOutComponent = (props) => {
     }
 
     if (error) {
-        return (
-            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
-                <ModalBody>
-                    <p>Hubo un error cerrando sesion.</p>
-                </ModalBody>
-            </Modal>
-        );
+        if(error.response){
+            if(error.response.status==401){
+                return (
+                    <Modal isOpen={props.isOpen} toggle={toogleResetAndDeleteTokenInfo}>
+                        <ModalHeader toggle={toogleResetAndDeleteTokenInfo}>Salir</ModalHeader>
+                        <ModalBody>
+                            <p>Hubo un error cerrando sesion, pues tu sesion ya estaba vencida</p>
+                            <p>inicia sesion de nuevo.</p>
+                        </ModalBody>
+                    </Modal>
+                );
+            }
+        }
+        
+        else{
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error cerrando sesion.</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        
     }
     if(loading){
         return(

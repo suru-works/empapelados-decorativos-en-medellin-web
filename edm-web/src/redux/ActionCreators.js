@@ -327,7 +327,7 @@ export const login = (user) => (dispatch) => {
             throw error;
         }
     })
-    .catch(error => dispatch(loginFailed(error.message)));
+    .catch(error => dispatch(loginFailed(error)));
 }
 
 export const logoutReset = () => ({
@@ -380,7 +380,7 @@ export const logout = () => (dispatch) => {
             throw error;
         }
     })
-    .catch(error => dispatch(logoutFailed(error.message)));
+    .catch(error => dispatch(logoutFailed(error)));
 }
 
 export const postFeedbackRequest = () => ({
