@@ -1,6 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
-import clienteAxios  from 'axios';
+import clienteAxios from 'axios';
 
 export const uploadFileReset = () => ({
     type: ActionTypes.UPLOAD_FILE_RESET
@@ -20,41 +20,17 @@ export const uploadFileFailed = (errmess) => ({
     payload: errmess
 });
 
-export const uploadFile = (data) => (dispatch) => {
+export const uploadFile = (data) => async (dispatch) => {
     dispatch(uploadFileRequest());
+    const res = await clienteAxios.post(baseBackUrl + data.type, data.file);
 
-    return fetch(baseBackUrl + data.type, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + localStorage.getItem('token')
-        },
-        body: data.file,
-        credentials: 'same-origin'
-    })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.success) {
-            dispatch(uploadFileSuccess(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(uploadFileFailed(error.message)));
+    console.log("esta es la respuesta");
+    console.log(res);
+    dispatch(uploadFileSuccess({}));
+    return res;
+
 }
+
 
 export const addProducts = (products) => ({
     type: ActionTypes.ADD_PRODUCTS,
@@ -74,21 +50,21 @@ export const fetchProducts = () => (dispatch) => {
     dispatch(productsLoading());
 
     return fetch(baseBackUrl + 'products')
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }, error => {
-        var errmess = new Error(error.message);
-        throw errmess;
-    })
-    .then(response => response.json())
-    .then(products => dispatch(addProducts(products)))
-    .catch(error => dispatch(productsFailed(error.message)));
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(products => dispatch(addProducts(products)))
+        .catch(error => dispatch(productsFailed(error.message)));
 }
 
 export const productReset = () => ({
@@ -122,34 +98,34 @@ export const postProduct = (product) => (dispatch) => {
         body: JSON.stringify(product),
         credentials: 'same-origin'
     })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
             throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.success) {
-            dispatch(productSuccess(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(productFailed(error.message)));
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                dispatch(productSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(productFailed(error.message)));
 }
 
 export function deleteProduct(id) {
     return async (dispatch) => {
-        dispatch( productRequest() );
-        
+        dispatch(productRequest());
+
         try {
             const headers = {
                 'Content-Type': 'application/json',
@@ -158,9 +134,9 @@ export function deleteProduct(id) {
             await clienteAxios.delete(`${baseBackUrl}products/${id}`, {
                 headers: headers
             });
-            dispatch( productSuccess('Se ha eliminado') );
+            dispatch(productSuccess('Se ha eliminado'));
         } catch (error) {
-            dispatch( productFailed(error.response) );
+            dispatch(productFailed(error.response));
         }
     }
 }
@@ -181,21 +157,21 @@ export const fetchMapsKey = () => (dispatch) => {
     dispatch(mapsLoading());
 
     return fetch(baseBackUrl + 'maps')
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }, error => {
-        var errmess = new Error(error.message);
-        throw errmess;
-    })
-    .then(response => response.json())
-    .then(maps => dispatch(addMaps(maps)))
-    .catch(error => dispatch(mapsFailed(error.message)));
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(maps => dispatch(addMaps(maps)))
+        .catch(error => dispatch(mapsFailed(error.message)));
 }
 
 export const registerReset = () => ({
@@ -227,29 +203,29 @@ export const register = (user) => (dispatch) => {
         body: JSON.stringify(user),
         credentials: 'same-origin'
     })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
             throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.success) {
-            localStorage.setItem('token', response.token);
-            dispatch(registerSuccess(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(registerFailed(error.message)));
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                localStorage.setItem('token', response.token);
+                dispatch(registerSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(registerFailed(error.message)));
 }
 
 export const loginRequest = () => ({
@@ -281,31 +257,31 @@ export const login = (user) => (dispatch) => {
         credentials: "same-origin",
         body: JSON.stringify(user)
     })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
             throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.success) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('username', response.username);
-            localStorage.setItem('admin', response.admin);
-            dispatch(loginSuccess(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(loginFailed(error)));
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('username', response.username);
+                localStorage.setItem('admin', response.admin);
+                dispatch(loginSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(loginFailed(error)));
 }
 
 export const logoutReset = () => ({
@@ -334,31 +310,31 @@ export const logout = () => (dispatch) => {
             'Authorization': 'bearer ' + localStorage.getItem('token')
         }
     })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
             throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response.success) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            localStorage.removeItem('admin');
-            dispatch(logoutSuccess(response));
-        } else {
-            var error = new Error('Error ' + response.status);
-            error.response = response;
-            throw error;
-        }
-    })
-    .catch(error => dispatch(logoutFailed(error)));
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                localStorage.removeItem('admin');
+                dispatch(logoutSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(logoutFailed(error)));
 }
 
 export const postFeedbackRequest = () => ({
@@ -375,30 +351,30 @@ export const postFeedbackFailed = (errmess) => ({
     payload: errmess
 });
 
-export const postFeedback= (feedback) => (dispatch) => {
+export const postFeedback = (feedback) => (dispatch) => {
     dispatch(logoutRequest());
-    
-  
+
+
     return fetch(baseBackUrl + 'feedback', {
-      method: "POST",
-      body: JSON.stringify(feedback),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "same-origin"
+        method: "POST",
+        body: JSON.stringify(feedback),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
     })
-      .then(response => {
-        if (response.ok) {
-          return response;
-        } else {
-          var error = new Error('Error ' + response.status + ': ' + response.statusText);
-          error.response = response;
-          throw error;
-        }
-      },
-        error => {
-          throw error;
-        })
-      .then(response => response.json())
-      .catch(error => { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: ' + error.message); });
-  };
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .catch(error => { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: ' + error.message); });
+};

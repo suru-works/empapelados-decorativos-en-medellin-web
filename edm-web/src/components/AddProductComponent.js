@@ -118,7 +118,7 @@ const AddProductComponent = (props) => {
                     <div className="d-flex space-around">
 
                         <Card className=" mr-2" >
-                            <Dropzone />
+                            <Dropzone type={'media/image'}/>
                         </Card>
                         <Form onSubmit={handleSubmit}>
                             <Card>
