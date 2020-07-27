@@ -54,7 +54,11 @@ const Dropzone = (props) => {
 
         const formData = new FormData();
         formData.append("file", fileForUpload);
-        doFileUpload(formData);
+        const data = {
+            type: props.type,
+            file: formData
+        };
+        doFileUpload(data);
     }
 
     const onDrop = useCallback(async (acceptedFiles) => {
@@ -89,15 +93,15 @@ const Dropzone = (props) => {
                 localStorage.removeItem("admin");
                 localStorage.removeItem("username");
                 return (
-                    <div>
+                    <section className="container">
                         <p>Hubo un error, pues tu sesion ya estaba vencida</p>
                         <p>inicia sesion de nuevo.</p>
-                    </div>
+                    </section>
                 );
             }
             else {
                 return (
-                    <div> error desconocido {error.response}</div>
+                    <section className="container"> <p>error desconocido {error.message}</p></section>
                 );
             }
         }
@@ -108,13 +112,11 @@ const Dropzone = (props) => {
         );
     }
     if (result) {
-        if (result.success) {
             return (
                 <div>
                     <p>Archivo subido correctamente correctamente.</p>
                 </div>
             );
-        }
     }
     else {
         return (
