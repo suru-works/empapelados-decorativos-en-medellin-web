@@ -5,6 +5,7 @@ import {
     Button, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 
+import SessionExpiredComponent from './SessionExpiredComponent';
 import Loading from './LoginComponent';
 import { logout, logoutReset } from '../redux/ActionCreators';
 
@@ -20,13 +21,6 @@ const LogOutComponent = (props) => {
         props.toggle();
     }
 
-    const toogleResetAndDeleteTokenInfo = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("admin");
-        localStorage.removeItem("username");
-        toogleAndReset();
-    }
-
     const doLogout = () => dispatch(logout());
 
     const handleLogout = event => {
@@ -38,13 +32,7 @@ const LogOutComponent = (props) => {
         if(error.response){
             if(error.response.status==401){
                 return (
-                    <Modal isOpen={props.isOpen} toggle={toogleResetAndDeleteTokenInfo}>
-                        <ModalHeader toggle={toogleResetAndDeleteTokenInfo}>Salir</ModalHeader>
-                        <ModalBody>
-                            <p>Hubo un error cerrando sesion, pues tu sesion ya estaba vencida</p>
-                            <p>inicia sesion de nuevo.</p>
-                        </ModalBody>
-                    </Modal>
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset}/>
                 );
             }
         }
@@ -83,8 +71,6 @@ const LogOutComponent = (props) => {
                 </Modal>
             );
         }
-        
-
     }
     else {
         return (

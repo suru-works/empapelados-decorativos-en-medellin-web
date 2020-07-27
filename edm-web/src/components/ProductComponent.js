@@ -2,6 +2,7 @@ import React, { Component, useEffect } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProduct from './EditProductComponent';
+import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 function RenderOptions(props) {
@@ -154,10 +155,15 @@ function RenderDeleteModal(props) {
         );
     }
     else if (error) {
+        if(error.status == 401){
+            return(
+                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}/>
+            );            
+        }
         return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
 
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={resetTypeAndToggle}>{props.product.name}</ModalHeader>
 
                 <ModalBody>
 

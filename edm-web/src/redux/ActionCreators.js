@@ -2,29 +2,34 @@ import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
 import clienteAxios  from 'axios';
 
-export const uploadRequest = () => ({
-    type: ActionTypes.UPLOAD_REQUEST
+export const uploadFileReset = () => ({
+    type: ActionTypes.UPLOAD_FILE_RESET
 });
 
-export const uploadSuccess = (result) => ({
-    type: ActionTypes.UPLOAD_SUCCESS,
+export const uploadFileRequest = () => ({
+    type: ActionTypes.UPLOAD_FILE_REQUEST
+});
+
+export const uploadFileSuccess = (result) => ({
+    type: ActionTypes.UPLOAD_FILE_SUCCESS,
     payload: result
 });
 
-export const uploadFailed = (errmess) => ({
-    type: ActionTypes.UPLOAD_FAILED,
+export const uploadFileFailed = (errmess) => ({
+    type: ActionTypes.UPLOAD_FILE_FAILED,
     payload: errmess
 });
 
-export const upload = (media) => (dispatch) => {
-    dispatch(uploadRequest());
+export const uploadFile = (data) => (dispatch) => {
+    dispatch(uploadFileRequest());
 
-    return fetch(baseBackUrl + 'media/image', {
+    return fetch(baseBackUrl + data.type, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + localStorage.getItem('token')
         },
-        body: JSON.stringify(media),
+        body: data.file,
         credentials: 'same-origin'
     })
     .then(response => {
@@ -41,14 +46,14 @@ export const upload = (media) => (dispatch) => {
     .then(response => response.json())
     .then(response => {
         if (response.success) {
-            dispatch(uploadSuccess(response));
+            dispatch(uploadFileSuccess(response));
         } else {
             var error = new Error('Error ' + response.status);
             error.response = response;
             throw error;
         }
     })
-    .catch(error => dispatch(uploadFailed(error.message)));
+    .catch(error => dispatch(uploadFileFailed(error.message)));
 }
 
 export const addProducts = (products) => ({
@@ -85,6 +90,11 @@ export const fetchProducts = () => (dispatch) => {
     .then(products => dispatch(addProducts(products)))
     .catch(error => dispatch(productsFailed(error.message)));
 }
+
+export const productReset = () => ({
+    type: ActionTypes.PRODUCT_RESET
+});
+
 
 export const productRequest = () => ({
     type: ActionTypes.PRODUCT_REQUEST
@@ -150,42 +160,10 @@ export function deleteProduct(id) {
             });
             dispatch( productSuccess('Se ha eliminado') );
         } catch (error) {
-            console.log(error.response.data);
-            dispatch( productFailed(error.response.data) );
+            dispatch( productFailed(error.response) );
         }
     }
 }
-
-/* export const deleteProduct = (productId) => (dispatch) => {
-    dispatch(productRequest());
-
-    return fetch(baseBackUrl + 'products/' + productId, {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + localStorage.getItem('token')
-        },
-        credentials: 'same-origin'
-    })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }, error => {
-        throw error;
-    })
-    .then(response => response.json())
-    .then(response => {
-        dispatch(productSuccess(response));
-        return(response);
-    })
-    .catch(error => dispatch(productFailed(error.message)));
-} */
-
 
 export const addMaps = (maps) => ({
     type: ActionTypes.ADD_MAPS,

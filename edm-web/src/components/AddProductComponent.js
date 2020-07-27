@@ -1,119 +1,119 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
+import { useSelector, useDispatch } from 'react-redux';
+import SessionExpiredComponent from './SessionExpiredComponent';
+import Loading from './LoginComponent';
+import { productReset, postProduct,uploadFileReset} from '../redux/ActionCreators';
 
-import { useDispatch } from 'react-redux'
-import clienteAxios from 'axios';
-import { baseBackUrl } from '../shared/baseUrl';
+const AddProductComponent = (props) => {
 
-const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
-};
+    const [price, setPrice] = useState(null);
+    const [units, setUnits] = useState(null);
+    const [featured, setFeatured] = useState(null);
+    const [name, setName] = useState(null);
+    const [description, setDescription] = useState(null);
 
-const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-};
+    const error = useSelector(state => state.product.errMess);
+    const result = useSelector(state => state.product.result);
+    const loading = useSelector(state => state.product.isLoading);
 
-const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-};
+    const fileSuccess = useSelector(state => state.uploadFile.result);
 
-const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-};
+    const dispatch = useDispatch();
 
-
-
-
-class AddProductComponent extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selectedFile: null
-        };
-        this.updateImageFile = this.updateImageFile.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    const toogleAndReset = () => {
+        dispatch(productReset());
+        dispatch(uploadFileReset());
+        props.toggle();
     }
 
-    updateImageFile(imageFile) {
-        //getting the image data from imagePicker
-        this.state = {
-            selectedFile: imageFile
-        };
+    const doAddProduct = (productData) => dispatch(postProduct(productData));
 
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-    async uploadImageFile(productData) {
-        const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
-        productData.finalProductData.imageUrl = '/public/images/products/' + resultado.data.archivo;
-        console.log(productData);
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + localStorage.getItem('token')
+        if (fileSuccess) {
+            const productData = {
+                price: price,
+                units: units,
+                featured: featured,
+                name: name,
+                description: description
+
+            }
+            if (productData.featured == 'on') {
+                productData.featured = true;
+            }
+            else {
+                productData.featured = false;
+            }
+
+            doAddProduct(productData);
         }
-
-        const resultadoFinal = await clienteAxios.post(baseBackUrl + 'products', productData.finalProductData, {
-            headers: headers
-        });
-        //this.props.postProduct(productData.finalProductData);
     }
 
-    handleSubmit(event) {
-
-        const formData = new FormData();
-        formData.append("file", this.state.selectedFile);
-
-        const productData = {
-            image: formData,
-            finalProductData: {
-                price: this.price.value,
-                units: this.units.value,
-                featured: this.featured.checked,
-                name: this.name.value,
-                description: this.description.value
+    if (error) {
+        if (error.response) {
+            if (error.response.status == 401) {
+                return (
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
+                );
+            }
+            else {
+                return (
+                    <div> error desconocido {error.response}</div>
+                );
             }
         }
 
-        if (productData.finalProductData.featured == 'on') {
-            productData.finalProductData.featured = true;
-        }
         else {
-            productData.finalProductData.featured = false;
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error añadiendo el producto.</p>
+                    </ModalBody>
+                </Modal>
+            );
         }
 
-        this.uploadImageFile(productData);
-        event.preventDefault();
-
-        this.props.toggle();
+    }
+    if (loading) {
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
+                <ModalBody>
+                    <Loading />
+                </ModalBody>
+            </Modal>
+        );
+    }
+    if (result) {
+        if (result.success) {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
+                    <ModalBody>
+                        <p>Producto añadido correctamente.</p>
+                    </ModalBody>
+                    <Button onClick={toogleAndReset}>Aceptar</Button>
+                </Modal>
+            );
+        }
 
 
     }
-    render() {
+    else {
         return (
             <div className="d-flex space-around">
 
                 <Card className=" mr-2" >
-                    <Dropzone updateImageFile={this.updateImageFile} />
+                    <Dropzone  />
                 </Card>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <Card>
 
                         <CardBody>
@@ -121,26 +121,28 @@ class AddProductComponent extends Component {
 
                             <Label htmlFor="name">Nombre</Label>
                             <Input type="text" id="name" name="name"
-                                innerRef={(input) => this.name = input}
+                                onChange={e => setName(e.target.value)}
                                 required
                             />
                             <Label htmlFor="price">Precio</Label>
                             <Input type="number" id="price" name="price"
-                                innerRef={(input) => this.price = input} />
+                                onChange={e => setPrice(e.target.value)} />
                             <Label htmlFor="units">Unidades disponibles</Label>
                             <Input type="number" id="units" name="units"
-                                innerRef={(input) => this.units = input} />
+                                onChange={e => setUnits(e.target.value)} />
                             <FormGroup check>
                                 <Label check>
-                                    <Input type="checkbox" id="featured" name="featured" innerRef={(input) => this.featured = input} />
+                                    <Input type="checkbox" id="featured" name="featured"
+                                        onChange={e => setFeatured(e.target.value)} />
                                     {' '}
-                                    destacar
-                                </Label>
-                                <Label htmlFor="description">Descripcion del producto</Label>
+                                        destacar
+                                    </Label>
+
 
                             </FormGroup>
+                            <Label htmlFor="description">Descripcion del producto</Label>
                             <Input type="textarea" id="description" name="description"
-                                innerRef={(input) => this.description = input} />
+                                onChange={e => setDescription(e.target.value)} />
                             <Button type="submit" value="submit" color="primary">Añadir</Button>
 
                         </CardBody>
@@ -151,8 +153,8 @@ class AddProductComponent extends Component {
         );
     }
 
-}
+};
 
-const AddProduct = AddProductComponent;
+AddProductComponent.propTypes = {};
 
-export default AddProduct;
+export default AddProductComponent;

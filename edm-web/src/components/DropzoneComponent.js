@@ -1,6 +1,8 @@
 import React, { Component, useEffect, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-
+import { useSelector, useDispatch } from 'react-redux';
+import {Button } from 'reactstrap';
+import { uploadFile } from '../redux/ActionCreators';
 
 const thumbsContainer = {
     display: 'flex',
@@ -36,14 +38,29 @@ const img = {
 
 const Dropzone = (props) => {
     const [fileForPreview,setFileForPreview]= useState([]);
+    const [fileForUpload,setFileForUpload]= useState(null);
+    const [fileHasChanged,setfileHasChanged] = useState(false);
+
+    const dispatch = useDispatch();
+    const doFileUpload = (fileData) => dispatch(uploadFile(fileData));
+
+    const handleUpload = (event) =>{
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append("file", fileForUpload);
+        doFileUpload(formData);
+    }
+
     const onDrop = useCallback(async (acceptedFiles) => {
-        console.log(acceptedFiles);
 
-        props.updateImageFile(acceptedFiles[0]);
-
+        setFileForUpload(acceptedFiles[0]);
         setFileForPreview(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)
         })));
+        if(!fileHasChanged){
+            setfileHasChanged(true);
+        }
         
     }, []);
 
@@ -70,6 +87,7 @@ const Dropzone = (props) => {
             <aside style={thumbsContainer}>
                 {thumbs}
             </aside>
+            <Button onClick={handleUpload} enabled={fileHasChanged}>Aceptar</Button>
         </section>
     );
 }

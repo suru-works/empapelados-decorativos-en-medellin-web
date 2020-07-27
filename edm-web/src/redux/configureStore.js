@@ -6,6 +6,7 @@ import { Product } from './product';
 import { Maps } from './maps';
 import { Register } from './register';
 import { Auth } from './auth';
+import { UploadFile } from './UploadFile';
 
  export const ConfigureStore = () => {
     const store = createStore(
@@ -14,7 +15,8 @@ import { Auth } from './auth';
             register: Register,
             maps: Maps,
             auth: Auth,
-            product: Product
+            product: Product,
+            uploadFile: UploadFile
         }),
        compose(applyMiddleware(thunk),
 
