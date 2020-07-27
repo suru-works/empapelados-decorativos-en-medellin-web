@@ -11,9 +11,9 @@ import { baseFrontUrl } from '../shared/baseUrl';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 
 function RenderAdminOptions(props) {
-    
 
-        if (localStorage.getItem('admin')) {
+
+    if (localStorage.getItem('admin')) {
         return (
             <FloatingButtonContainer>
 
@@ -73,7 +73,6 @@ class Gallery extends Component {
     }
 
     render() {
-        console.log(this.props.products.length);
         if (!(this.props.products.length > 0)) {
             return (
                 <div className="container">
@@ -88,17 +87,10 @@ class Gallery extends Component {
                         <p> No se encontraron productos en oferta.</p>
 
                     </div>
-                    <Modal className="modal-lg" isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}>
 
-                        <ModalHeader toggle={this.toggleAddProductModal}>Añadir un producto</ModalHeader>
+                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}></AddProduct>
 
-                        <ModalBody>
-
-                            <AddProduct upload={this.props.upload} postProduct={this.props.postProduct} toggle={this.toggleAddProductModal}></AddProduct>
-
-                        </ModalBody>
-                    </Modal>
-                    <RenderAdminOptions toggleAddProductModal = {this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
+                    <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
                 </div>
             );
         }
@@ -136,18 +128,9 @@ class Gallery extends Component {
                         {galeria}
                     </div>
 
-                    <Modal className="modal-lg" isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}>
+                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}></AddProduct>
 
-                        <ModalHeader toggle={this.toggleAddProductModal}>Añadir un producto</ModalHeader>
-
-                        <ModalBody>
-
-                            <AddProduct upload={this.props.upload} postProduct={this.props.postProduct} toggle={this.toggleAddProductModal}></AddProduct>
-
-                        </ModalBody>
-                    </Modal>
-
-                    <RenderAdminOptions toggleAddProductModal = {this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
+                    <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
 
                 </div>
 

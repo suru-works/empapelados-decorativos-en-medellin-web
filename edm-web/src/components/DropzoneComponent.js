@@ -1,8 +1,9 @@
 import React, { Component, useEffect, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
-import {Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { uploadFile } from '../redux/ActionCreators';
+import Loading from './LoginComponent';
 
 const thumbsContainer = {
     display: 'flex',
@@ -37,14 +38,18 @@ const img = {
 
 
 const Dropzone = (props) => {
-    const [fileForPreview,setFileForPreview]= useState([]);
-    const [fileForUpload,setFileForUpload]= useState(null);
-    const [fileHasChanged,setfileHasChanged] = useState(false);
+    const [fileForPreview, setFileForPreview] = useState([]);
+    const [fileForUpload, setFileForUpload] = useState(null);
+    const [fileHasChanged, setfileHasChanged] = useState(false);
+
+    const error = useSelector(state => state.uploadFile.errMess);
+    const result = useSelector(state => state.uploadFile.result);
+    const loading = useSelector(state => state.uploadFile.isLoading);
 
     const dispatch = useDispatch();
     const doFileUpload = (fileData) => dispatch(uploadFile(fileData));
 
-    const handleUpload = (event) =>{
+    const handleUpload = (event) => {
         event.preventDefault();
 
         const formData = new FormData();
@@ -58,13 +63,13 @@ const Dropzone = (props) => {
         setFileForPreview(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)
         })));
-        if(!fileHasChanged){
+        if (!fileHasChanged) {
             setfileHasChanged(true);
         }
-        
+
     }, []);
 
-    const thumbs = fileForPreview.map( file => (
+    const thumbs = fileForPreview.map(file => (
         <div style={thumb} key={file.name}>
             <div style={thumbInner}>
                 <img
@@ -74,22 +79,58 @@ const Dropzone = (props) => {
             </div>
         </div>
     ));
-    
+
 
     const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop })
+    if (error) {
+        if (error.response) {
+            if (error.response.status == 401) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("admin");
+                localStorage.removeItem("username");
+                return (
+                    <div>
+                        <p>Hubo un error, pues tu sesion ya estaba vencida</p>
+                        <p>inicia sesion de nuevo.</p>
+                    </div>
+                );
+            }
+            else {
+                return (
+                    <div> error desconocido {error.response}</div>
+                );
+            }
+        }
+    }
+    if (loading) {
+        return (
+            <Loading />
+        );
+    }
+    if (result) {
+        if (result.success) {
+            return (
+                <div>
+                    <p>Archivo subido correctamente correctamente.</p>
+                </div>
+            );
+        }
+    }
+    else {
+        return (
+            <section className="container">
+                <div {...getRootProps({ className: 'dropzone' })}>
+                    <input {...getInputProps()} />
+                    <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
+                </div>
+                <aside style={thumbsContainer}>
+                    {thumbs}
+                </aside>
+                <Button onClick={handleUpload} enabled={fileHasChanged}>Aceptar</Button>
+            </section>
+        );
+    }
 
-    return (
-        <section className="container">
-            <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
-            </div>
-            <aside style={thumbsContainer}>
-                {thumbs}
-            </aside>
-            <Button onClick={handleUpload} enabled={fileHasChanged}>Aceptar</Button>
-        </section>
-    );
 }
 
 export default Dropzone;

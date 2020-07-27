@@ -6,7 +6,7 @@ import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import Loading from './LoginComponent';
-import { productReset, postProduct,uploadFileReset} from '../redux/ActionCreators';
+import { productReset, postProduct, uploadFileReset } from '../redux/ActionCreators';
 
 const AddProductComponent = (props) => {
 
@@ -108,48 +108,58 @@ const AddProductComponent = (props) => {
     }
     else {
         return (
-            <div className="d-flex space-around">
 
-                <Card className=" mr-2" >
-                    <Dropzone  />
-                </Card>
-                <Form onSubmit={handleSubmit}>
-                    <Card>
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
-                        <CardBody>
-                            <CardTitle> Ingresa los datos del producto </CardTitle>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
 
-                            <Label htmlFor="name">Nombre</Label>
-                            <Input type="text" id="name" name="name"
-                                onChange={e => setName(e.target.value)}
-                                required
-                            />
-                            <Label htmlFor="price">Precio</Label>
-                            <Input type="number" id="price" name="price"
-                                onChange={e => setPrice(e.target.value)} />
-                            <Label htmlFor="units">Unidades disponibles</Label>
-                            <Input type="number" id="units" name="units"
-                                onChange={e => setUnits(e.target.value)} />
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" id="featured" name="featured"
-                                        onChange={e => setFeatured(e.target.value)} />
-                                    {' '}
-                                        destacar
-                                    </Label>
+                <ModalBody>
+
+                    <div className="d-flex space-around">
+
+                        <Card className=" mr-2" >
+                            <Dropzone />
+                        </Card>
+                        <Form onSubmit={handleSubmit}>
+                            <Card>
+
+                                <CardBody>
+                                    <CardTitle> Ingresa los datos del producto </CardTitle>
+
+                                    <Label htmlFor="name">Nombre</Label>
+                                    <Input type="text" id="name" name="name"
+                                        onChange={e => setName(e.target.value)}
+                                        required
+                                    />
+                                    <Label htmlFor="price">Precio</Label>
+                                    <Input type="number" id="price" name="price"
+                                        onChange={e => setPrice(e.target.value)} />
+                                    <Label htmlFor="units">Unidades disponibles</Label>
+                                    <Input type="number" id="units" name="units"
+                                        onChange={e => setUnits(e.target.value)} />
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input type="checkbox" id="featured" name="featured"
+                                                onChange={e => setFeatured(e.target.value)} />
+                                                {' '}
+                                                 destacar
+                                        </Label>
+                                    </FormGroup>
+                                    <Label htmlFor="description">Descripcion del producto</Label>
+                                    <Input type="textarea" id="description" name="description"
+                                        onChange={e => setDescription(e.target.value)} />
+                                    <Button type="submit" value="submit" color="primary">Añadir</Button>
+
+                                </CardBody>
+                            </Card>
+                        </Form>
+
+                    </div>
+
+                </ModalBody>
+            </Modal>
 
 
-                            </FormGroup>
-                            <Label htmlFor="description">Descripcion del producto</Label>
-                            <Input type="textarea" id="description" name="description"
-                                onChange={e => setDescription(e.target.value)} />
-                            <Button type="submit" value="submit" color="primary">Añadir</Button>
-
-                        </CardBody>
-                    </Card>
-                </Form>
-
-            </div>
         );
     }
 
