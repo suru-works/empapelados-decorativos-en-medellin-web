@@ -17,16 +17,26 @@ const AddProductComponent = (props) => {
     const [description, setDescription] = useState(null);
 
     const error = useSelector(state => state.product.errMess);
-    const result = useSelector(state => state.product.result);
+    const result = useSelector(state => state.product.product);
     const loading = useSelector(state => state.product.isLoading);
 
     const fileSuccess = useSelector(state => state.uploadFile.result);
+
+    const readyToPostProduct = () => {
+        if(fileSuccess){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
         dispatch(productReset());
         dispatch(uploadFileReset());
+        props.reloadData();
         props.toggle();
     }
 
@@ -50,6 +60,7 @@ const AddProductComponent = (props) => {
             else {
                 productData.featured = false;
             }
+            productData.imageUrl = '/public/images/products/' + fileSuccess.data.archivo;
 
             doAddProduct(productData);
         }
@@ -91,8 +102,7 @@ const AddProductComponent = (props) => {
             </Modal>
         );
     }
-    if (result) {
-        if (result.success) {
+    if (result) { {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
@@ -148,7 +158,7 @@ const AddProductComponent = (props) => {
                                     <Label htmlFor="description">Descripcion del producto</Label>
                                     <Input type="textarea" id="description" name="description"
                                         onChange={e => setDescription(e.target.value)} />
-                                    <Button type="submit" value="submit" color="primary">Añadir</Button>
+                                    <Button type="submit" value="submit" color="primary" disabled={!readyToPostProduct()}>Añadir</Button>
 
                                 </CardBody>
                             </Card>

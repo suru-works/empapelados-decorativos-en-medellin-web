@@ -22,12 +22,26 @@ export const uploadFileFailed = (errmess) => ({
 
 export const uploadFile = (data) => async (dispatch) => {
     dispatch(uploadFileRequest());
-    const res = await clienteAxios.post(baseBackUrl + data.type, data.file);
+    const headers = {
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+    
+    try {
+        
+        const res = await clienteAxios.post(baseBackUrl + data.type, data.file, { headers: headers });
+        console.log(res);
+        dispatch(uploadFileSuccess(res));
 
-    console.log("esta es la respuesta");
-    console.log(res);
-    dispatch(uploadFileSuccess({}));
-    return res;
+    } catch (error) {
+        console.log("paso un error");
+        console.log(error);
+        dispatch(uploadFileFailed(error));
+        
+    }
+
+
+    return true;
+    
 
 }
 
@@ -86,40 +100,28 @@ export const productFailed = (errmess) => ({
     payload: errmess
 });
 
-export const postProduct = (product) => (dispatch) => {
+export const postProduct = (product) => async (dispatch) => {
     dispatch(productRequest());
 
-    return fetch(baseBackUrl + 'products', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + localStorage.getItem('token')
-        },
-        body: JSON.stringify(product),
-        credentials: 'same-origin'
-    })
-        .then(response => {
-            if (response.ok) {
-                return response;
-            } else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText);
-                error.response = response;
-                throw error;
-            }
-        }, error => {
-            throw error;
-        })
-        .then(response => response.json())
-        .then(response => {
-            if (response.success) {
-                dispatch(productSuccess(response));
-            } else {
-                var error = new Error('Error ' + response.status);
-                error.response = response;
-                throw error;
-            }
-        })
-        .catch(error => dispatch(productFailed(error.message)));
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+    
+    try {
+        const res = await clienteAxios.post(baseBackUrl + 'products', product, {
+            headers: headers
+        });
+        dispatch(productSuccess(res));
+        
+
+    } catch (error) {
+        dispatch(productFailed(error));
+    }
+
+
+    return true;
+
 }
 
 export function deleteProduct(id) {

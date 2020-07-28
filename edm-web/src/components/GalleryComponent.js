@@ -21,12 +21,12 @@ function RenderAdminOptions(props) {
 
                 <FloatingButtonLink tooltip="Añadir un producto">
                     <div onClick={props.toggleAddProductModal} style={{ width: 35, height: 35, marginRight: 0, marginLeft: 8, marginTop: 5, marginBottom: 0 }}>
-                        <i class="fa fa-plus fa-2x"></i>
+                        <i className="fa fa-plus fa-2x"></i>
                     </div >
                 </FloatingButtonLink>
                 <FloatingButtonLink tooltip="Editar">
                     <div onClick={props.openEditOptions} style={{ width: 35, height: 35, marginRight: 0, marginLeft: 15, marginTop: 6, marginBottom: 0 }}>
-                        <i class="fa fa-pencil fa-1x"></i>
+                        <i className="fa fa-pencil fa-1x"></i>
                     </div >
                 </FloatingButtonLink>
 
@@ -88,7 +88,7 @@ class Gallery extends Component {
 
                     </div>
 
-                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}></AddProduct>
+                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal} reloadData={this.props.reloadData}></AddProduct>
 
                     <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
                 </div>
@@ -99,7 +99,7 @@ class Gallery extends Component {
                 try {
 
                     return (
-                        <Product product={product}
+                        <Product product={product} key={product._id}
                             areEditOptionsActived={this.state.areEditOptionsActived}
                             deleteProduct={this.props.deleteProduct}
                             productsErrMess={this.props.productsErrMess}
@@ -128,7 +128,7 @@ class Gallery extends Component {
                         {galeria}
                     </div>
 
-                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal}></AddProduct>
+                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal} reloadData={this.props.reloadData}></AddProduct>
 
                     <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
 

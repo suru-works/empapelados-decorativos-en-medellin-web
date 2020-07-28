@@ -40,7 +40,7 @@ const img = {
 const Dropzone = (props) => {
     const [fileForPreview, setFileForPreview] = useState([]);
     const [fileForUpload, setFileForUpload] = useState(null);
-    const [fileHasChanged, setfileHasChanged] = useState(false);
+    const [blockSubmit, setBlockSubmit] = useState(true);
 
     const error = useSelector(state => state.uploadFile.errMess);
     const result = useSelector(state => state.uploadFile.result);
@@ -67,8 +67,8 @@ const Dropzone = (props) => {
         setFileForPreview(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)
         })));
-        if (!fileHasChanged) {
-            setfileHasChanged(true);
+        if (blockSubmit) {
+            setBlockSubmit(false);
         }
 
     }, []);
@@ -128,7 +128,7 @@ const Dropzone = (props) => {
                 <aside style={thumbsContainer}>
                     {thumbs}
                 </aside>
-                <Button onClick={handleUpload} enabled={fileHasChanged}>Aceptar</Button>
+                <Button onClick={handleUpload} disabled={blockSubmit}>Aceptar</Button>
             </section>
         );
     }
