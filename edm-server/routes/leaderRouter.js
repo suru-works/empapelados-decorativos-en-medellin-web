@@ -16,17 +16,17 @@ leaderRouter.route('/')
     next();
 })
 .get(cors.cors, (req, res, next) => {
-    leaders.find({})
+    Leaders.find({})
     .then((leaders) => res.json(leaders), (err) => next(err))
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    leaders.create(req.body)
+    Leaders.create(req.body)
     .then((leader) => res.json(leader), (err) => next(err))
     .catch((err) => next(err));
 })
 .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    leaders.remove({})
+    Leaders.remove({})
     .then((resp) => res.json(resp), (err) => next(err))
     .catch((err) => next(err));
 });
@@ -39,19 +39,19 @@ leaderRouter.route('/:leaderId')
     next();
 })
 .get(cors.cors, (req, res, next) => {
-    leaders.findById(req.params.leaderId)
+    Leaders.findById(req.params.leaderId)
     .then((leader) => res.json(leader), (err) => next(err))
     .catch((err) => next(err));
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    leaders.findByIdAndUpdate(req.params.leaderId, {
+    Leaders.findByIdAndUpdate(req.params.leaderId, {
         $set: req.body
     }, { new: true })
     .then((leader) => res.json(leader), (err) => next(err))
     .catch((err) => next(err));
 })
 .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    leaders.findByIdAndRemove(req.params.leaderId)
+    Leaders.findByIdAndRemove(req.params.leaderId)
     .then((resp) => res.json(resp), (err) => next(err))
     .catch((err) => next(err));
 });
