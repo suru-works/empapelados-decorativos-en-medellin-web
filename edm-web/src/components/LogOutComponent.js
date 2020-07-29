@@ -67,7 +67,6 @@ const LogOutComponent = (props) => {
                     <ModalBody>
                         <p>Cierre de sesion exitoso</p>
                     </ModalBody>
-                    <Button onClick={toogleAndReset}>Aceptar</Button>
                 </Modal>
             );
         }
@@ -78,9 +77,11 @@ const LogOutComponent = (props) => {
                 <ModalHeader toggle={toogleAndReset}>Salir</ModalHeader>
 
                 <ModalBody>
-                    <p>Esta seguro de que quiere cerrar sesion?</p>
+                    <p>¿Está seguro de que quiere cerrar sesión?</p>
+                    <div className="d-flex justify-content-center">
+                        <Button onClick={handleLogout} className="primary-button">Cerrar sesion</Button>
+                    </div>
                 </ModalBody>
-                <Button onClick={handleLogout}>Cerrar sesion</Button>
             </Modal>
         );
     }

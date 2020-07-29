@@ -101,7 +101,9 @@ const RegisterComponent = (props) => {
                                 />
                             </FormGroup>
 
-                            <Button type="submit" value="submit" color="primary">Registrarse</Button>
+                            <div className="d-flex justify-content-center">
+                                <Button type="submit" value="submit" className="primary-button">Registrarse</Button>
+                            </div>
                         </Form>
                     </ModalBody>
             </Modal>

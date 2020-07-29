@@ -139,8 +139,10 @@ const LoginComponent = (props) => {
                                 <Input type="user" id="user" name="user" className="form-control" value={user}
                                     onChange={e => setUser(e.target.value)} />
                             </FormGroup>
-                            <Button color="primary" onClick={switchRestore}>Cancelar</Button>
-                            <Button type="submit" value="submit" color="primary">Restablecer</Button>
+                            <div className="d-flex justify-content-center">
+                                <Button className="secondary-button" onClick={switchRestore}>Cancelar</Button>
+                                <Button type="submit" value="submit" className="primary-button">Restablecer</Button>
+                            </div>
                         </Form>
                     </ModalBody>
                 </Modal>
@@ -166,9 +168,11 @@ const LoginComponent = (props) => {
                                 <Input type="password" id="password" className="form-control" name="password" value={password}
                                     onChange={e => setPassword(e.target.value)} />
                             </FormGroup>
-    
-                            <Button type="submit" value="submit" color="primary">Ingresar</Button>
-                            <Button onClick={switchRestore}>Olvide mi contraseña</Button>
+
+                            <div className="d-flex justify-content-center">
+                                <Button type="submit" value="submit" className="primary-button">Ingresar</Button>
+                                <Button onClick={switchRestore} className="secondary-button">Olvidé mi contraseña</Button>
+                            </div>
                         </Form>
                     </ModalBody>
                 </Modal>
