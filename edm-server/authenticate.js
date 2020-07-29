@@ -33,18 +33,24 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => 
 }));
 
 exports.userIsVerified = function(req, res, next) {
-    User.findOne({
-        username: req.body.username
-    })
-    .then(user => {
-        if (user.verified) {
-            next();
-        } else {
-            var err = new Error('You are not verified, check your email');
-            err.status = 403;
-            next(err);
-        }
-    })
+    if (req.body.username) {
+        User.findOne({
+            username: req.body.username
+        })
+        .then(user => {
+            if (user.verified) {
+                next();
+            } else {
+                var err = new Error('You are not verified, check your email');
+                err.status = 403;
+                next(err);
+            }
+        });
+    } else {
+        var err = new Error('No username was included in the request');
+        err.status = 400;
+        next(err);
+    }
 }
 
 
