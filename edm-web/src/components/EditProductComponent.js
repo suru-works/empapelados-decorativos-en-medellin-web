@@ -160,14 +160,14 @@ const EditProductComponent = (props) => {
 
                     <div className="d-flex space-around row">
 
-                        <Card className="col-12 col-md-6 mb-2 mb-md-0 inline-block" >
+                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
                             <Dropzone type={'media/image'} updateFileData={updateFileData} />
                         </Card>
 
-                        <Form onSubmit={uploadChanges} className="col ml-3 ml-md-0 mr-3" >
-                            <Card >
+                        <Form onSubmit={uploadChanges} className="col" style={{ padding: 1}} >
+                            <Card style={{ padding: 11}}>
 
-                                <CardBody>
+                                <CardBody style={{ padding: 8}}>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>

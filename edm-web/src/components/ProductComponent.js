@@ -35,13 +35,16 @@ function RenderDetailModal(props) {
 
                     <div className="d-flex space-around row">
 
-                        <div className="col-12 col-md-6 mb-2 mb-md-0 inline-block">
-                            <img className='detail-size' src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
-                        </div>
+                        
+                            
+                        
+                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}} >
+                            <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                        </Card>
 
-                        <Card className="col ml-3 ml-md-0 mr-3">
+                        <Card className="col" style={{ padding: 12}} >
 
-                            <CardBody>
+                            <CardBody style={{ padding: 8}}>
                                 <CardTitle> Detalles del producto </CardTitle>
                                 <div className="info-size scroll">
                                     <CardText>  Precio: {props.product.price}  </CardText>
