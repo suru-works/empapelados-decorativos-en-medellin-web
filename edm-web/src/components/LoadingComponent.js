@@ -1,13 +1,20 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 
-const Loading = () => {
+export const Loading = () => {
     return(
-        <div className="col-12">
-            <Spinner animation="border" variant="danger" />
-            <p >Cargando . . .</ p >
+
+        <div>
+
+            <div className="row justify-content-center" >            
+                <Spinner  animation="border" variant="danger" />
+            </div>
+
+            <div className="row justify-content-center" >            
+                <p >Cargando . . .</ p >
+            </div>
+
         </div>
+
     );
 };
-
-export default Loading; 

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import EditProduct from './EditProductComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
