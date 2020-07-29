@@ -6,8 +6,11 @@ import { Product } from './product';
 import { Maps } from './maps';
 import { Register } from './register';
 import { Auth } from './auth';
-import { UploadFile } from './UploadFile';
-
+import { UploadFile } from './uploadFile';
+import { UpdateFile } from './updateFile';
+import { DeleteFile } from './deleteFile';
+import { Leaders } from './leaders';
+import { Leader } from './leader';
  export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
@@ -16,7 +19,11 @@ import { UploadFile } from './UploadFile';
             maps: Maps,
             auth: Auth,
             product: Product,
-            uploadFile: UploadFile
+            uploadFile: UploadFile,
+            updateFile: UpdateFile,
+            deleteFile: DeleteFile,
+            leaders: Leaders,
+            leader: Leader
         }),
        compose(applyMiddleware(thunk),
 

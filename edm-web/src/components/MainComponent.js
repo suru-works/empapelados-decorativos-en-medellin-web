@@ -7,7 +7,7 @@ import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct } from '../redux/ActionCreators';
+import { fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct } from '../redux/ActionCreators';
 import { baseBackUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
@@ -19,6 +19,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProducts()),
+    fetchLeaders: () => dispatch(fetchLeaders()),
     fetchMapsKey: () => dispatch(fetchMapsKey()),
     login: (credentials) => dispatch(login(credentials)),
     register: (user) => dispatch(register(user)),
@@ -32,6 +33,7 @@ class Main extends Component {
 
     componentDidMount() {
         this.props.fetchProducts();
+        this.props.fetchLeaders();
         this.props.fetchMapsKey();
     }
 

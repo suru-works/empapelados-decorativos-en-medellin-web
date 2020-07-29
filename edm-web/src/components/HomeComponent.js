@@ -4,7 +4,7 @@ import { baseFrontUrl } from '../shared/baseUrl';
 import { NavLink, Link } from 'react-router-dom';
 import ImageGallery from 'react-image-gallery';      //Si esta linea no sirve pegue en el cmd:     npm install react-image-gallery
 import '../styles.css'; // Tell webpack that HomeComponent.js uses these styles
-import Loading from './LoadingComponent';
+import { Loading } from './LoadingComponent';
 
 function Home(props) {
 
@@ -20,11 +20,7 @@ function Home(props) {
 
     if (props.products.isLoading) {
         return(
-            <div className="container">
-                <div className="row">            
-                    <Loading />
-                </div>
-            </div>
+            <Loading />
         );
     }
     else if (props.products.errMess) {

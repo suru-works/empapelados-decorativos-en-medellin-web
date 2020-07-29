@@ -1,186 +1,206 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
-
-import clienteAxios from 'axios';
-import { baseBackUrl } from '../shared/baseUrl';
-
-
-//dropzone image preview settings
-
-const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
-};
-
-const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-};
-
-const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-};
-
-const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-};
+import { useSelector, useDispatch } from 'react-redux';
+import SessionExpiredComponent from './SessionExpiredComponent';
+import {Loading} from './LoadingComponent';
+import { productReset, postProduct, updateProduct, updateFileReset} from '../redux/ActionCreators';
 
 
+const EditProductComponent = (props) => {
+    const [price, setPrice] = useState(props.product.price);
+    const [units, setUnits] = useState(props.product.units);
+    const [featured, setFeatured] = useState(props.product.featured);
+    const [name, setName] = useState(props.product.name);
+    const [description, setDescription] = useState(props.product.description);
 
+    const error = useSelector(state => state.product.errMess);
+    const result = useSelector(state => state.product.product);
+    const loading = useSelector(state => state.product.isLoading);
 
-class EditProductComponent extends Component {
+    const updateFileResult = useSelector(state => state.updateFile.result);
+    const updateFileError = useSelector(state => state.updateFile.errMess);
 
-    constructor(props) {
-        super(props);
+    const dispatch = useDispatch();
 
-        this.state = {
-            selectedFile: null,
-            hasImageChanged: false,
-            price: props.product.price,
-            units: props.product.units,
-            featured: props.product.featured,
-            name: props.product.name,
-            description: props.product.description
-        };
-        this.updateImageFile = this.updateImageFile.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-
-        this.form = React.createRef()
+    const toogleAndReset = () => {
+        dispatch(productReset());
+        dispatch(updateFileReset());
+        props.reloadData();
+        props.toggle();
     }
 
-    updateImageFile(imageFile) {
-        //getting the image data from imagePicker
-        if (!this.state.hasImageChanged) {
-            this.setState({
-                hasImageChanged: true
-            });
-        }
-        this.setState({
-            selectedFile: imageFile
-        });
-
+    const updateFileData = {
+        type: '/image',
+        id: props.product.imageUrl.split('/').slice(-1)[0],
+        initialPreview: props.product.imageUrl
     }
 
-    async uploadChanges(productData) {
-        if (this.state.hasImageChanged) {
-            const imageId = this.props.product.imageUrl.split('/').slice(-1)[0];
+    const doUpdateProduct = (productData) => dispatch(updateProduct(productData));
 
-
-            await clienteAxios.delete(baseBackUrl + 'media/image/' + imageId);
-            const resultado = await clienteAxios.post(baseBackUrl + 'media/image', productData.image);
-            productData.finalProductData.imageUrl = '/public/images/products/' + resultado.data.archivo;
-        }
-         else{
-            productData.finalProductData.imageUrl = this.props.product.imageUrl;
-        }
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + localStorage.getItem('token')
-        }
-
-        const resultadoFinal = await clienteAxios.put(baseBackUrl + 'products/'+productData.finalProductData.productId , productData.finalProductData, {
-            headers: headers
-        }); 
-    }
-
-    handleSubmit(event) {
-
-        const formData = new FormData();
-
-        if (this.state.hasImageChanged) {
-            console.log('este es el archivo en el estado');
-            console.log(this.state.selectedFile);
-
-            formData.append("file", this.state.selectedFile);
-
-        }
-
-
+    const uploadChanges = (event) => {
+        event.preventDefault();
         const productData = {
-            image: formData,
-            finalProductData: {
-                productId:this.props.product._id,
-                price: this.state.price,
-                units: this.state.units,
-                featured: this.state.featured,
-                name: this.state.name,
-                description: this.state.description
+            productId: props.product._id,
+            price: price,
+            units: units,
+            featured: featured,
+            name: name,
+            description: description
+
+        }
+        if (productData.featured == 'on') {
+            productData.featured = true;
+        }
+        else {
+            productData.featured = false;
+        }
+        if(updateFileResult){
+            productData.imageUrl = '/public/images/products/' + updateFileResult.data.archivo;
+        }
+        else{
+            productData.imageUrl = props.product.imageUrl;
+        }
+
+        doUpdateProduct(productData);
+    }
+
+
+
+
+    if (updateFileError) {
+        if (updateFileError.response) {
+            if (updateFileError.response.status == 401) {
+                return (
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
+                );
+            }
+            else {
+                return (
+                    <div> error desconocido {updateFileError.response}</div>
+                );
             }
         }
 
-        this.uploadChanges(productData);
-
-        console.log('este es el nombre del archivo ya subido');
-        console.log(productData);
-        event.preventDefault();
+        else {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error actualizando la imagen del producto.</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
 
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
+
+    if (error) {
+        if (error.response) {
+            if (error.response.status == 401) {
+                return (
+                    <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
+                );
+            }
+            else {
+                return (
+                    <div> error desconocido {error.response}</div>
+                );
+            }
+        }
+
+        else {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalBody>
+                        <p>Hubo un error actualizando el producto.</p>
+                    </ModalBody>
+                </Modal>
+            );
+        }
+
     }
-    render() {
+    if (loading) {
         return (
-            <div className="d-flex space-around">
-
-                <Card className=" mr-2" >
-                    <Dropzone updateImageFile={this.updateImageFile} />
-                </Card>
-                <Form onSubmit={this.handleSubmit} ref={this.form}>
-                    <Card>
-
-                        <CardBody>
-                            <CardTitle> Ingresa los datos del producto </CardTitle>
-
-                            <Label htmlFor="name">Nombre</Label>
-                            <Input type="text" id="name" name="name" value={this.state.name} onChange={event => this.handleInputChange(event)} required/>
-                            <Label htmlFor="price">Precio</Label>
-                            <Input type="number" id="price" name="price" value={this.state.price} onChange={event => this.handleInputChange(event)} />
-                            <Label htmlFor="units">Unidades disponibles</Label>
-                            <Input type="number" id="units" name="units" value={this.state.units} onChange={event => this.handleInputChange(event)} />
-                            <Label check>destacar</Label>
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" id="featured" name="featured" checked={this.state.featured} onChange={event => this.handleInputChange(event)} />
-                                    {' '}
-                                    destacar
-                                </Label>
-                            </FormGroup>
-                            <Label htmlFor="description">Descripcion del producto</Label>
-                            <Input type="textarea" id="description" name="description" value={this.state.description} onChange={event => this.handleInputChange(event)} />
-
-                        </CardBody>
-                    </Card>
-                    <Button type="submit" value="submit" color="primary" >Guardar</Button>
-                </Form>
-
-            </div>
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                <ModalBody>
+                    <Loading />
+                </ModalBody>
+            </Modal>
         );
     }
+    if (result) {
+        {
+            return (
+                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalBody>
+                        <p>Producto actualizado correctamente.</p>
+                    </ModalBody>
+                    <Button onClick={toogleAndReset}>Aceptar</Button>
+                </Modal>
+            );
+        }
 
-}
 
-const EditProduct = EditProductComponent;
+    }
+    else {
+        return (
 
-export default EditProduct;
+            <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
+
+                <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+
+                <ModalBody>
+
+                    <div className="d-flex space-around">
+
+                        <Card className=" mr-2" >
+                            <Dropzone type={'media/image'} updateFileData={updateFileData} />
+                        </Card>
+                        <Form onSubmit={uploadChanges} >
+                            <Card>
+
+                                <CardBody>
+                                    <CardTitle> Ingresa los datos del producto </CardTitle>
+
+                                    <Label htmlFor="name">Nombre</Label>
+                                    <Input type="text" id="name" name="name" value={name} onChange={event => setName(event.target.value)} required />
+                                    <Label htmlFor="price">Precio</Label>
+                                    <Input type="number" id="price" name="price" value={price} onChange={event => setPrice(event.target.value)} />
+                                    <Label htmlFor="units">Unidades disponibles</Label>
+                                    <Input type="number" id="units" name="units" value={units} onChange={event => setUnits(event.target.value)} />
+                                    <Label check>destacar</Label>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input type="checkbox" id="featured" name="featured" checked={featured} onChange={event => setFeatured(event.target.value)} />
+                                            {' '}
+                                    destacar
+                                </Label>
+                                    </FormGroup>
+                                    <Label htmlFor="description">Descripcion del producto</Label>
+                                    <Input type="textarea" id="description" name="description" value={description} onChange={event => setDescription(event.target.value)} />
+
+                                </CardBody>
+                            </Card>
+                            <Button type="submit" value="submit" color="primary" >Guardar</Button>
+                        </Form>
+
+                    </div>
+
+                </ModalBody>
+            </Modal>
+
+
+        );
+    }
+};
+
+EditProductComponent.propTypes = {};
+
+export default EditProductComponent;
