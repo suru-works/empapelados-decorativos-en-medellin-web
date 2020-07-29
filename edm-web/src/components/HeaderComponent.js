@@ -65,12 +65,12 @@ class Header extends Component {
         } else if (localStorage.getItem('token')) {
             return (
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <p>{localStorage.username}</p>
+                    <NavItem className="d-flex align-items-center">
+                        <span style={{ color: '#ffffff' }}>{localStorage.username}</span>
                     </NavItem>
                     <NavItem>
                         <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLogoutModal}>
-                            <span className="fa fa-sign-in"> Cerrar sesión </span>
+                            <span className="fa fa-sign-in"></span> Cerrar sesión
                         </Button>
                     </NavItem>
                 </Nav>
@@ -80,13 +80,13 @@ class Header extends Component {
                 <Nav className="ml-auto" navbar>
                     <NavItem>
                         <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLoginModal}>
-                            <span className="fa fa-sign-in"> Iniciar sesión </span>
+                            <span className="fa fa-sign-in"></span> Iniciar sesión
                         </Button>
                     </NavItem>
 
                     <NavItem>
                         <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
-                            <span className="fa fa-user-circle-o" aria-hidden="true"> Regístrate </span>
+                            <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
                         </Button>
                     </NavItem>
                 </Nav>
