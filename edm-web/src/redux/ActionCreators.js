@@ -433,6 +433,60 @@ export const logout = () => (dispatch) => {
         .catch(error => dispatch(logoutFailed(error)));
 }
 
+export const restoreRequest = () => ({
+    type: ActionTypes.RESTORE_REQUEST
+});
+
+export const restoreReset = () => ({
+    type: ActionTypes.RESTORE_RESET
+});
+
+export const restoreSuccess = (result) => ({
+    type: ActionTypes.RESTORE_SUCCESS,
+    payload: result
+});
+
+export const restoreFailed = (errmess) => ({
+    type: ActionTypes.RESTORE_FAILED,
+    payload: errmess
+});
+
+export const restorePassword = (user) => (dispatch) => {
+    dispatch(restoreRequest());
+
+    return fetch(baseBackUrl + 'users/restore', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(user)
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            throw error;
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                dispatch(restoreSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(restoreFailed(error)));
+}
+
+
 //------------Feedback actions -----------------------------------------------------------------------------
 
 export const postFeedbackRequest = () => ({
