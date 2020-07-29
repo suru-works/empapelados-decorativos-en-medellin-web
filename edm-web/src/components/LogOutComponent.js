@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 
 import SessionExpiredComponent from './SessionExpiredComponent';
-import Loading from './LoadingComponent';
+import {Loading} from './LoadingComponent';
 import { logout, logoutReset } from '../redux/ActionCreators';
 
 const LogOutComponent = (props) => {

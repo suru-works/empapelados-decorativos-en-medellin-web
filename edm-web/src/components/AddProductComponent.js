@@ -5,7 +5,7 @@ import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, Mo
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
-import Loading from './LoadingComponent';
+import {Loading} from './LoadingComponent';
 import { productReset, postProduct, uploadFileReset } from '../redux/ActionCreators';
 
 const AddProductComponent = (props) => {

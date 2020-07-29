@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
 import { uploadFile, updateFile } from '../redux/ActionCreators';
-import Loading from './LoadingComponent';
+import {Loading} from './LoadingComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 const thumbsContainer = {

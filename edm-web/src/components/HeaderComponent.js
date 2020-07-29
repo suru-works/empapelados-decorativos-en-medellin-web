@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
-import Loading from './LoadingComponent';
+import {Loading} from './LoadingComponent';
 import LoginComponent from './LoginComponent.js';
 import LogOutComponent from './LogOutComponent.js';
 import RegisterComponent from './RegisterComponent.js';

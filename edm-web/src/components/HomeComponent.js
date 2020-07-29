@@ -18,8 +18,6 @@ function Home(props) {
         );
     });
 
-    props.products.isLoading = true;
-
     if (props.products.isLoading) {
         return(
             <Loading />
