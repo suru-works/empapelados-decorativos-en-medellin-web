@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import EditProduct from './EditProductComponent';
+import EditProductComponent from './EditProductComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
@@ -175,22 +175,6 @@ function RenderDeleteModal(props) {
     }
 }
 
-function RenderEditModal(props) {
-    if (props.type == 'options') {
-        return (
-            <Modal className="modal-lg" isOpen={props.isEditModalOpen} toggle={props.toggleEditModal}>
-
-                <ModalHeader toggle={props.EditModal}>Editar informacion de producto</ModalHeader>
-
-                <ModalBody>
-
-                    <EditProduct product={props.product} toggleEditModal={props.toggleEditModal}/>
-
-                </ModalBody>
-            </Modal>
-        );
-    }
-}
 
 class Product extends Component {
 
@@ -248,13 +232,7 @@ class Product extends Component {
 
     handleDelete(productId) {
 
-        this.props.deleteProduct(productId)
-            .then(() => {
-                this.setState({
-                    deleteModalType: 'error'
-                });
-            }
-            )
+        this.props.deleteProduct(productId);
     }
 
     resetDeleteModalState() {
@@ -306,13 +284,8 @@ class Product extends Component {
                     resetDeleteModalState={this.resetDeleteModalState}
                     reloadData={this.props.reloadData}
                 />
-                <RenderEditModal
-                    type={this.state.editModalType}
-                    isEditModalOpen={this.state.isEditModalOpen}
-                    updateEditModalType={this.updateEditModalType}
-                    toggleEditModal={this.toggleEditModal}
-                    product={this.props.product}
-                />
+                <EditProductComponent product={this.props.product} reloadData={this.props.reloadData} isOpen={this.state.isEditModalOpen} toggle={this.toggleEditModal}/>
+                
 
 
 

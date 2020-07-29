@@ -6,7 +6,7 @@ import {
     Form, FormGroup, Input, Label
 } from 'reactstrap';
 
-import Loading from './LoginComponent';
+import Loading from './LoadingComponent';
 import { login, loginReset } from '../redux/ActionCreators';
 
 
