@@ -111,3 +111,8 @@ a:hover {
 .scroll {
   overflow-y: scroll;
 }
+
+.leader-image {
+  height: 30vh;
+  width: auto;
+}

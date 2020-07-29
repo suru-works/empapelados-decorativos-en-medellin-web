@@ -2,6 +2,37 @@ import React, {useState}from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
+import { baseFrontUrl } from '../shared/baseUrl';
+import { useSelector } from 'react-redux';
+
+const thumb = {
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    width: 100,
+    height: 100,
+    padding: 4,
+    boxSizing: 'border-box'
+};
+
+const leaderBorder = {
+    border: '1px solid #000000'
+};
+
+const thumbInner = {
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
+};
+
+const img = {
+    display: 'block',
+    width: 'auto',
+    height: '100%'
+};
+
 function RenderAdminOptions(props) {
 
 
@@ -37,6 +68,23 @@ function RenderAdminOptions(props) {
     }
 }
 
+function RenderLeader({leader}) {
+    return (
+        <div>
+            <Media style={leaderBorder} tag="li">
+                <Media left middle className="mr-5">
+                    <Media className="leader-image" object src={baseFrontUrl + leader.imageUrl} alt={leader.name} />
+                </Media>
+                <Media body>
+                    <Media heading>{leader.name}</Media>
+                    <p>{leader.designation}</p>
+                    <p>{leader.description}</p>
+                </Media>
+            </Media>
+        </div>
+    );
+}
+
 function About(props) {
 
     const [isAddLeaderModalOpen, setIsAddLeaderModalOpen] = useState(false);
@@ -49,6 +97,9 @@ function About(props) {
     const openEditOptions = () => {
         setAreEditOptionsActived(!areEditOptionsActived);
     }
+
+    const leaders = useSelector(state => state.leaders.leaders);
+    const leaderList = leaders.map((leader) => <RenderLeader leader={leader} />);
 
     return (
         <div className="container">
@@ -91,7 +142,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {}
+                        {leaderList}
                     </Media>
                 </div>
             </div>
