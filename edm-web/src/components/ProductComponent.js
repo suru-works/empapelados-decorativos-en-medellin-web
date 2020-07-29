@@ -71,8 +71,8 @@ function RenderDetailModal(props) {
 
                                 <Form>
                                     <Input className="mb-1" type="text" required></Input>
-                                    <div className="d-flex justify-content-end">
-                                        <Button type="submit" color="primary">Comentar</Button>
+                                    <div className="d-flex justify-content-center">
+                                        <Button type="submit" className="primary-button" >Comentar</Button>
                                     </div>
                                 </Form>
                             </CardBody>

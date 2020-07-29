@@ -158,13 +158,14 @@ const EditProductComponent = (props) => {
 
                 <ModalBody>
 
-                    <div className="d-flex space-around">
+                    <div className="d-flex space-around row">
 
-                        <Card className=" mr-2" >
+                        <Card className="col-12 col-md-6 mb-2 mb-md-0 inline-block" >
                             <Dropzone type={'media/image'} updateFileData={updateFileData} />
                         </Card>
-                        <Form onSubmit={uploadChanges} >
-                            <Card>
+
+                        <Form onSubmit={uploadChanges} className="col ml-3 ml-md-0 mr-3" >
+                            <Card >
 
                                 <CardBody>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
@@ -186,9 +187,16 @@ const EditProductComponent = (props) => {
                                     <Label htmlFor="description">Descripcion del producto</Label>
                                     <Input type="textarea" id="description" name="description" value={description} onChange={event => setDescription(event.target.value)} />
 
+                                <div class="d-flex justify-content-center" >
+                                    <Button className="secondary-button" type="submit" value="submit"  >Guardar</Button>
+                                </div>
+
                                 </CardBody>
+                                
+
                             </Card>
-                            <Button type="submit" value="submit" color="primary" >Guardar</Button>
+                            
+                            
                         </Form>
 
                     </div>

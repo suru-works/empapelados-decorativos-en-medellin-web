@@ -13,6 +13,7 @@ const thumbsContainer = {
     marginTop: 16
 };
 
+//Afecta la foto al dar click sobre EDITAR el producto, actualmente estira lo que puede la altura y acomoda el ancho
 const thumb = {
     display: 'inline-flex',
     borderRadius: 2,
@@ -31,6 +32,7 @@ const thumbInner = {
     overflow: 'hidden'
 };
 
+//Afecta la foto normal al dar click sobre el producto, actualmente estira lo que puede la altura y acomoda el ancho
 const img = {
     display: 'block',
     width: 'auto',
@@ -84,32 +86,26 @@ const Dropzone = (props) => {
 
 
     
-
+//Este estilo se activa solo al EDITAR un producto
     const thumbs = () => {
         if(props.updateFileData && fileForPreview.length==0){
             return(
-                <div style={thumb} key={0}>
-                    <div style={thumbInner}>
-                        <img
+                
+                        <img className='detail-size' 
                             src={baseFrontUrl+props.updateFileData.initialPreview}
-                            style={img}
+                                    
                         />
-                    </div>
-                </div>
+
             ); 
                 
         }
         else{
             return(
                 fileForPreview.map(file => (
-                    <div style={thumb} key={file.name}>
-                        <div style={thumbInner}>
-                            <img
+                            <img className='detail-size' 
                                 src={file.preview}
-                                style={img}
+
                             />
-                        </div>
-                    </div>
                 ))
             ); 
         }
@@ -158,10 +154,13 @@ const Dropzone = (props) => {
                     <input {...getInputProps()} />
                     <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
                 </div>
-                <aside style={thumbsContainer}>
+                <aside>
                     {thumbs()}
                 </aside>
-                <Button onClick={handleUpload} disabled={blockSubmit}>Aceptar</Button>
+                <div class="d-flex justify-content-center" >
+                    <Button onClick={handleUpload} disabled={blockSubmit} className="primary-button" style={{borderRadius: 3, marginTop: 20}}>Aceptar</Button>
+                </div>
+                
             </section>
         );
     }
