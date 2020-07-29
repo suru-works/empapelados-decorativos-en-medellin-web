@@ -44,7 +44,7 @@ function Home(props) {
                 </div>
                 <div className="row col-12 align-items-center justify-content-center">
                     <Link to='/galeria'>
-                        <Button color="warning">Ordena ahora!</Button>{' '}
+                        <Button className="primary-button">Ver más</Button>{' '}
                     </Link>
                         
                 </div>

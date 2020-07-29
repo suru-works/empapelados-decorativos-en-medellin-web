@@ -6,31 +6,19 @@ import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 
-const primaryButton = {
-    margin: 10,
-    backgroundColor: '#870000',
-    color: '#ffffff'
-}
-
-const secondaryButton = {
-    margin: 10,
-    backgroundColor: '#f9683a',
-    color: '#ffffff'
-}
-
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
         return (
             <div className='mt-3 d-flex justify-content-center'>
-                <Button style={primaryButton} onClick={() => props.toggleEditModal()}>Editar</Button>
-                <Button style={secondaryButton} onClick={() => props.toggleDeleteModal()}>Eliminar</Button>
+                <Button className="primary-button" onClick={() => props.toggleEditModal()}>Editar</Button>
+                <Button className="secondary-button" onClick={() => props.toggleDeleteModal()}>Eliminar</Button>
             </div>
         );
     }
     else {
         return (
             <div className='mt-3 d-flex justify-content-center'>
-                <Button style={primaryButton} onClick={() => props.toggleDetailsModal()}>Ver mas</Button>
+                <Button className="primary-button" onClick={() => props.toggleDetailsModal()}>Ver más</Button>
             </div>
         );
     }

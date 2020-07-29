@@ -23,6 +23,17 @@
   color:#ffffff;
 }
 
+.primary-button {
+  margin: 10px !important;
+  background-color: #870000 !important;
+  color: #ffffff !important;
+}
+
+.secondary-button {
+  margin: 10px !important;
+  background-color: #f9683a !important;
+  color: #ffffff !important;
+}
 
 address{
   font-size:80%;

@@ -124,7 +124,7 @@ function About(props) {
 
                 <div className="col-12 col-md-5">
                     <Card>
-                        <CardHeader className="bg-primary text-white">Cualidades que nos distinguen</CardHeader>
+                        <CardHeader style={{ backgroundColor: '#f9683a' }} className="text-white">Cualidades que nos distinguen</CardHeader>
                         <CardBody>
                             <h6> <i className="fa fa-check-square-o" aria-hidden="true"></i> Asesorias personalizadas. </h6>
                             <br></br>
