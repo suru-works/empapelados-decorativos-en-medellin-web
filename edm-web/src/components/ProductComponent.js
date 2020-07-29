@@ -1,7 +1,8 @@
 import React, { Component, useEffect } from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback } from 'reactstrap';
-import { useSelector, useDispatch } from 'react-redux'
+import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import EditProduct from './EditProductComponent';
+import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
 function RenderOptions(props) {
@@ -31,21 +32,48 @@ function RenderDetailModal(props) {
 
                 <ModalBody>
 
-                    <div className="d-flex space-around">
+                    <div className="d-flex space-around row">
 
-                        <Card className=" mr-2" key={props.product._id}>
-                            <CardImg top src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
-                        </Card>
+                        <div className="col-12 col-md-6 mb-2 mb-md-0 inline-block">
+                            <img className='detail-size' src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                        </div>
 
-                        <Card key={props.product._id}>
+                        <Card className="col ml-3 ml-md-0 mr-3">
 
                             <CardBody>
                                 <CardTitle> Detalles del producto </CardTitle>
-                                <CardText>  Precio: {props.product.price}  </CardText>
-                                <CardText>  Unidades: {props.product.units}  </CardText>
-                                <CardText>  {props.product.description}  </CardText>
+                                <div className="info-size scroll">
+                                    <CardText>  Precio: {props.product.price}  </CardText>
+                                    <CardText>  Unidades: {props.product.units}  </CardText>
+                                    <CardText>  {props.product.description}  </CardText>
+                                </div>
                                 <CardText>  Comentarios: {props.product.comments}  </CardText>
-                                <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
+                                <div className="comment-size scroll mb-3">
+                                    
+                                    <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                    <CardText>Speedwagon best waifu</CardText>
+                                </div>
+
+                                <Form>
+                                    <Input className="mb-1" type="text" required></Input>
+                                    <div className="d-flex justify-content-end">
+                                        <Button type="submit" color="primary">Comentar</Button>
+                                    </div>
+                                </Form>
                             </CardBody>
                         </Card>
 
@@ -127,10 +155,15 @@ function RenderDeleteModal(props) {
         );
     }
     else if (error) {
+        if(error.status == 401){
+            return(
+                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}/>
+            );            
+        }
         return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
 
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={resetTypeAndToggle}>{props.product.name}</ModalHeader>
 
                 <ModalBody>
 
@@ -222,19 +255,6 @@ class Product extends Component {
                 });
             }
             )
-
-        /* .then(() => {
-            if(this.state.productDeleteError){
-                this.setState({
-                    deleteModalType: 'error'
-                });
-            }
-            else {
-                this.setState({
-                    deleteModalType: 'success'
-                });
-            }
-        }) */
     }
 
     resetDeleteModalState() {
@@ -265,7 +285,7 @@ class Product extends Component {
                     <CardBody>
                         <CardTitle>{this.props.product.name}</CardTitle>
 
-                        <CardImg onClick={this.toggleDetailsModal} width="100%" src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
+                        <CardImg className='display-image-size' onClick={this.toggleDetailsModal} src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
                         <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDetailsModal={this.toggleDetailsModal} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
                     </CardBody>
                 </Card>

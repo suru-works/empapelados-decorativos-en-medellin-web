@@ -93,9 +93,9 @@ class Contact extends Component {
 
                     <div className="col-12 col-sm-11 offset-sm-1">
                         <div className="btn-group" role="group">
-                            <a role="button" className="btn btn-primary" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
-                            <a role="button" className="btn btn-success" href="https://wa.me/573002312301"><i className="fa fa-whatsapp"></i> Whatsapp </a>
-                            <a role="button" className="btn btn-info" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                            <a role="button" className="btn btn-primary" target="_blank"  href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
+                            <a role="button" className="btn btn-success" target="_blank"  href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                            <a role="button" className="btn btn-info" target="_blank"  href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
                         </div>
                     </div>
                 </div>

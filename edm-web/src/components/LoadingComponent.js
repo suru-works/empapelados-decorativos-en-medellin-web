@@ -1,10 +1,13 @@
 import React from 'react';
+import Spinner from 'react-bootstrap/Spinner'
 
-export const Loading = () => {
+const Loading = () => {
     return(
         <div className="col-12">
-            <span className="fa fa-spinner fa-pulse fa-3x fa-fw text-primary"></span>
-            <p>Cargando . . .</p>
+            <Spinner animation="border" variant="danger" />
+            <p >Cargando . . .</ p >
         </div>
     );
 };
+
+export default Loading; 

@@ -6,6 +6,7 @@ import { Product } from './product';
 import { Maps } from './maps';
 import { Register } from './register';
 import { Auth } from './auth';
+import { UploadFile } from './UploadFile';
 
  export const ConfigureStore = () => {
     const store = createStore(
@@ -14,7 +15,8 @@ import { Auth } from './auth';
             register: Register,
             maps: Maps,
             auth: Auth,
-            product: Product
+            product: Product,
+            uploadFile: UploadFile
         }),
        compose(applyMiddleware(thunk),
 
@@ -25,20 +27,3 @@ import { Auth } from './auth';
 
     return store;
 } 
-
-/* const ConfigureStore = () => createStore(
-    combineReducers({
-        products: Products,
-        register: Register,
-        maps: Maps,
-        auth: Auth,
-        product: Product
-    }),
-    compose(applyMiddleware(thunk),
-
-        typeof window === 'object' &&
-            typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
-    )
-);
-
-export default ConfigureStore; */

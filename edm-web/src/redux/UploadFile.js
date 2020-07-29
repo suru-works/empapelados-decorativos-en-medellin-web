@@ -1,18 +1,18 @@
 import * as ActionTypes from './ActionTypes';
 
-export const Register = (state = {
+export const UploadFile = (state = {
     isLoading: false,
     errMess: null,
     result: null
 }, action) => {
     switch(action.type) {
-        case ActionTypes.REGISTER_RESET:
+        case ActionTypes.UPLOAD_FILE_RESET:
             return {...state, isLoading: false, errMess: null, result: null}
-        case ActionTypes.REGISTER_REQUEST:
+        case ActionTypes.UPLOAD_FILE_REQUEST:
             return {...state, isLoading: true, errMess: null, result: null}
-        case ActionTypes.REGISTER_SUCCESS:
+        case ActionTypes.UPLOAD_FILE_SUCCESS:
             return {...state, isLoading: false, errMess: null, result: action.payload};
-        case ActionTypes.REGISTER_FAILED:
+        case ActionTypes.UPLOAD_FILE_FAILED:
             return {...state, isLoading: false, errMess: action.payload};
         default:
             return state;

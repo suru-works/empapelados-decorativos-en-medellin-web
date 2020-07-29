@@ -1,11 +1,10 @@
 import * as ActionTypes from './ActionTypes';
 
 export const Product = (state = {
-    isLoading: true,
+    isLoading: false,
     errMess: null,
     product: null
 }, action) => {
-    console.log('Entrando al switch', state)
     switch (action.type) {
         case ActionTypes.PRODUCT_RESET:
             return { ...state, isLoading: false, errMess: null, product: null };
