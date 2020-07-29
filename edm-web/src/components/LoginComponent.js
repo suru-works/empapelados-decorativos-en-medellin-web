@@ -48,6 +48,15 @@ const LoginComponent = (props) => {
         doRestorePassword({ username: user});
     }
 
+    const switchRestore = () => {
+        if(restore){
+            setRestore(false);
+        }
+        else{
+            setRestore(true);
+        }
+    }
+
     if (error) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -94,7 +103,7 @@ const LoginComponent = (props) => {
                     </Modal>
                 );
             }
-            if(restoreLoading){
+            else if(restoreLoading){
                 return(
                     <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                         <ModalHeader toggle={toogleAndReset}>Restablecer contraseña</ModalHeader>
@@ -104,7 +113,7 @@ const LoginComponent = (props) => {
                     </Modal>
                 );
             }
-            if (restoreResult) {
+            else if (restoreResult) {
                 if(restoreResult.success){
                     return (
                         <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
@@ -130,7 +139,7 @@ const LoginComponent = (props) => {
                                 <Input type="user" id="user" name="user" className="form-control" value={user}
                                     onChange={e => setUser(e.target.value)} />
                             </FormGroup>
-                            <Button color="primary" onClick={setRestore(false)}>Cancelar</Button>
+                            <Button color="primary" onClick={switchRestore}>Cancelar</Button>
                             <Button type="submit" value="submit" color="primary">Restablecer</Button>
                         </Form>
                     </ModalBody>
@@ -159,6 +168,7 @@ const LoginComponent = (props) => {
                             </FormGroup>
     
                             <Button type="submit" value="submit" color="primary">Ingresar</Button>
+                            <Button onClick={switchRestore}>Olvide mi contraseña</Button>
                         </Form>
                     </ModalBody>
                 </Modal>
