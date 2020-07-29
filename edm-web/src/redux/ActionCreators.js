@@ -1,7 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { baseBackUrl } from '../shared/baseUrl';
 import clienteAxios from 'axios';
-
+//----Files actions----------------------------------------------------------------------------
 export const uploadFileReset = () => ({
     type: ActionTypes.UPLOAD_FILE_RESET
 });
@@ -25,26 +25,91 @@ export const uploadFile = (data) => async (dispatch) => {
     const headers = {
         'Authorization': 'bearer ' + localStorage.getItem('token')
     }
-    
+
     try {
-        
+
         const res = await clienteAxios.post(baseBackUrl + data.type, data.file, { headers: headers });
-        console.log(res);
+        
         dispatch(uploadFileSuccess(res));
 
     } catch (error) {
-        console.log("paso un error");
-        console.log(error);
         dispatch(uploadFileFailed(error));
-        
+
     }
 
 
     return true;
-    
+
 
 }
 
+export const deleteFileReset = () => ({
+    type: ActionTypes.DELETE_FILE_RESET
+});
+
+export const deleteFileRequest = () => ({
+    type: ActionTypes.DELETE_FILE_REQUEST
+});
+
+export const deleteFileSuccess = (result) => ({
+    type: ActionTypes.DELETE_FILE_SUCCESS,
+    payload: result
+});
+
+export const deleteFileFailed = (errmess) => ({
+    type: ActionTypes.DELETE_FILE_FAILED,
+    payload: errmess
+});
+
+export const deleteFile = ({type, id})=>  async (dispatch)=> {
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+        }
+        const res = await clienteAxios.delete(baseBackUrl + type + id,{headers: headers});
+        dispatch(deleteFileSuccess(res));
+
+    } catch (error) {
+        dispatch(deleteFileFailed(error));
+    }
+}
+
+export const updateFileReset = () => ({
+    type: ActionTypes.UPDATE_FILE_RESET
+});
+
+export const updateFileRequest = () => ({
+    type: ActionTypes.UPDATE_FILE_REQUEST
+});
+
+export const updateFileSuccess = (result) => ({
+    type: ActionTypes.UPDATE_FILE_SUCCESS,
+    payload: result
+});
+
+export const updateFileFailed = (errmess) => ({
+    type: ActionTypes.UPDATE_FILE_FAILED,
+    payload: errmess
+});
+
+export const updateFile = ({type, id, file})=>  async (dispatch)=> {
+    try {
+        await deleteFile({type, id});
+
+        const headers = {
+            'Authorization': 'bearer ' + localStorage.getItem('token')
+        }
+
+        const res = await clienteAxios.post(baseBackUrl + type, file,{headers: headers}); 
+        dispatch(updateFileSuccess(res));
+
+    } catch (error) {
+        dispatch(updateFileFailed(error));
+    }
+}
+
+//---------product actions ---------------------------------------------------------------------------------
 
 export const addProducts = (products) => ({
     type: ActionTypes.ADD_PRODUCTS,
@@ -81,6 +146,7 @@ export const fetchProducts = () => (dispatch) => {
         .catch(error => dispatch(productsFailed(error.message)));
 }
 
+
 export const productReset = () => ({
     type: ActionTypes.PRODUCT_RESET
 });
@@ -107,13 +173,37 @@ export const postProduct = (product) => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + localStorage.getItem('token')
     }
-    
+
     try {
         const res = await clienteAxios.post(baseBackUrl + 'products', product, {
             headers: headers
         });
         dispatch(productSuccess(res));
-        
+
+
+    } catch (error) {
+        dispatch(productFailed(error));
+    }
+
+
+    return true;
+
+}
+
+export const updateProduct = (productData) => async (dispatch) => {
+    dispatch(productRequest());
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+
+    try {
+        const res = await clienteAxios.put(baseBackUrl + 'products/'+productData.productId , productData, {
+            headers: headers
+        }); 
+        dispatch(productSuccess(res));
+
 
     } catch (error) {
         dispatch(productFailed(error));
@@ -143,6 +233,8 @@ export function deleteProduct(id) {
     }
 }
 
+
+//----------maps actions -----------------------------------------------------------------------------------
 export const addMaps = (maps) => ({
     type: ActionTypes.ADD_MAPS,
     payload: maps
@@ -175,6 +267,8 @@ export const fetchMapsKey = () => (dispatch) => {
         .then(maps => dispatch(addMaps(maps)))
         .catch(error => dispatch(mapsFailed(error.message)));
 }
+
+//----------Login, logout, sigin actions------------------------------------------------------------------------
 
 export const registerReset = () => ({
     type: ActionTypes.REGISTER_RESET
@@ -339,6 +433,8 @@ export const logout = () => (dispatch) => {
         .catch(error => dispatch(logoutFailed(error)));
 }
 
+//------------Feedback actions -----------------------------------------------------------------------------
+
 export const postFeedbackRequest = () => ({
     type: ActionTypes.FEEDBACK_REQUEST
 });
@@ -380,3 +476,127 @@ export const postFeedback = (feedback) => (dispatch) => {
         .then(response => response.json())
         .catch(error => { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: ' + error.message); });
 };
+
+//--------------leaders actions----------------------------------------------------------------------------------------------------------------
+
+export const addLeaders = (leaders) => ({
+    type: ActionTypes.ADD_LEADERS,
+    payload: leaders
+});
+
+export const leadersLoading = () => ({
+    type: ActionTypes.LEADERS_LOADING
+});
+
+export const leadersFailed = (errmess) => ({
+    type: ActionTypes.LEADERS_FAILED,
+    payload: errmess
+});
+
+export const fetchLeaders = () => (dispatch) => {
+    dispatch(leadersLoading());
+
+    return fetch(baseBackUrl + 'leaders')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(leaders => dispatch(addLeaders(leaders)))
+        .catch(error => dispatch(leadersFailed(error.message)));
+}
+
+
+export const leaderReset = () => ({
+    type: ActionTypes.LEADER_RESET
+});
+
+
+export const leaderRequest = () => ({
+    type: ActionTypes.LEADER_REQUEST
+});
+
+export const leaderSuccess = (result) => ({
+    type: ActionTypes.LEADER_SUCCESS,
+    payload: result
+});
+
+export const leaderFailed = (errmess) => ({
+    type: ActionTypes.LEADER_FAILED,
+    payload: errmess
+});
+
+export const postLeader = (leader) => async (dispatch) => {
+    dispatch(leaderRequest());
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+
+    try {
+        const res = await clienteAxios.post(baseBackUrl + 'leaders', leader, {
+            headers: headers
+        });
+        dispatch(leaderSuccess(res));
+
+
+    } catch (error) {
+        dispatch(leaderFailed(error));
+    }
+
+
+    return true;
+
+}
+
+export const updateLeader = (leaderData) => async (dispatch) => {
+    dispatch(leaderRequest());
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+
+    try {
+        const res = await clienteAxios.put(baseBackUrl + 'leaders/'+leaderData.leaderId , leaderData, {
+            headers: headers
+        }); 
+        dispatch(leaderSuccess(res));
+
+
+    } catch (error) {
+        dispatch(leaderFailed(error));
+    }
+
+
+    return true;
+
+}
+
+export function deleteLeader(id) {
+    return async (dispatch) => {
+        dispatch(leaderRequest());
+
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + localStorage.getItem('token')
+            }
+            await clienteAxios.delete(`${baseBackUrl}leaders/${id}`, {
+                headers: headers
+            });
+            dispatch(productSuccess('Se ha eliminado'));
+        } catch (error) {
+            dispatch(productFailed(error.response));
+        }
+    }
+}

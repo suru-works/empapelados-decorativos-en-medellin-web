@@ -50,23 +50,28 @@ const eliminarArchivo = async (req,res,next) => {
     try {
         fs.unlinkSync(process.env.MEDIA_URL+'images/products/'+req.params.fileId);        
     } catch (error) {
-        //console.log(error);
-        //  res.json({error: error.code});
-        //res.statusCode = 500;
         res.status(500).json({msg: 'Error al eliminar el archivo'});
     }
     
 }
 
 
+router.route("/image")
+.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200)})
+.all((req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    next();
+}).post( cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, subirArchivo);
 
-router.post("/image", subirArchivo
 
-);
+router.route("/image/:fileId")
+.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200)})
+.all((req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    next();
+}).post( cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, eliminarArchivo);
 
-
-router.delete("/image/:fileId", eliminarArchivo
-
-);
 
 module.exports = router;

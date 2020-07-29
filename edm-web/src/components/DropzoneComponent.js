@@ -2,8 +2,9 @@ import React, { Component, useEffect, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
-import { uploadFile } from '../redux/ActionCreators';
-import Loading from './LoginComponent';
+import { uploadFile, updateFile } from '../redux/ActionCreators';
+import Loading from './LoadingComponent';
+import { baseFrontUrl } from '../shared/baseUrl';
 
 const thumbsContainer = {
     display: 'flex',
@@ -48,6 +49,7 @@ const Dropzone = (props) => {
 
     const dispatch = useDispatch();
     const doFileUpload = (fileData) => dispatch(uploadFile(fileData));
+    const doFileUpdate = (fileData) => dispatch(updateFile(fileData));
 
     const handleUpload = (event) => {
         event.preventDefault();
@@ -58,7 +60,14 @@ const Dropzone = (props) => {
             type: props.type,
             file: formData
         };
-        doFileUpload(data);
+        if(props.updateFileData){
+            data.id = props.updateFileData.id;
+            doFileUpdate(data);
+        }
+        else{
+            doFileUpload(data);
+        }
+        
     }
 
     const onDrop = useCallback(async (acceptedFiles) => {
@@ -73,16 +82,40 @@ const Dropzone = (props) => {
 
     }, []);
 
-    const thumbs = fileForPreview.map(file => (
-        <div style={thumb} key={file.name}>
-            <div style={thumbInner}>
-                <img
-                    src={file.preview}
-                    style={img}
-                />
-            </div>
-        </div>
-    ));
+
+    
+
+    const thumbs = () => {
+        if(props.updateFileData && fileForPreview.length==0){
+            return(
+                <div style={thumb} key={0}>
+                    <div style={thumbInner}>
+                        <img
+                            src={baseFrontUrl+props.updateFileData.initialPreview}
+                            style={img}
+                        />
+                    </div>
+                </div>
+            ); 
+                
+        }
+        else{
+            return(
+                fileForPreview.map(file => (
+                    <div style={thumb} key={file.name}>
+                        <div style={thumbInner}>
+                            <img
+                                src={file.preview}
+                                style={img}
+                            />
+                        </div>
+                    </div>
+                ))
+            ); 
+        }
+    }
+    
+    
 
 
     const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop })
@@ -126,7 +159,7 @@ const Dropzone = (props) => {
                     <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
                 </div>
                 <aside style={thumbsContainer}>
-                    {thumbs}
+                    {thumbs()}
                 </aside>
                 <Button onClick={handleUpload} disabled={blockSubmit}>Aceptar</Button>
             </section>

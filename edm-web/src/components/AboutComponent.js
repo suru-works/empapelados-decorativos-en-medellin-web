@@ -1,11 +1,58 @@
-import React from 'react';
+import React, {useState}from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
+function RenderAdminOptions(props) {
 
-function About() {
+
+    if (localStorage.getItem('admin')) {
+        return (
+            <FloatingButtonContainer>
+
+
+
+                <FloatingButtonLink tooltip="Añadir un lider">
+                    <div onClick={props.toggleAddLeaderModal} style={{ width: 35, height: 35, marginRight: 0, marginLeft: 8, marginTop: 5, marginBottom: 0 }}>
+                        <i className="fa fa-plus fa-2x"></i>
+                    </div >
+                </FloatingButtonLink>
+                <FloatingButtonLink tooltip="Editar">
+                    <div onClick={props.openEditOptions} style={{ width: 35, height: 35, marginRight: 0, marginLeft: 15, marginTop: 6, marginBottom: 0 }}>
+                        <i className="fa fa-pencil fa-1x"></i>
+                    </div >
+                </FloatingButtonLink>
+
+                <FloatingButton
+                    tooltip="Editar acerca de nosotros"
+                    icon="fa fa-pencil-square-o fa-2x"
+                    rotate={true}
+                    styles={{ backgroundColor: darkColors.lighterRed, color: lightColors.white }} />
+            </FloatingButtonContainer>
+        );
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+}
+
+function About(props) {
+
+    const [isAddLeaderModalOpen, setIsAddLeaderModalOpen] = useState(false);
+    const [areEditOptionsActived, setAreEditOptionsActived] = useState(false);
+
+    const toggleAddLeaderModal = () => {
+        setIsAddLeaderModalOpen(!isAddLeaderModalOpen);
+    }
+
+    const openEditOptions = () => {
+        setAreEditOptionsActived(!areEditOptionsActived);
+    }
 
     return (
         <div className="container">
+            <RenderAdminOptions toggleAddLeaderModal={toggleAddLeaderModal} openEditOptions={openEditOptions}></RenderAdminOptions>
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
