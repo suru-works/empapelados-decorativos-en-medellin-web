@@ -18,7 +18,8 @@ const thumb = {
 };
 
 const leaderBorder = {
-    border: '1px solid #000000'
+    border: '1px solid #000000',
+    margin: '20px'
 };
 
 const thumbInner = {
