@@ -454,7 +454,7 @@ export const restoreFailed = (errmess) => ({
 export const restorePassword = (user) => (dispatch) => {
     dispatch(restoreRequest());
 
-    return fetch(baseBackUrl + 'users/restore', {
+    return fetch(baseBackUrl + 'users/forgot', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

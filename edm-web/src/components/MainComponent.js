@@ -6,6 +6,7 @@ import Home from './HomeComponent';
 import Gallery from './GalleryComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
+import Forgot from './ForgotComponent';
 import { connect } from 'react-redux';
 import { fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct } from '../redux/ActionCreators';
 import { baseBackUrl } from '../shared/baseUrl';
@@ -79,6 +80,7 @@ class Main extends Component {
                 />
                 <Switch>
                     <Route path="/inicio" component={HomePage} />
+                    <Route path="/restablecer-contraseña/:token" component={() => <Forgot/>} />
                     <Route path="/galeria" component={GalleryPage} />
                     <Route exact path='/acerca-de-nosotros' component={() => <About />} />
                     <Route exact path='/contacto' component={ContactPage} />
