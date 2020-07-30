@@ -24,6 +24,25 @@ function RenderOptions(props) {
     }
 }
 
+function CanIComment() {
+
+    if (localStorage.getItem('token')) {
+        return (
+            <Form>
+                <Input className="mb-1" type="text" required></Input>
+                <div className="d-flex justify-content-center">
+                    <Button type="submit" className="primary-button" >Comentar</Button>
+                </div>
+            </Form>
+        );
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+}
+
 function RenderDetailModal(props) {
     if (props.type == 'options') {
         return (
@@ -35,49 +54,30 @@ function RenderDetailModal(props) {
 
                     <div className="d-flex space-around row">
 
-                        
-                            
-                        
-                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}} >
+
+
+
+                        <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
                             <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
                         </Card>
 
-                        <Card className="col" style={{ padding: 12}} >
+                        <Card className="col" style={{ padding: 12 }} >
 
-                            <CardBody style={{ padding: 8}}>
-                                <CardTitle> Detalles del producto </CardTitle>
+                            <CardBody style={{ padding: 8 }}>
+                                <CardTitle className="text-danger"> Detalles del producto </CardTitle>
                                 <div className="info-size scroll">
                                     <CardText>  Precio: {props.product.price}  </CardText>
                                     <CardText>  Unidades: {props.product.units}  </CardText>
                                     <CardText>  {props.product.description}  </CardText>
                                 </div>
-                                <CardText>  Comentarios: {props.product.comments}  </CardText>
+                                <CardText>  Comentarios:  </CardText>
                                 <div className="comment-size scroll mb-3">
-                                    
-                                    <CardImg width="100%" src="https://media.tenor.com/images/fe3826b59f80f5e6c7cc04eb474fb44d/tenor.gif" alt="chika dance" />
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
-                                    <CardText>Speedwagon best waifu</CardText>
+
+                                    <CardText>  {props.product.comments}  </CardText>
                                 </div>
 
-                                <Form>
-                                    <Input className="mb-1" type="text" required></Input>
-                                    <div className="d-flex justify-content-center">
-                                        <Button type="submit" className="primary-button" >Comentar</Button>
-                                    </div>
-                                </Form>
+                                <CanIComment />
+                                
                             </CardBody>
                         </Card>
 
@@ -91,7 +91,7 @@ function RenderDetailModal(props) {
 
 function RenderDeleteModal(props) {
     const dispatch = useDispatch();
-    
+
     const error = useSelector(state => state.product.errMess);
 
     const resetTypeAndToggle = () => {
@@ -159,10 +159,10 @@ function RenderDeleteModal(props) {
         );
     }
     else if (error) {
-        if(error.status == 401){
-            return(
-                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}/>
-            );            
+        if (error.status == 401) {
+            return (
+                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
+            );
         }
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
@@ -288,8 +288,8 @@ class Product extends Component {
                     resetDeleteModalState={this.resetDeleteModalState}
                     reloadData={this.props.reloadData}
                 />
-                <EditProductComponent product={this.props.product} reloadData={this.props.reloadData} isOpen={this.state.isEditModalOpen} toggle={this.toggleEditModal}/>
-                
+                <EditProductComponent product={this.props.product} reloadData={this.props.reloadData} isOpen={this.state.isEditModalOpen} toggle={this.toggleEditModal} />
+
 
 
 

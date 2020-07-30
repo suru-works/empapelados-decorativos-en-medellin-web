@@ -152,7 +152,7 @@ const Dropzone = (props) => {
             <section className="container">
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
-                    <p>Arrastra una imagen aqui o presiona para seleccionar una.</p>
+                    <p className="text-primary">Arrastra una imagen aqui o presiona para seleccionar una.</p>
                 </div>
                 <aside>
                     {thumbs()}

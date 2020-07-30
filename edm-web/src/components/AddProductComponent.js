@@ -125,15 +125,16 @@ const AddProductComponent = (props) => {
 
                 <ModalBody>
 
-                    <div className="d-flex space-around">
+                    <div className="d-flex space-around row">
 
-                        <Card className=" mr-2" >
+                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
                             <Dropzone type={'media/image'}/>
                         </Card>
-                        <Form onSubmit={handleSubmit}>
-                            <Card>
 
-                                <CardBody>
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1}}>
+                            <Card style={{ padding: 11}}>
+
+                                <CardBody style={{ padding: 8}}>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
@@ -158,7 +159,11 @@ const AddProductComponent = (props) => {
                                     <Label htmlFor="description">Descripcion del producto</Label>
                                     <Input type="textarea" id="description" name="description"
                                         onChange={e => setDescription(e.target.value)} />
-                                    <Button type="submit" value="submit" color="primary" disabled={!readyToPostProduct()}>Añadir</Button>
+                                    
+                                    <div class="d-flex justify-content-center" >
+                                        <Button type="submit" value="submit" className="secondary-button" disabled={!readyToPostProduct()}>Añadir</Button>
+                                    </div>
+                                    
 
                                 </CardBody>
                             </Card>
