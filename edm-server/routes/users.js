@@ -9,92 +9,112 @@ const { token } = require('morgan');
 
 const mail = require('../com/mail');
 const verifyView = require('../view/verifyView');
+const forgotView = require('../view/forgotView');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
 router.post('/signup', cors.corsWithOptions, (req, res, next) => {
-  const verifyToken=Math.floor((Math.random() * 100) + 54);
-  req.body.verifyToken=verifyToken;
-  req.body.verified=false;
+  const verifyToken = Math.floor((Math.random() * 100) + 54);
+  req.body.verifyToken = verifyToken;
+  req.body.verified = false;
   console.log(req.body);
-  User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+  User.register(new User({ username: req.body.username }), req.body.password, (err, user) => {
     if (err) {
       console.log(err);
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
-      res.json({err: err});
+      res.json({ err: err });
     } else {
       if (req.body.name) user.name = req.body.name;
       if (req.body.phoneNumber) user.phoneNumber = req.body.phoneNumber;
       if (req.body.verifyToken) user.verifyToken = req.body.verifyToken;
       if (req.body.verified) user.verified = req.body.verified;
-      
 
-      const verifyHTML =verifyView.verifyView(user);
+
+      const verifyHTML = verifyView.verifyView(user);
       //sending email for user verification
       mailData = {
-        serverService:'gmail',
-        serverMail:process.env.AUTH_EMAIL_USER,
-        serverPassword:process.env.AUTH_EMAIL_PASSWORD,
-        sender:'"Empapelados decorativos en medellin"',
-        receivers:req.body.username,
-        subject:'vertificacion de cuenta',
-        text:'',
-        html:verifyHTML
+        serverService: 'gmail',
+        serverMail: process.env.AUTH_EMAIL_USER,
+        serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+        sender: '"Empapelados decorativos en medellin"',
+        receivers: req.body.username,
+        subject: 'vertificacion de cuenta',
+        text: '',
+        html: verifyHTML
       };
       mail.mail(mailData);
       user.save((err, user) => {
         if (err) {
-          
+
           res.statusCode = 500;
           res.setHeader('Content-Type', 'application/json');
-          res.json({err: err});
+          res.json({ err: err });
           return;
         }
         passport.authenticate('local')(req, res, () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
-          res.json({success: true, token: authenticate.getToken({_id: req.user._id}), status: 'Registration Successful!'});
+          res.json({ success: true, token: authenticate.getToken({ _id: req.user._id }), status: 'Registration Successful!' });
         });
       })
     }
   });
 });
 
-router.get('/verify/:token', cors.corsWithOptions,(req, res) => {
-  
-   console.log('User verification attempt');
-   const token=req.params.token.split(',');
-   console.log(token);
-   User.findByIdAndUpdate(token[0],{
-     $set: {
-       verified: true
-      }
-    },{new: true})
-   .then((user) => {
-     console.log(user);
-     res.redirect('https://www.empapeladosdecorativosenmedellin.com/');
-     return user;
-   }, (err) => next(err))
-   .catch((err) => {
-     console.log(err);
+router.get('/verify/:token', cors.corsWithOptions, (req, res) => {
+
+  const token = req.params.token.split(',');
+  User.findByIdAndUpdate(token[0], {
+    $set: {
+      verified: true
+    }
+  }, { new: true })
+    .then((user) => {
+      res.redirect('https://www.empapeladosdecorativosenmedellin.com/');
+      return user;
+    }, (err) => next(err))
+    .catch((err) => {
       next(err)
     });
 });
 
 router.post('/login', cors.corsWithOptions, authenticate.userIsVerified, passport.authenticate('local'), (req, res) => {
-  var token = authenticate.getToken({_id: req.user._id});
+  var token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({success: true, token: token, username: req.user.username, admin: req.user.admin, status: 'You are successfully logged in!'});
+  res.json({ success: true, token: token, username: req.user.username, admin: req.user.admin, status: 'You are successfully logged in!' });
 });
 
 router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
   req.logout();
-  res.json({success: true, status: 'You have successfully logged out!'});
+  res.json({ success: true, status: 'You have successfully logged out!' });
+});
+
+router.post('/forgot', function (req, res, next) {
+  try {
+    const forgotData = req.body;
+    forgotData.forgotToken = 'numb';
+    const forgotHTML = forgotView.forgotView(forgotData);
+    //sending email for user verification
+    mailData = {
+      serverService: 'gmail',
+      serverMail: process.env.AUTH_EMAIL_USER,
+      serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+      sender: '"Empapelados decorativos en medellin"',
+      receivers: req.body.username,
+      subject: 'reestablecer contraseña',
+      text: '',
+      html: forgotHTML
+    };
+    mail.mail(mailData);
+  } catch (error) {
+    console.log(error);
+  }
+
 });
 
 module.exports = router;

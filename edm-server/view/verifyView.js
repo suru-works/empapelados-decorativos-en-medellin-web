@@ -5,10 +5,6 @@ function verifyView (user) {
     html=html.replace("userName",user.name);
     html=html.replace("userId",user._id);
     html=html.replace("verifyToken",user.verifyToken);
-    console.log(user.name);
-    console.log(html.search("userName"));
-    console.log(user._id);
-    console.log(html.search("userId"));
     
     return(html);
 }
