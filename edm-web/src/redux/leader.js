@@ -3,7 +3,7 @@ import * as ActionTypes from './ActionTypes';
 export const Leader = (state = {
     isLoading: false,
     errMess: null,
-    product: null
+    leader: null
 }, action) => {
     switch (action.type) {
         case ActionTypes.LEADER_RESET:
