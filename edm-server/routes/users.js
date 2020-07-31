@@ -95,66 +95,126 @@ router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) 
   res.json({ success: true, status: 'You have successfully logged out!' });
 });
 
-router.post('/forgot', function (req, res, next) {
-  const data = req.body;
-  User.findOne({ username: data.username })
-    .then(async (user) => {
-      if (user) {
-        var isTokenNotUnique = true;
-        const now = new Date();
-        //now.setMinutes(now.getMinutes + 5);
-        var key = crypto.randomBytes(20).toString('hex');
-        while (isTokenNotUnique) {
-          var forgotToken = now + ',' + key;
-          var userByToken = await User.findOne({ forgotPasswordToken: forgotToken });
-          if (userByToken) {
-            //the token allready exist
-            key = crypto.randomBytes(20).toString('hex');
-          }
-          else {
-            isTokenNotUnique = false;
-            data.forgotToken = forgotToken;
-            await User.findByIdAndUpdate(user._id, {
-              $set: {
-                forgotPasswordToken: forgotToken
-              }
-            }, { new: true })
-          }
+router.post('/forgot', async function (req, res, next) {
 
+  const data = req.body;
+
+  try {
+    let user = await User.findOne({ username: data.username });
+
+    if (user) {
+      console.log(data.username);
+      var isTokenNotUnique = true;
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 5);
+      var key = crypto.randomBytes(20).toString('hex');
+      while (isTokenNotUnique) {
+        var forgotToken = now + ',' + key;
+        var userByToken = await User.findOne({ forgotPasswordToken: forgotToken });
+        if (userByToken) {
+          //the token allready exist
+          key = crypto.randomBytes(20).toString('hex');
+        }
+        else {
+          isTokenNotUnique = false;
+          data.forgotToken = forgotToken;
+          await User.findByIdAndUpdate(user._id, {
+            $set: {
+              forgotPasswordToken: forgotToken
+            }
+          }, { new: true })
         }
 
-
-
-        const forgotHTML = forgotView.forgotView(data);
-        //sending email for user verification
-        mailData = {
-          serverService: 'gmail',
-          serverMail: process.env.AUTH_EMAIL_USER,
-          serverPassword: process.env.AUTH_EMAIL_PASSWORD,
-          sender: '"Empapelados decorativos en medellin"',
-          receivers: data.username,
-          subject: 'restablecer contraseña',
-          text: '',
-          html: forgotHTML
-        };
-        mail.mail(mailData);
-        return user;
-      }
-      else {
-        //no se que hacer aqui con los errores y las respuestas
-        /* res.statusCode = 404;
-        return; */
       }
 
-    }, (err) => next(err))
-    .catch((err) => {
-      console.log(err);
-      res.statusCode = 500;
-          res.setHeader('Content-Type', 'application/json');
-          res.json({ err: err });
-      next(err);
-    });
-
+      const forgotHTML = forgotView.forgotView(data);
+      //sending email for user verification
+      mailData = {
+        serverService: 'gmail',
+        serverMail: process.env.AUTH_EMAIL_USER,
+        serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+        sender: '"Empapelados decorativos en medellin"',
+        receivers: data.username,
+        subject: 'restablecer contraseña',
+        text: '',
+        html: forgotHTML
+      };
+      mail.mail(mailData);
+      res.status(200);
+      res.json({
+        success: true
+      });
+    }
+    else {
+      var err = new Error("User does not exist");
+      err.statusCode = 404;
+      throw err;
+    }
+  }
+  catch (err) {
+    if (err.statusCode == 404) {
+      res.status(404);
+      res.json({
+        msg: "User does not exist"
+      });
+    } else {
+      res.status(500);
+      res.json({
+        msg: "Unknown error"
+      });
+    }
+  }
 });
 
+router.post('/forgot:token', async function (req, res, next) {
+
+  try {
+    const data = req.body;
+
+    const token = req.params.token.split(',');
+
+    const now = new Date();
+    const exp = new Date(token[0]);
+
+    if (now > exp) {
+      var err = new Error("The recovery token has expired");
+      err.statusCode = 401;
+      throw err;
+    }
+    else {
+      let user = await User.findOne({ forgotPasswordToken: req.params.token });
+      if (user) {
+        await user.setPassword(data.newPassword);
+        await user.save();
+      }
+      else {
+        //error por que no existe
+        var err = new Error("User does not exist");
+        err.statusCode = 404;
+        throw err;
+      }
+    }
+  }
+  catch (err) {
+    if (err.statusCode == 401) {
+      res.status(401);
+      res.json({
+        msg: "The recovery token has expired"
+      });
+    }
+    else if (err.statusCode == 404) {
+      res.status(404);
+      res.json({
+        msg: "User does not exist"
+      });
+    }
+    else {
+      res.status(500);
+      res.json({
+        msg: "Unknown error"
+      });
+    }
+  }
+
+});
 module.exports = router;
