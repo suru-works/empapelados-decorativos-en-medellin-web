@@ -6,6 +6,7 @@ const passport = require('passport');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
 const { token } = require('morgan');
+const crypto = require("crypto");
 
 const mail = require('../com/mail');
 const verifyView = require('../view/verifyView');
@@ -95,25 +96,64 @@ router.get('/logout', cors.corsWithOptions, authenticate.verifyUser, (req, res) 
 });
 
 router.post('/forgot', function (req, res, next) {
-  try {
-    const forgotData = req.body;
-    forgotData.forgotToken = 'numb';
-    const forgotHTML = forgotView.forgotView(forgotData);
-    //sending email for user verification
-    mailData = {
-      serverService: 'gmail',
-      serverMail: process.env.AUTH_EMAIL_USER,
-      serverPassword: process.env.AUTH_EMAIL_PASSWORD,
-      sender: '"Empapelados decorativos en medellin"',
-      receivers: req.body.username,
-      subject: 'reestablecer contraseña',
-      text: '',
-      html: forgotHTML
-    };
-    mail.mail(mailData);
-  } catch (error) {
-    console.log(error);
-  }
+  const data = req.body;
+  User.findOne({ username: data.username })
+    .then(async (user) => {
+      if (user) {
+        var isTokenNotUnique = true;
+        const now = new Date();
+        //now.setMinutes(now.getMinutes + 5);
+        var key = crypto.randomBytes(20).toString('hex');
+        while (isTokenNotUnique) {
+          var forgotToken = now + ',' + key;
+          var userByToken = await User.findOne({ forgotPasswordToken: forgotToken });
+          if (userByToken) {
+            //the token allready exist
+            key = crypto.randomBytes(20).toString('hex');
+          }
+          else {
+            isTokenNotUnique = false;
+            data.forgotToken = forgotToken;
+            await User.findByIdAndUpdate(user._id, {
+              $set: {
+                forgotPasswordToken: forgotToken
+              }
+            }, { new: true })
+          }
+
+        }
+
+
+
+        const forgotHTML = forgotView.forgotView(data);
+        //sending email for user verification
+        mailData = {
+          serverService: 'gmail',
+          serverMail: process.env.AUTH_EMAIL_USER,
+          serverPassword: process.env.AUTH_EMAIL_PASSWORD,
+          sender: '"Empapelados decorativos en medellin"',
+          receivers: data.username,
+          subject: 'restablecer contraseña',
+          text: '',
+          html: forgotHTML
+        };
+        mail.mail(mailData);
+        return user;
+      }
+      else {
+        //no se que hacer aqui con los errores y las respuestas
+        /* res.statusCode = 404;
+        return; */
+      }
+
+    }, (err) => next(err))
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({ err: err });
+      next(err);
+    });
 
 });
 
