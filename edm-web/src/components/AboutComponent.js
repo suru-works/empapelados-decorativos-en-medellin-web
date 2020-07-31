@@ -153,7 +153,7 @@ function About(props) {
             </div>
 
 
-            <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal}  ></AddLeader>
+            <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal} reloadData={props.reloadData} ></AddLeader>
 
 
         </div>

@@ -153,7 +153,7 @@ const AddProductComponent = (props) => {
                                             <Input type="checkbox" id="featured" name="featured"
                                                 onChange={e => setFeatured(e.target.value)} />
                                                 {' '}
-                                                 destacar
+                                                 Destacar
                                         </Label>
                                     </FormGroup>
                                     <Label htmlFor="description">Descripcion del producto</Label>

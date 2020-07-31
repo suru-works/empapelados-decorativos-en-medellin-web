@@ -8,12 +8,14 @@ import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Forgot from './ForgotComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct } from '../redux/ActionCreators';
+import { fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct,
+        postLeader, deleteLeader } from '../redux/ActionCreators';
 import { baseBackUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
         products: state.products,
+        leaders: state.leaders,
         maps: state.maps,
         auth: state.auth
     }
@@ -27,7 +29,9 @@ const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
     postFeedback: (feedback) => dispatch(postFeedback(feedback)),
     postProduct: (product) => dispatch(postProduct(product)),
-    deleteProduct: (productId) => dispatch(deleteProduct(productId))
+    deleteProduct: (productId) => dispatch(deleteProduct(productId)),
+    postLeader: (leader) => dispatch(postLeader(leader)),
+    deleteLeader: (leaderId) => dispatch(deleteLeader(leaderId))
 });
 
 class Main extends Component {
@@ -70,6 +74,19 @@ class Main extends Component {
             )
         }
 
+        const AboutPage = () => {
+            return (
+                <About 
+                    postLeader={this.props.postLeader}
+                    leaders={this.props.leaders.leaders}
+                    leadersLoading={this.props.leaders.isLoading}
+                    leadersErrMess={this.props.leaders.errMess}
+                    deleteLeader={this.props.deleteLeader}
+                    reloadData={this.props.fetchLeaders}
+                />
+            )
+        }
+
         return (
             <div>
                 <Header
@@ -82,7 +99,7 @@ class Main extends Component {
                     <Route path="/inicio" component={HomePage} />
                     <Route path="/restablecer-contraseña/:token" component={() => <Forgot/>} />
                     <Route path="/galeria" component={GalleryPage} />
-                    <Route exact path='/acerca-de-nosotros' component={() => <About />} />
+                    <Route exact path='/acerca-de-nosotros' component={AboutPage} />
                     <Route exact path='/contacto' component={ContactPage} />
                     <Redirect to="/inicio"></Redirect>
                 </Switch>

@@ -10,16 +10,13 @@ import { leaderReset, postLeader, uploadFileReset } from '../redux/ActionCreator
 
 const AddLeaderComponent = (props) => {
 
-    const [price, setPrice] = useState(null);
-    const [units, setUnits] = useState(null);
-    const [featured, setFeatured] = useState(null);
     const [name, setName] = useState(null);
+    const [designation, setDesignation] = useState(null);
     const [description, setDescription] = useState(null);
 
     const error = useSelector(state => state.leader.errMess);
     const result = useSelector(state => state.leader.leader);
     const loading = useSelector(state => state.leader.isLoading);
-    
 
     const fileSuccess = useSelector(state => state.uploadFile.result);
 
@@ -48,10 +45,8 @@ const AddLeaderComponent = (props) => {
 
         if (fileSuccess) {
             const leaderData = {
-                price: price,
-                units: units,
-                featured: featured,
                 name: name,
+                designation: designation,
                 description: description
 
             }
@@ -104,16 +99,16 @@ const AddLeaderComponent = (props) => {
         );
     }
     if (result) { {
-            return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Añadir un lider</ModalHeader>
-                    <ModalBody>
-                        <p>Lider añadido correctamente.</p>
-                    </ModalBody>
-                    <Button onClick={toogleAndReset}>Aceptar</Button>
-                </Modal>
-            );
-        }
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Añadir un lider</ModalHeader>
+                <ModalBody>
+                    <p>Lider añadido correctamente.</p>
+                </ModalBody>
+                <Button onClick={toogleAndReset}>Aceptar</Button>
+            </Modal>
+        );
+    }
 
 
     }
@@ -138,8 +133,20 @@ const AddLeaderComponent = (props) => {
                                 <CardBody style={{ padding: 8}}>
                                     <CardTitle> Ingresa los datos del lider </CardTitle>
 
-                                    <Label htmlFor="MIRAR LAS COSAS DEL LIDER">MIRAR LAS COSAS DEL LIDER</Label>
-                                    
+                                    <Label htmlFor="name">Nombre</Label>
+                                    <Input type="text" id="name" name="name"
+                                        onChange={e => setName(e.target.value)}
+                                        required
+                                    />
+                                    <Label htmlFor="designation">Cargo</Label>
+                                    <Input type="text" id="designation" name="designation"
+                                        onChange={e => setDesignation(e.target.value)}
+                                        required
+                                    />
+
+                                    <Label htmlFor="description">Descripción del lider</Label>
+                                    <Input type="textarea" id="description" name="description"
+                                        onChange={e => setDescription(e.target.value)} />
                                     
                                     <div class="d-flex justify-content-center" >
                                         <Button type="submit" value="submit" className="secondary-button" disabled={!readyToPostLeader()}>Añadir</Button>
