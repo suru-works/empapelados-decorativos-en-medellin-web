@@ -648,9 +648,9 @@ export function deleteLeader(id) {
             await clienteAxios.delete(`${baseBackUrl}leaders/${id}`, {
                 headers: headers
             });
-            dispatch(productSuccess('Se ha eliminado'));
+            dispatch(leaderSuccess('Se ha eliminado el lider'));
         } catch (error) {
-            dispatch(productFailed(error.response));
+            dispatch(leaderFailed(error.response));
         }
     }
 }

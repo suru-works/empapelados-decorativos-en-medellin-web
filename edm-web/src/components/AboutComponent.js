@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { useSelector } from 'react-redux';
+import AddLeader from './AddLeaderComponent';
 
 const thumb = {
     display: 'inline-flex',
@@ -40,8 +41,6 @@ function RenderAdminOptions(props) {
     if (localStorage.getItem('admin')) {
         return (
             <FloatingButtonContainer>
-
-
 
                 <FloatingButtonLink tooltip="Añadir un lider">
                     <div onClick={props.toggleAddLeaderModal} style={{ width: 35, height: 35, marginRight: 0, marginLeft: 8, marginTop: 5, marginBottom: 0 }}>
@@ -99,6 +98,11 @@ function About(props) {
         setAreEditOptionsActived(!areEditOptionsActived);
     }
 
+    
+    const reloadData = () => {
+        reloadData();
+    }
+
     const leaders = useSelector(state => state.leaders.leaders);
     const leaderList = leaders.map((leader) => <RenderLeader leader={leader} />);
 
@@ -147,6 +151,11 @@ function About(props) {
                     </Media>
                 </div>
             </div>
+
+
+            <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal}  ></AddLeader>
+
+
         </div>
     );
 }
