@@ -5,6 +5,7 @@ import { Container as FloatingButtonContainer, Button as FloatingButton, Link as
 import { baseFrontUrl } from '../shared/baseUrl';
 import { useSelector } from 'react-redux';
 import AddLeader from './AddLeaderComponent';
+import EditLeader from './EditLeaderComponent';
 
 const thumb = {
     display: 'inline-flex',
@@ -108,7 +109,7 @@ function About(props) {
 
     return (
         <div className="container">
-            <RenderAdminOptions toggleAddLeaderModal={toggleAddLeaderModal} openEditOptions={openEditOptions}></RenderAdminOptions>
+            
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
@@ -154,6 +155,8 @@ function About(props) {
 
 
             <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal} reloadData={props.reloadData} ></AddLeader>
+
+            <RenderAdminOptions toggleAddLeaderModal={toggleAddLeaderModal} openEditOptions={openEditOptions}></RenderAdminOptions>
 
 
         </div>

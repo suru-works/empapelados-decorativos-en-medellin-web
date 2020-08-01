@@ -6,19 +6,18 @@ import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import {Loading} from './LoadingComponent';
-import { productReset, postProduct, updateProduct, updateFileReset} from '../redux/ActionCreators';
+import { leaderReset, postLeader, updateLeader, updateFileReset} from '../redux/ActionCreators';
 
 
-const EditProductComponent = (props) => {
-    const [price, setPrice] = useState(props.product.price);
-    const [units, setUnits] = useState(props.product.units);
-    const [featured, setFeatured] = useState(props.product.featured);
-    const [name, setName] = useState(props.product.name);
-    const [description, setDescription] = useState(props.product.description);
+const EditLeaderComponent = (props) => {
+    
+    const [name, setName] = useState(null);
+    const [designation, setDesignation] = useState(null);
+    const [description, setDescription] = useState(null);
 
-    const error = useSelector(state => state.product.errMess);
-    const result = useSelector(state => state.product.product);
-    const loading = useSelector(state => state.product.isLoading);
+    const error = useSelector(state => state.leader.errMess);
+    const result = useSelector(state => state.leader.leader);
+    const loading = useSelector(state => state.leader.isLoading);
 
     const updateFileResult = useSelector(state => state.updateFile.result);
     const updateFileError = useSelector(state => state.updateFile.errMess);
@@ -26,7 +25,7 @@ const EditProductComponent = (props) => {
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
-        dispatch(productReset());
+        dispatch(leaderReset());
         dispatch(updateFileReset());
         props.reloadData();
         props.toggle();
@@ -34,37 +33,34 @@ const EditProductComponent = (props) => {
 
     const updateFileData = {
         type: '/image',
-        id: props.product.imageUrl.split('/').slice(-1)[0],
-        initialPreview: props.product.imageUrl
+        id: props.leader.imageUrl.split('/').slice(-1)[0],
+        initialPreview: props.leader.imageUrl
     }
 
-    const doUpdateProduct = (productData) => dispatch(updateProduct(productData));
+    const doUpdateLeader = (leaderData) => dispatch(updateLeader(leaderData));
 
     const uploadChanges = (event) => {
         event.preventDefault();
-        const productData = {
-            productId: props.product._id,
-            price: price,
-            units: units,
-            featured: featured,
+        const leaderData = {
+            leaderId: props.leader._id,
             name: name,
+            designation: designation,
             description: description
-
         }
-        if (productData.featured == 'on') {
-            productData.featured = true;
+        if (leaderData.featured == 'on') {
+            leaderData.featured = true;
         }
         else {
-            productData.featured = false;
+            leaderData.featured = false;
         }
         if(updateFileResult){
-            productData.imageUrl = '/public/images/products/' + updateFileResult.data.archivo;
+            leaderData.imageUrl = '/public/images/leaders/' + updateFileResult.data.archivo;
         }
         else{
-            productData.imageUrl = props.product.imageUrl;
+            leaderData.imageUrl = props.leader.imageUrl;
         }
 
-        doUpdateProduct(productData);
+        doUpdateLeader(leaderData);
     }
 
 
@@ -87,9 +83,9 @@ const EditProductComponent = (props) => {
         else {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
                     <ModalBody>
-                        <p>Hubo un error actualizando la imagen del producto.</p>
+                        <p>Hubo un error actualizando la imagen del lider.</p>
                     </ModalBody>
                 </Modal>
             );
@@ -115,9 +111,9 @@ const EditProductComponent = (props) => {
         else {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
                     <ModalBody>
-                        <p>Hubo un error actualizando el producto.</p>
+                        <p>Hubo un error actualizando el lider.</p>
                     </ModalBody>
                 </Modal>
             );
@@ -127,7 +123,7 @@ const EditProductComponent = (props) => {
     if (loading) {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
                 <ModalBody>
                     <Loading />
                 </ModalBody>
@@ -138,9 +134,9 @@ const EditProductComponent = (props) => {
         {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                    <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
                     <ModalBody>
-                        <p>Producto actualizado correctamente.</p>
+                        <p>Lider actualizado correctamente.</p>
                     </ModalBody>
                     <Button onClick={toogleAndReset}>Aceptar</Button>
                 </Modal>
@@ -154,45 +150,34 @@ const EditProductComponent = (props) => {
 
             <Modal className="modal-lg" isOpen={props.isOpen} toggle={toogleAndReset}>
 
-                <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
 
                 <ModalBody>
 
                     <div className="d-flex space-around row">
 
                         <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
-                            <Dropzone type={'media/image'} destination= {'/products'} updateFileData={updateFileData} />
+                            <Dropzone type={'media/image'} destination= {'/leaders'} updateFileData={updateFileData} />
                         </Card>
 
                         <Form onSubmit={uploadChanges} className="col" style={{ padding: 1}} >
                             <Card style={{ padding: 11}}>
 
                                 <CardBody style={{ padding: 8}}>
-                                    <CardTitle> Ingresa los datos del producto </CardTitle>
+                                    <CardTitle> Ingresa los datos del lider </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
                                     <Input type="text" id="name" name="name" value={name} onChange={event => setName(event.target.value)} required />
-                                    <Label htmlFor="price">Precio</Label>
-                                    <Input type="number" id="price" name="price" value={price} onChange={event => setPrice(event.target.value)} />
-                                    <Label htmlFor="units">Unidades disponibles</Label>
-                                    <Input type="number" id="units" name="units" value={units} onChange={event => setUnits(event.target.value)} />
-                                    <Label check>destacar</Label>
-                                    <FormGroup check>
-                                        <Label check>
-                                            <Input type="checkbox" id="featured" name="featured" checked={featured} onChange={event => setFeatured(event.target.value)} />
-                                            {' '}
-                                        destacar
-                                        </Label>
-                                    </FormGroup>
-                                    <Label htmlFor="description">Descripcion del producto</Label>
+                                    <Label htmlFor="designation">Cargo</Label>
+                                    <Input type="text" id="designation" name="designation" value={designation} onChange={event => setDesignation(event.target.value)} />
+                                    <Label htmlFor="description">Descripcion del lider</Label>
                                     <Input type="textarea" id="description" name="description" value={description} onChange={event => setDescription(event.target.value)} />
-
+                                    
                                     <div class="d-flex justify-content-center" >
                                         <Button className="secondary-button" type="submit" value="submit"  >Guardar</Button>
                                     </div>
 
                                 </CardBody>
-                                
 
                             </Card>
                             
@@ -209,6 +194,6 @@ const EditProductComponent = (props) => {
     }
 };
 
-EditProductComponent.propTypes = {};
+EditLeaderComponent.propTypes = {};
 
-export default EditProductComponent;
+export default EditLeaderComponent;

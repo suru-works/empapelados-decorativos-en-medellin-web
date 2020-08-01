@@ -124,7 +124,7 @@ const AddLeaderComponent = (props) => {
                     <div className="d-flex space-around row">
 
                         <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
-                            <Dropzone type={'media/image'}/>
+                            <Dropzone type={'media/image'} destination= {'/leaders'}/>
                         </Card>
 
                         <Form onSubmit={handleSubmit} className="col" style={{ padding: 1}}>
