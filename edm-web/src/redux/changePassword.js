@@ -13,7 +13,7 @@ export const ChangePassword = (state = {
         case ActionTypes.CHANGEPASSWORD_SUCCESS:
             return { ...state, isLoading: false, errMess: null, result: action.payload };
         case ActionTypes.CHANGEPASSWORD_FAILED:
-            return { ...state, isLoading: false, errMess: action.payload };
+            return { ...state, isLoading: false, errMess: action.payload, result: null };
         default:
             return state;
     }

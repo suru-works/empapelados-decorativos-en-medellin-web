@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {Loading} from './LoadingComponent';
+import { Loading } from './LoadingComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Button, Form, FormGroup, Input, Label
 } from 'reactstrap';
 import { useParams } from "react-router-dom";
 
-import { changePassword} from '../redux/ActionCreators';
+
+
+import { changePassword } from '../redux/ActionCreators';
 
 const ForgotComponent = (props) => {
     let params = useParams();
@@ -18,7 +20,7 @@ const ForgotComponent = (props) => {
     const error = useSelector(state => state.changePassword.errMess);
     const result = useSelector(state => state.changePassword.result);
     const loading = useSelector(state => state.changePassword.isLoading);
-    
+
     const doChangePassword = data => dispatch(changePassword(data));
 
     const handleSubmit = (event) => {
@@ -45,10 +47,7 @@ const ForgotComponent = (props) => {
             </div>
         );
     }
-    else if (loading){
-
-    }
-    else if (result){
+    else if (loading) {
         return (
             <div className="container">
                 <div className="row">
@@ -58,12 +57,29 @@ const ForgotComponent = (props) => {
                     </div>
                 </div>
                 <div className="row col-12 align-items-center justify-content-center">
-                    <Loading/>
+                    <Loading />
+                </div>
+            </div>
+
+        );
+
+    }
+    else if (result) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <h3>Cambiar contraseña</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row col-12 align-items-center justify-content-center">
+                    <Label>Contraseña cambiada exitosamente!</Label>
                 </div>
             </div>
         );
     }
-    else{
+    else {
         return (
             <div className="container">
                 <div className="row">
@@ -74,16 +90,16 @@ const ForgotComponent = (props) => {
                 </div>
                 <div className="row col-12 align-items-center justify-content-center">
                     <Form onSubmit={handleSubmit}>
-    
+
                         <FormGroup>
                             <Label htmlFor="password">Nueva contraseña</Label>
                             <Input type="password" id="password1" className="form-control" name="password1" value={password1}
                                 onChange={e => setPassword1(e.target.value)} />
                             <Label htmlFor="password">Repite la contraseña</Label>
                             <Input type="password" id="password2" className="form-control" name="password2" value={password2}
-                                        onChange={e => setPassword2(e.target.value)} />
+                                onChange={e => setPassword2(e.target.value)} />
                         </FormGroup>
-    
+
                         <div className="d-flex justify-content-center">
                             <Button type="submit" value="submit" className="primary-button">Cambiar contraseña</Button>
                         </div>
@@ -93,7 +109,7 @@ const ForgotComponent = (props) => {
         );
     }
 
-    
+
 };
 
 ForgotComponent.propTypes = {};
