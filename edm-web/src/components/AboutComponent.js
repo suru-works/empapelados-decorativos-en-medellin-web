@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { useSelector } from 'react-redux';
+import Leader from './LeaderComponent';
 import AddLeader from './AddLeaderComponent';
 import EditLeader from './EditLeaderComponent';
 
@@ -69,23 +70,6 @@ function RenderAdminOptions(props) {
     }
 }
 
-function RenderLeader({leader}) {
-    return (
-        <div>
-            <Media style={leaderBorder} tag="li">
-                <Media left middle className="mr-5">
-                    <Media className="leader-image" object src={baseFrontUrl + leader.imageUrl} alt={leader.name} />
-                </Media>
-                <Media body>
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
-                </Media>
-            </Media>
-        </div>
-    );
-}
-
 function About(props) {
 
     const [isAddLeaderModalOpen, setIsAddLeaderModalOpen] = useState(false);
@@ -105,7 +89,26 @@ function About(props) {
     }
 
     const leaders = useSelector(state => state.leaders.leaders);
-    const leaderList = leaders.map((leader) => <RenderLeader leader={leader} />);
+
+    const leaderList = props.leaders.map((leader) => {
+        try {
+
+            return (
+                <Leader leader={leader} key={leader._id}
+                    areEditOptionsActived={areEditOptionsActived}
+                    deleteLeader={props.deleteLeader}
+                    leadersErrMess={props.leadersErrMess}
+                    reloadData={props.reloadData}
+                />
+            );
+        }
+        catch (err) {
+            console.log(err);
+        }
+
+
+
+    });
 
     return (
         <div className="container">
@@ -146,13 +149,8 @@ function About(props) {
                 <div className="col-12">
                     <h2>Lideres de nuestra compa­ñia</h2>
                 </div>
-                <div className="col-12">
-                    <Media list>
-                        {leaderList}
-                    </Media>
-                </div>
+                {leaderList}
             </div>
-
 
             <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal} reloadData={props.reloadData} ></AddLeader>
 

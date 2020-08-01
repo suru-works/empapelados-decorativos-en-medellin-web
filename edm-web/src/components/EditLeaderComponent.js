@@ -11,9 +11,9 @@ import { leaderReset, postLeader, updateLeader, updateFileReset} from '../redux/
 
 const EditLeaderComponent = (props) => {
     
-    const [name, setName] = useState(null);
-    const [designation, setDesignation] = useState(null);
-    const [description, setDescription] = useState(null);
+    const [name, setName] = useState(props.leader.name);
+    const [description, setDescription] = useState(props.leader.description);
+    const [designation, setDesignation] = useState(props.leader.designation);
 
     const error = useSelector(state => state.leader.errMess);
     const result = useSelector(state => state.leader.leader);
@@ -47,12 +47,7 @@ const EditLeaderComponent = (props) => {
             designation: designation,
             description: description
         }
-        if (leaderData.featured == 'on') {
-            leaderData.featured = true;
-        }
-        else {
-            leaderData.featured = false;
-        }
+
         if(updateFileResult){
             leaderData.imageUrl = '/public/images/leaders/' + updateFileResult.data.archivo;
         }

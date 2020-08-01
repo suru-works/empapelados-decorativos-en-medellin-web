@@ -1,6 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import { useSelector } from 'react-redux'
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import Product from './ProductComponent';
 import AddProduct from './AddProductComponent';
 import { Loading } from './LoadingComponent';
@@ -78,13 +79,18 @@ class Gallery extends Component {
                 <div className="container">
 
                     <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>Galería</BreadcrumbItem>
+                        </Breadcrumb>
                         <div className="col-12">
-                            <h3>Galeria de productos</h3>
+                            <h3>Galería de productos</h3>
                             <hr />
                         </div>
                     </div>
+
                     <div className="row col-12">
-                        <p> No se encontraron productos en oferta.</p>
+                        <p> No se encontraron productos en oferta. </p>
 
                     </div>
 
@@ -119,8 +125,12 @@ class Gallery extends Component {
                 <div className="container">
 
                     <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>Galería</BreadcrumbItem>
+                        </Breadcrumb>
                         <div className="col-12">
-                            <h3>Galeria de productos</h3>
+                            <h3>Galería de productos</h3>
                             <hr />
                         </div>
                     </div>
