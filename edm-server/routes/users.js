@@ -7,10 +7,32 @@ const authenticate = require('../authenticate');
 const cors = require('./cors');
 const { token } = require('morgan');
 const crypto = require("crypto");
+const CryptoJS = require('crypto-js');
 
 const mail = require('../com/mail');
 const verifyView = require('../view/verifyView');
 const forgotView = require('../view/forgotView');
+
+
+const encrypt = text => {
+  const encrypted = CryptoJS.AES.encrypt(text+'', process.env.CRYPTOJS_SECRET);
+  return encrypted;
+};
+
+const decrypt = data => {
+  const decrypted = CryptoJS.AES.decrypt(data, process.env.CRYPTOJS_SECRET);
+  console.log('desencriptado');
+  console.log(decrypted);
+  console.log('em string');
+  console.log(decrypted.toString());
+  return decrypted;
+};
+
+function parseISOString(s) {
+  var b = s.split(/\D+/);
+  return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+};
+
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -106,10 +128,10 @@ router.post('/forgot', async function (req, res, next) {
       console.log(data.username);
       var isTokenNotUnique = true;
       const now = new Date();
-      now.setMinutes(now.getMinutes() + 5);
+      now.setMinutes(now.getMinutes() + 10);
       var key = crypto.randomBytes(20).toString('hex');
       while (isTokenNotUnique) {
-        var forgotToken = now + ',' + key;
+        var forgotToken = now.toISOString() + ',' + key;
         var userByToken = await User.findOne({ forgotPasswordToken: forgotToken });
         if (userByToken) {
           //the token allready exist
@@ -158,6 +180,7 @@ router.post('/forgot', async function (req, res, next) {
         msg: "User does not exist"
       });
     } else {
+      console.log(err);
       res.status(500);
       res.json({
         msg: "Unknown error"
@@ -166,15 +189,20 @@ router.post('/forgot', async function (req, res, next) {
   }
 });
 
-router.post('/forgot:token', async function (req, res, next) {
+router.post('/forgot/:token', async function (req, res, next) {
 
   try {
     const data = req.body;
-
     const token = req.params.token.split(',');
 
     const now = new Date();
-    const exp = new Date(token[0]);
+    const exp = parseISOString(token[0]);
+
+    console.log('esta es la fecha actual');
+    console.log(now.toISOString());
+    console.log('esta es la fecha del token');
+    console.log(exp.toISOString());
+    
 
     if (now > exp) {
       var err = new Error("The recovery token has expired");
@@ -186,6 +214,11 @@ router.post('/forgot:token', async function (req, res, next) {
       if (user) {
         await user.setPassword(data.newPassword);
         await user.save();
+        res.status(200);
+        res.json({
+          msg: "Password changed successfully"
+        });
+
       }
       else {
         //error por que no existe
@@ -209,6 +242,7 @@ router.post('/forgot:token', async function (req, res, next) {
       });
     }
     else {
+      console.log(err);
       res.status(500);
       res.json({
         msg: "Unknown error"
