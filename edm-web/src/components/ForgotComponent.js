@@ -25,11 +25,15 @@ const ForgotComponent = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const changePasswordData = {
-            token: params.token,
-            newPassword: password1
+        if (password1 != password2) {
+            alert('Las contraseñas no coinciden');
+        } else {
+            const changePasswordData = {
+                token: params.token,
+                newPassword: password1
+            }
+            doChangePassword(changePasswordData);
         }
-        doChangePassword(changePasswordData);
     }
 
     if (error) {
