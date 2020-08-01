@@ -42,8 +42,8 @@ const RenderMap = () => {
             <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
                 withMarker={true}
                 googleMapURL={mapUrl + `${result.key}`}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `100%`, width:`100%`}} />}
+                mapElement={<div style={{ height: `100%`, width:`100%` }} />}
                 mapType='roadmap'
                 loadingElement={<Loading />}
 
@@ -113,29 +113,42 @@ class Contact extends Component {
                         <h3>Información de localización</h3>
                     </div>
 
-                    <div className="col-12 col-sm-4 offset-sm-1">
-                        <h5>Nuestra dirección</h5>
 
-                        <address>
-                            Cra. 76b #107a-34,<br />
-                            Santander, Medellín, Antioquia<br />
-                            <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
-                            <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
-                        </address>
-                    </div>
-                    <div className="col-12 col-sm-6 offset-sm-1">
-                        <h5>Mapa de nuestra localización</h5>
-                        <RenderMap></RenderMap>
-                    </div>
+                    <div className="row col-12 ">
 
+                        <div className="col-12 col-sm-6">
+                            <h5>Nuestra dirección</h5>
 
-                    <div className="col-12 col-sm-11 offset-sm-1">
-                        <div className="btn-group" role="group">
-                            <a role="button" className="btn btn-primary" target="_blank" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
-                            <a role="button" className="btn btn-success" target="_blank" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
-                            <a role="button" className="btn btn-info" target="_blank" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                            <address>
+                                Cra. 76b #107a-34,<br />
+                                Santander, Medellín, Antioquia<br />
+                                <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
+                                <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
+                            </address>
+                            <div className="col-12 col-sm-11 offset-sm-1">
+                                <div className="btn-group" role="group">
+                                    <a role="button" className="btn btn-primary" target="_blank" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
+                                    <a role="button" className="btn btn-success" target="_blank" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                                    <a role="button" className="btn btn-info" target="_blank" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                                </div>
+                            </div>
                         </div>
+                        <div className="col-12 col-sm-6 ">
+
+                                <h5>Mapa de nuestra localización</h5>
+                                <RenderMap></RenderMap>
+
+
+
+
+                        </div>
+
                     </div>
+
+                    
+
+
+                    
                 </div>
 
                 <div className="row row-content">
