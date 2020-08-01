@@ -63,6 +63,7 @@ const Dropzone = (props) => {
             file: formData
         };
         if(props.updateFileData){
+            data.destination = props.updateFileData.destination;
             data.id = props.updateFileData.id;
             doFileUpdate(data);
         }

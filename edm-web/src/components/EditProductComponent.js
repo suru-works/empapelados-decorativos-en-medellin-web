@@ -34,6 +34,7 @@ const EditProductComponent = (props) => {
 
     const updateFileData = {
         type: '/image',
+        destination : '/products',
         id: props.product.imageUrl.split('/').slice(-1)[0],
         initialPreview: props.product.imageUrl
     }
