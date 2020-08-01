@@ -31,7 +31,7 @@ const subirArchivo = async (req,res,next) =>{
             destination: (req, file, cb) => {
                 //cb(null, __dirname + '/../uploads')
                 console.log(process.env.MEDIA_URL);
-                cb(null, process.env.MEDIA_URL+'images/products/')
+                cb(null, process.env.MEDIA_URL+'images/'+req.params.destination)
             },
             filename: (req, file, cb) => {
                 const extension = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
@@ -48,15 +48,17 @@ const subirArchivo = async (req,res,next) =>{
 const eliminarArchivo = async (req,res,next) => {
 
     try {
-        fs.unlinkSync(process.env.MEDIA_URL+'images/products/'+req.params.fileId);        
+        fs.unlinkSync(process.env.MEDIA_URL+'images/'+req.params.destination+'/'+req.params.fileId);
+        res.status(200).json({msg: 'eliminado correctamente'});        
     } catch (error) {
+        console.log(error);
         res.status(500).json({msg: 'Error al eliminar el archivo'});
     }
     
 }
 
 
-router.route("/image")
+router.route("/image/:destination")
 .options(cors.corsWithOptions, (req,res) => {res.sendStatus(200)})
 .all((req, res, next) => {
     res.statusCode = 200;
@@ -65,13 +67,15 @@ router.route("/image")
 }).post( cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, subirArchivo);
 
 
-router.route("/image/:fileId")
+router.route("/image/:destination/:fileId")
 .options(cors.corsWithOptions, (req,res) => {res.sendStatus(200)})
 .all((req, res, next) => {
+    console.log(req.params.destination);
+    console.log(req.params.fileId);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     next();
-}).post( cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, eliminarArchivo);
+}).delete( cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, eliminarArchivo);
 
 
 module.exports = router;
