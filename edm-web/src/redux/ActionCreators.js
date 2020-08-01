@@ -61,13 +61,13 @@ export const deleteFileFailed = (errmess) => ({
     payload: errmess
 });
 
-export const deleteFile = ({type, id})=>  async (dispatch)=> {
+export const deleteFile = ({type, id, destination})=>  async (dispatch)=> {
     try {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'bearer ' + localStorage.getItem('token')
         }
-        const res = await clienteAxios.delete(baseBackUrl + type + id,{headers: headers});
+        const res = await clienteAxios.delete(baseBackUrl + type + destination + '/'+ id,{headers: headers});
         dispatch(deleteFileSuccess(res));
 
     } catch (error) {
@@ -93,15 +93,15 @@ export const updateFileFailed = (errmess) => ({
     payload: errmess
 });
 
-export const updateFile = ({type, id, file})=>  async (dispatch)=> {
+export const updateFile = ({type, destination, id, file})=>  async (dispatch)=> {
     try {
-        await deleteFile({type, id});
+        await deleteFile({type, id, destination});
 
         const headers = {
             'Authorization': 'bearer ' + localStorage.getItem('token')
         }
 
-        const res = await clienteAxios.post(baseBackUrl + type, file,{headers: headers}); 
+        const res = await clienteAxios.post(baseBackUrl + type + destination, file,{headers: headers}); 
         dispatch(updateFileSuccess(res));
 
     } catch (error) {

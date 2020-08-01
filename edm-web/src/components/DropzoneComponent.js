@@ -60,10 +60,10 @@ const Dropzone = (props) => {
         formData.append("file", fileForUpload);
         const data = {
             type: props.type,
+            destination: props.destination,
             file: formData
         };
         if(props.updateFileData){
-            data.destination = props.updateFileData.destination;
             data.id = props.updateFileData.id;
             doFileUpdate(data);
         }

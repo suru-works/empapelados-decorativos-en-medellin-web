@@ -34,7 +34,6 @@ const EditProductComponent = (props) => {
 
     const updateFileData = {
         type: '/image',
-        destination : '/products',
         id: props.product.imageUrl.split('/').slice(-1)[0],
         initialPreview: props.product.imageUrl
     }
@@ -162,7 +161,7 @@ const EditProductComponent = (props) => {
                     <div className="d-flex space-around row">
 
                         <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
-                            <Dropzone type={'media/image'} updateFileData={updateFileData} />
+                            <Dropzone type={'media/image'} destination= {'/products'} updateFileData={updateFileData} />
                         </Card>
 
                         <Form onSubmit={uploadChanges} className="col" style={{ padding: 1}} >
