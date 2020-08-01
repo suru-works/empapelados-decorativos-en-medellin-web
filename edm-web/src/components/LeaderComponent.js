@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
+import { Card, CardImg, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import EditProductComponent from './EditProductComponent';
+import EditLeaderComponent from './EditLeaderComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
@@ -24,56 +24,29 @@ function RenderOptions(props) {
     }
 }
 
-function CanIComment() {
-
-    if (localStorage.getItem('token')) {
-        return (
-            <Form>
-                <Input className="mb-1" type="text" required></Input>
-                <div className="d-flex justify-content-center">
-                    <Button type="submit" className="primary-button" >Comentar</Button>
-                </div>
-            </Form>
-        );
-    }
-    else {
-        return (
-            <div></div>
-        );
-    }
-}
-
 function RenderDetailModal(props) {
     if (props.type == 'options') {
         return (
             <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
 
-                <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={props.toggleDetailsModal}>{props.leader.name}</ModalHeader>
 
                 <ModalBody>
 
                     <div className="d-flex space-around row">
-
+                        
                         <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
-                            <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                            <CardImg src={baseFrontUrl + props.leader.imageUrl} alt={props.leader.name} />
                         </Card>
 
                         <Card className="col" style={{ padding: 12 }} >
 
                             <CardBody style={{ padding: 8 }}>
-                                <CardTitle className="text-danger"> Detalles del producto </CardTitle>
+
                                 <div className="info-size scroll">
-                                    <CardText>  Precio: {props.product.price}  </CardText>
-                                    <CardText>  Unidades: {props.product.units}  </CardText>
-                                    <CardText>  {props.product.description}  </CardText>
+                                    <CardText>  Cargo: {props.leader.designation}  </CardText>
+                                    <CardText>  {props.leader.description}  </CardText>
                                 </div>
-                                <CardText>  Comentarios:  </CardText>
-                                <div className="comment-size scroll mb-3">
-
-                                    <CardText>  {props.product.comments}  </CardText>
-                                </div>
-
-                                <CanIComment />
                                 
                             </CardBody>
                         </Card>
@@ -89,35 +62,35 @@ function RenderDetailModal(props) {
 function RenderDeleteModal(props) {
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.product.errMess);
+    const error = useSelector(state => state.leader.errMess);
 
     const resetTypeAndToggle = () => {
-        dispatch({ type: 'PRODUCT_RESET' });
+        dispatch({ type: 'LEADER_RESET' });
         props.toggleDeleteModal();
     }
 
     /* useEffect(() => {
         this.setState({
-            productDeleteError: error
+            leaderDeleteError: error
         })
     }, [error]) */
     if (props.type == 'options') {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={props.toggleDeleteModal}>{props.leader.name}</ModalHeader>
 
                 <ModalBody>
 
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col">
-                                <p className="text-center">¿Seguro que desea eliminar el producto?</p>
+                                <p className="text-center">¿Seguro que desea eliminar el lider?</p>
                             </div>
                         </div>
                         <div className="row justify-content-center">
                             <div className="col-3">
-                                <Button onClick={() => props.handleDelete(props.product._id)}>Confirmar</Button>
+                                <Button onClick={() => props.handleDelete(props.leader._id)}>Confirmar</Button>
                             </div>
                             <div className="col-3">
                                 <Button onClick={props.toggleDeleteModal}>Cancelar</Button>
@@ -134,14 +107,14 @@ function RenderDeleteModal(props) {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={props.toggleDeleteModal}>{props.leader.name}</ModalHeader>
 
                 <ModalBody>
 
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col">
-                                <p className="text-center">Se ha eliminado el producto correctamente.</p>
+                                <p className="text-center">Se ha eliminado el lider correctamente.</p>
                             </div>
                         </div>
                         <div className="row justify-content-center">
@@ -164,11 +137,11 @@ function RenderDeleteModal(props) {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
 
-                <ModalHeader toggle={resetTypeAndToggle}>{props.product.name}</ModalHeader>
+                <ModalHeader toggle={resetTypeAndToggle}>{props.leader.name}</ModalHeader>
 
                 <ModalBody>
 
-                    <p>Ha ocurrido un error eliminando el producto.</p>
+                    <p>Ha ocurrido un error eliminando el lider.</p>
                     <Button onClick={resetTypeAndToggle}>Aceptar</Button>
                 </ModalBody>
             </Modal>
@@ -177,21 +150,20 @@ function RenderDeleteModal(props) {
 }
 
 
-class Product extends Component {
-
+class Leader extends Component {
 
     constructor(props) {
 
         super(props);
         this.state = {
-            product: this.props.product,
+            leader: this.props.leader,
             isDetailsModalOpen: false,
             isDeleteModalOpen: false,
             isEditModalOpen: false,
             deleteModalType: 'options',
             detailsModalType: 'options',
             editModalType: 'options',
-            productDeleteError: null
+            leaderDeleteError: null
         };
 
         this.toggleDetailsModal = this.toggleDetailsModal.bind(this);
@@ -199,7 +171,6 @@ class Product extends Component {
         this.toggleEditModal = this.toggleEditModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.updateEditModalType = this.updateEditModalType.bind(this);
-
     }
 
     toggleDetailsModal() {
@@ -230,10 +201,9 @@ class Product extends Component {
         });
     }
 
+    handleDelete(leaderId) {
 
-    handleDelete(productId) {
-
-        this.props.deleteProduct(productId);
+        this.props.deleteLeader(leaderId);
     }
 
     resetDeleteModalState() {
@@ -256,15 +226,14 @@ class Product extends Component {
 
     render() {
 
-
-
         return (
-            <div className="mt-3 col-12 col-lg-3 col-md-4 col-sm-6" key={this.props.product._id}>
+            <div className="mt-3 col-12 col-lg-6 col-md-6 " key={this.props.leader._id}>
                 <Card >
                     <CardBody>
-                        <CardTitle>{this.props.product.name}</CardTitle>
+                        <CardTitle>{this.props.leader.name}</CardTitle>
 
-                        <CardImg onClick={this.toggleDetailsModal} src={baseFrontUrl + this.props.product.imageUrl} alt={this.props.product.name} />
+                        <CardImg onClick={this.toggleDetailsModal} src={baseFrontUrl + this.props.leader.imageUrl} alt={this.props.leader.name} />
+                        <CardTitle>{this.props.leader.designation}</CardTitle>
                         <RenderOptions areEditOptionsActived={this.props.areEditOptionsActived} toggleDetailsModal={this.toggleDetailsModal} toggleDeleteModal={this.toggleDeleteModal} toggleEditModal={this.toggleEditModal}></RenderOptions>
                     </CardBody>
                 </Card>
@@ -274,18 +243,18 @@ class Product extends Component {
                     type={this.state.detailsModalType}
                     isDetailsModalOpen={this.state.isDetailsModalOpen}
                     toggleDetailsModal={this.toggleDetailsModal}
-                    product={this.props.product}
+                    leader={this.props.leader}
                 />
                 <RenderDeleteModal
                     type={this.state.deleteModalType}
                     isDeleteModalOpen={this.state.isDeleteModalOpen}
                     toggleDeleteModal={this.toggleDeleteModal}
                     handleDelete={this.handleDelete}
-                    product={this.props.product}
+                    leader={this.props.leader}
                     resetDeleteModalState={this.resetDeleteModalState}
                     reloadData={this.props.reloadData}
                 />
-                <EditProductComponent product={this.props.product} reloadData={this.props.reloadData} isOpen={this.state.isEditModalOpen} toggle={this.toggleEditModal} />
+                <EditLeaderComponent leader={this.props.leader} reloadData={this.props.reloadData} isOpen={this.state.isEditModalOpen} toggle={this.toggleEditModal} />
 
 
 
@@ -296,4 +265,4 @@ class Product extends Component {
 
 }
 
-export default Product;
+export default Leader;

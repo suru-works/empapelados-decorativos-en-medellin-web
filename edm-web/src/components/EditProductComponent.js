@@ -26,10 +26,9 @@ const EditProductComponent = (props) => {
     const dispatch = useDispatch();
 
     const toogleAndReset = () => {
-        dispatch(productReset());
+        dispatch({ type: 'PRODUCT_RESET' });
         dispatch(updateFileReset());
         props.reloadData();
-        props.toggle();
     }
 
     const updateFileData = {
