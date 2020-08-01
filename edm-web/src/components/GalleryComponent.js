@@ -122,7 +122,7 @@ class Gallery extends Component {
 
             return (
 
-                <div className="container">
+                <div className="container justify-content-center">
 
                     <div className="row">
                         <Breadcrumb>
@@ -134,9 +134,18 @@ class Gallery extends Component {
                             <hr />
                         </div>
                     </div>
-                    <div className="row col-12">
-                        {galeria}
+
+                    <div className="row">
+
+                       
+                                {galeria}
+                        
+
+
+                        
                     </div>
+
+                    
 
                     <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal} reloadData={this.props.reloadData}></AddProduct>
 
