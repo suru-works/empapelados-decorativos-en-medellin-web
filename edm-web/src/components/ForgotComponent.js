@@ -7,6 +7,8 @@ import {
 } from 'reactstrap';
 import { useParams } from "react-router-dom";
 
+import { changePassword} from '../redux/ActionCreators';
+
 const ForgotComponent = (props) => {
     let params = useParams();
     const dispatch = useDispatch();
@@ -17,14 +19,13 @@ const ForgotComponent = (props) => {
     const result = useSelector(state => state.changePassword.result);
     const loading = useSelector(state => state.changePassword.isLoading);
     
-    //const doChangePassword = data => dispatch(changePassword(data));
-    const doChangePassword = data => console.log(data);
+    const doChangePassword = data => dispatch(changePassword(data));
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const changePasswordData = {
             token: params.token,
-            password: password1
+            newPassword: password1
         }
         doChangePassword(changePasswordData);
     }

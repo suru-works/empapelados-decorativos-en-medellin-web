@@ -12,6 +12,7 @@ import { DeleteFile } from './deleteFile';
 import { Leaders } from './leaders';
 import { Leader } from './leader';
 import { Restore } from './restore';
+import { ChangePassword } from './changePassword';
  export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
@@ -25,7 +26,8 @@ import { Restore } from './restore';
             deleteFile: DeleteFile,
             leaders: Leaders,
             leader: Leader,
-            restore: Restore
+            restore: Restore,
+            changePassword: ChangePassword
         }),
        compose(applyMiddleware(thunk),
 

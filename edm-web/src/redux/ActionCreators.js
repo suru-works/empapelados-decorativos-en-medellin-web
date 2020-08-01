@@ -486,6 +486,58 @@ export const restorePassword = (user) => (dispatch) => {
         .catch(error => dispatch(restoreFailed(error)));
 }
 
+export const changePasswordRequest = () => ({
+    type: ActionTypes.CHANGEPASSWORD_REQUEST
+});
+
+export const changePasswordReset = () => ({
+    type: ActionTypes.CHANGEPASSWORD_RESET
+});
+
+export const changePasswordSuccess = (result) => ({
+    type: ActionTypes.CHANGEPASSWORD_SUCCESS,
+    payload: result
+});
+
+export const changePasswordFailed = (errmess) => ({
+    type: ActionTypes.CHANGEPASSWORD_FAILED,
+    payload: errmess
+});
+
+export const changePassword = (data) => (dispatch) => {
+    dispatch(changePasswordRequest());
+
+    return fetch(baseBackUrl + 'users/forgot/'+data.token, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            throw error;
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                dispatch(restoreSuccess(response));
+            } else {
+                var error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(restoreFailed(error)));
+}
 
 //------------Feedback actions -----------------------------------------------------------------------------
 
