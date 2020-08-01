@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 
 import {Loading} from './LoadingComponent';
-import { login, loginReset, restorePassword} from '../redux/ActionCreators';
+import { login, loginReset, restoreReset, restorePassword} from '../redux/ActionCreators';
 
 
 const LoginComponent = (props) => {
@@ -28,6 +28,7 @@ const LoginComponent = (props) => {
 
 
     const toogleAndReset = () => {
+        dispatch(restoreReset());
         dispatch(loginReset());
         setRestore(false);
         setUser(null);
