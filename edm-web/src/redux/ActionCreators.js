@@ -28,7 +28,7 @@ export const uploadFile = (data) => async (dispatch) => {
 
     try {
 
-        const res = await clienteAxios.post(baseBackUrl + data.type, data.file, { headers: headers });
+        const res = await clienteAxios.post(baseBackUrl + data.type + data.destination, data.file, { headers: headers });
         
         dispatch(uploadFileSuccess(res));
 
