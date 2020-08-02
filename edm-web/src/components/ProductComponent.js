@@ -1,10 +1,12 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProductComponent from './EditProductComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
+
+import { postcomment } from '../redux/ActionCreators';
 
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
@@ -24,21 +26,68 @@ function RenderOptions(props) {
     }
 }
 
-function CanIComment() {
+const CanIComment = (props) => {
+
+    const [newComment, setNewComment] = useState(null);
+
+    const error = useSelector(state => state.comment.errMess);
+    const result = useSelector(state => state.comment.comment);
+    const loading = useSelector(state => state.comment.isLoading);
+
+    const dispatch = useDispatch();
+
+    const doComment = (comment) => dispatch(postcomment(comment));
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const commentData = {
+            productId: props.productId,
+            comment: newComment
+        };
+        doComment(commentData);
+
+    }
 
     if (localStorage.getItem('token')) {
-        return (
-            <Form>
-                <Input className="mb-1" type="text" required></Input>
-                <div className="d-flex justify-content-center">
-                    <Button type="submit" className="primary-button" >Comentar</Button>
+        if (error) {
+            return (
+                <div>
+                    <label>Hubo un error publicando el comentario</label>
                 </div>
-            </Form>
-        );
+            );
+        }
+        else if (loading) {
+            return (
+                <Loading></Loading>
+            );
+        }
+        else if (result) {
+            return (
+                <div>
+                    <label>Comentario publicado correctamente</label>
+                </div>
+            );
+        }
+        else {
+            return (
+                <Form onSubmit={handleSubmit}>
+                    <Input className="mb-1" type="text" required onChange={e => setNewComment(e.target.value)}></Input>
+                    <div className="d-flex justify-content-center">
+                        <Button type="submit" className="primary-button" >Comentar</Button>
+                    </div>
+                </Form>
+            );
+        }
+
     }
     else {
         return (
-            <div></div>
+            <Form onSubmit={handleSubmit}>
+                <Input className="mb-1" type="text" required disabled={true} ></Input>
+                <div className="d-flex justify-content-center">
+                    <Button type="submit" className="primary-button" disabled={true} tooltip={"Ingresa para porder comentar"}>Comentar</Button>
+                </div>
+            </Form>
         );
     }
 }
@@ -73,8 +122,8 @@ function RenderDetailModal(props) {
                                     <CardText>  {props.product.comments}  </CardText>
                                 </div>
 
-                                <CanIComment />
-                                
+                                <CanIComment productId={props.product._id}/>
+
                             </CardBody>
                         </Card>
 

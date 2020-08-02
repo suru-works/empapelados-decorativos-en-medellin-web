@@ -234,6 +234,96 @@ export function deleteProduct(id) {
 }
 
 
+
+export const commentReset = () => ({
+    type: ActionTypes.COMMENT_RESET
+});
+
+
+export const commentRequest = () => ({
+    type: ActionTypes.COMMENT_REQUEST
+});
+
+export const commentSuccess = (result) => ({
+    type: ActionTypes.COMMENT_SUCCESS,
+    payload: result
+});
+
+export const commentFailed = (errmess) => ({
+    type: ActionTypes.COMMENT_FAILED,
+    payload: errmess
+});
+
+export const postcomment = (data) => async (dispatch) => {
+    dispatch(commentRequest());
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+
+    try {
+        const res = await clienteAxios.post(baseBackUrl + 'products/'+data.productId+'/comments', {comment:data.comment}, {
+            headers: headers
+        });
+        dispatch(commentSuccess(res));
+
+
+    } catch (error) {
+        dispatch(commentFailed(error));
+    }
+
+
+    return true;
+
+}
+
+export const updateComment = (commentData) => async (dispatch) => {
+    dispatch(commentRequest());
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + localStorage.getItem('token')
+    }
+
+    try {
+        const res = await clienteAxios.put(baseBackUrl + 'products/'+commentData.productId+'/'+commentData.commentId , commentData.newComment, {
+            headers: headers
+        }); 
+        dispatch(commentSuccess(res));
+
+
+    } catch (error) {
+        dispatch(commentFailed(error));
+    }
+
+
+    return true;
+
+}
+
+export function deleteComment(commentData) {
+    return async (dispatch) => {
+        dispatch(commentRequest());
+
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + localStorage.getItem('token')
+            }
+            await clienteAxios.delete(`${baseBackUrl}products/${commentData.productId}/${commentData.commentId}`, {
+                headers: headers
+            });
+            dispatch(commentSuccess('Se ha eliminado'));
+        } catch (error) {
+            dispatch(commentFailed(error.response));
+        }
+    }
+}
+
+
+
+
 //----------maps actions -----------------------------------------------------------------------------------
 export const addMaps = (maps) => ({
     type: ActionTypes.ADD_MAPS,

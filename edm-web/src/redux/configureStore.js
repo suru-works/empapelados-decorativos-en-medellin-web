@@ -13,6 +13,7 @@ import { Leaders } from './leaders';
 import { Leader } from './leader';
 import { Restore } from './restore';
 import { ChangePassword } from './changePassword';
+import { Comment } from './comment';
  export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
@@ -27,7 +28,8 @@ import { ChangePassword } from './changePassword';
             leaders: Leaders,
             leader: Leader,
             restore: Restore,
-            changePassword: ChangePassword
+            changePassword: ChangePassword,
+            comment: Comment
         }),
        compose(applyMiddleware(thunk),
 
