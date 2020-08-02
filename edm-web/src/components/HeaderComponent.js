@@ -148,10 +148,7 @@ class Header extends Component {
                             </div>
                             <div className="ml-auto">
 
-                                {window.innerWidth > 768 && (
-                                    <img className="float-right" height="312" width="163" src={baseFrontUrl + "public/logo/blackLogo.png"} alt="company-logo"></img>
-                                )
-                                }
+                                <img className="float-right d-none d-md-block" height="312" width="163" src={baseFrontUrl + "public/logo/blackLogo.png"} alt="company-logo"></img>
 
                             </div>
                         </div>

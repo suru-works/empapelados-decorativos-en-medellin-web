@@ -6,7 +6,7 @@ import SessionExpiredComponent from './SessionExpiredComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 
-import { postcomment } from '../redux/ActionCreators';
+import { postcomment, commentReset, fetchProducts  } from '../redux/ActionCreators';
 
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
@@ -38,6 +38,18 @@ const CanIComment = (props) => {
 
     const doComment = (comment) => dispatch(postcomment(comment));
 
+    const doCommentReset = () => dispatch(commentReset());
+
+    const doFetch= () => dispatch(fetchProducts());
+
+    function doResetandShow(){
+        doCommentReset();
+        doFetch();
+    }
+
+
+    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const commentData = {
@@ -52,7 +64,15 @@ const CanIComment = (props) => {
         if (error) {
             return (
                 <div>
-                    <label>Hubo un error publicando el comentario</label>
+
+                    <div className="d-flex justify-content-center">
+                        <label><label>Hubo un error publicando el comentario</label></label>
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                        <Button onClick={doCommentReset} className="primary-button" >Aceptar</Button>
+                    </div>
+                    
                 </div>
             );
         }
@@ -62,9 +82,18 @@ const CanIComment = (props) => {
             );
         }
         else if (result) {
+            
             return (
                 <div>
-                    <label>Comentario publicado correctamente</label>
+
+                    <div className="d-flex justify-content-center">
+                        <label>Comentario publicado correctamente</label>
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                        <Button onClick={doResetandShow} className="primary-button" >Aceptar</Button>
+                    </div>
+                    
                 </div>
             );
         }
@@ -85,11 +114,39 @@ const CanIComment = (props) => {
             <Form onSubmit={handleSubmit}>
                 <Input className="mb-1" type="text" required disabled={true} ></Input>
                 <div className="d-flex justify-content-center">
-                    <Button type="submit" className="primary-button" disabled={true} tooltip={"Ingresa para porder comentar"}>Comentar</Button>
+                    <Button type="submit" className="primary-button" disabled={true} tooltip={"Ingresa para poder comentar"}>Comentar</Button>
                 </div>
             </Form>
         );
     }
+}
+
+
+const ShowComments = (props) => {
+
+    if (props.comments.length == 0 ) {
+        return( 
+            <CardText>Este producto aún no tiene comentarios, se el primero en opinar!</CardText>
+        );
+    }
+    else {
+
+        const oneComment = props.comments.map((item) => {
+            return (
+                <CardText>"{item.comment}" - {new Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+
+                }).format(new Date(item.updatedAt))}</CardText>
+            );
+        });
+        
+        return (
+            oneComment
+        );
+    }
+
 }
 
 function RenderDetailModal(props) {
@@ -119,7 +176,8 @@ function RenderDetailModal(props) {
                                 <CardText>  Comentarios:  </CardText>
                                 <div className="comment-size scroll mb-3">
 
-                                    <CardText>  {props.product.comments}  </CardText>
+                                    <ShowComments comments={props.product.comments}/>
+
                                 </div>
 
                                 <CanIComment productId={props.product._id}/>

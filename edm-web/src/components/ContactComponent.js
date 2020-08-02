@@ -138,17 +138,10 @@ class Contact extends Component {
                                 <h5>Mapa de nuestra localización</h5>
                                 <RenderMap></RenderMap>
 
-
-
-
                         </div>
 
                     </div>
 
-                    
-
-
-                    
                 </div>
 
                 <div className="row row-content">

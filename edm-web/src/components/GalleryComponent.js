@@ -117,7 +117,6 @@ class Gallery extends Component {
                     console.log(err);
                 }
 
-
             });
 
             return (
@@ -136,12 +135,8 @@ class Gallery extends Component {
                     </div>
 
                     <div className="row">
-
-                       
+           
                                 {galeria}
-                        
-
-
                         
                     </div>
 
