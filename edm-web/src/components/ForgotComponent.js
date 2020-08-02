@@ -7,15 +7,23 @@ import {
 } from 'reactstrap';
 import { useParams } from "react-router-dom";
 
-
-
 import { changePassword } from '../redux/ActionCreators';
+
+import { useFormik } from "formik";
+
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+    password1: Yup.string().min(6).required("Obligatorio"),
+    password2: Yup.string().required("Required")
+});
+
 
 const ForgotComponent = (props) => {
     let params = useParams();
     const dispatch = useDispatch();
-    const [password1, setPassword1] = useState(null);
-    const [password2, setPassword2] = useState(null);
+    /* const [password1, setPassword1] = useState(null);
+    const [password2, setPassword2] = useState(null); */
 
     const error = useSelector(state => state.changePassword.errMess);
     const result = useSelector(state => state.changePassword.result);
@@ -23,18 +31,29 @@ const ForgotComponent = (props) => {
 
     const doChangePassword = data => dispatch(changePassword(data));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (password1 != password2) {
-            alert('Las contraseñas no coinciden');
-        } else {
-            const changePasswordData = {
-                token: params.token,
-                newPassword: password1
-            }
-            doChangePassword(changePasswordData);
+    const submit = (data) => {
+
+        const changePasswordData = {
+            token: params.token,
+            newPassword: data.password1
         }
+        doChangePassword(changePasswordData);
+
     }
+
+    const { handleSubmit, handleChange, values, errors} = useFormik({
+        initialValues: {
+            password1: '',
+            password2: ''
+        },
+        validationSchema,
+        onSubmit(values){
+            console.log(values);
+            submit(values);
+        }
+    });
+
+    
 
     if (error) {
         return (
@@ -97,11 +116,14 @@ const ForgotComponent = (props) => {
 
                         <FormGroup>
                             <Label htmlFor="password">Nueva contraseña</Label>
-                            <Input type="password" id="password1" className="form-control" name="password1" value={password1}
-                                onChange={e => setPassword1(e.target.value)} />
+                            <Input type="password" id="password1" className="form-control" name="password1" values={values.password1}
+                                onChange={handleChange} 
+                            />
+                            {errors.password1 ? errors.password1 : null}
                             <Label htmlFor="password">Repite la contraseña</Label>
-                            <Input type="password" id="password2" className="form-control" name="password2" value={password2}
-                                onChange={e => setPassword2(e.target.value)} />
+                            <Input type="password" id="password2" className="form-control" name="password2" value={values.password2}
+                                onChange={handleChange} />
+                            {errors.password2 ? errors.password2 : null}
                         </FormGroup>
 
                         <div className="d-flex justify-content-center">
