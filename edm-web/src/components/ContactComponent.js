@@ -4,27 +4,74 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { Loading } from './LoadingComponent';
+
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-const mapUrl = ``;
+
+
+const RenderMap = () => {
+    const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=`;
+
+    
+    const error = useSelector(state => state.maps.errMess);
+    const result = useSelector(state => state.maps.maps);
+    const loading = useSelector(state => state.maps.isLoading);
+
+    if (error) {
+        return (
+            <label>Error cargando el mapa</label>
+        );
+
+    }
+    else if (loading) {
+        return (
+            <Loading></Loading>
+        );
+
+    }
+    else if (result) {
+        return (
+
+
+            <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
+                withMarker={true}
+                googleMapURL={mapUrl + `${result.key}`}
+                containerElement={<div style={{ height: `400px`, width:`auto`}} />}
+                mapElement={<div style={{ height: `100%`, width:`100%` }} />}
+                mapType='roadmap'
+                loadingElement={<Loading />}
+
+            />
+
+
+        );
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+
+}
 
 class Contact extends Component {
 
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${props.mapsKey}`;
         this.name = React.createRef();
         this.phoneNumber = React.createRef();
         this.email = React.createRef();
         this.agree = React.createRef();
         this.feedback = React.createRef();
         this.contactType = React.createRef();
-        
+
     }
 
     toggle(e) {
@@ -33,7 +80,7 @@ class Contact extends Component {
     }
 
     handleSubmit(values) {
-        const feedbackData={
+        const feedbackData = {
             feedback: values.feedback,
             name: values.name,
             phoneNumber: values.phoneNumber,
@@ -66,38 +113,42 @@ class Contact extends Component {
                         <h3>Información de localización</h3>
                     </div>
 
-                    <div className="col-12 col-sm-4 offset-sm-1">
-                        <h5>Nuestra dirección</h5>
 
-                        <address>
-                            Cra. 76b #107a-34,<br />
-                            Santander, Medellín, Antioquia<br />
-                            <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
-                            <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
-                        </address>
-                    </div>
+                    <div className="row col-12 ">
 
-                    <div className="col-12 col-sm-6 offset-sm-1">
-                        <h5>Mapa de nuestra localización</h5>
-                        <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
-                            withMarker={true}
-                            googleMapURL={this.mapURL}
-                            containerElement={<div style={{ height: `100%` }} />}
-                            mapElement={<div style={{ height: `100%` }} />}
-                            mapType= 'roadmap'
-                            loadingElement={<p>cargando</p>}
-                            
-                        />
+                        <div className="col-12 col-sm-6">
+                            <h5>Nuestra dirección</h5>
 
-                    </div>
-
-                    <div className="col-12 col-sm-11 offset-sm-1">
-                        <div className="btn-group" role="group">
-                            <a role="button" className="btn btn-primary" target="_blank"  href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
-                            <a role="button" className="btn btn-success" target="_blank"  href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
-                            <a role="button" className="btn btn-info" target="_blank"  href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                            <address>
+                                Cra. 76b #107a-34,<br />
+                                Santander, Medellín, Antioquia<br />
+                                <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
+                                <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
+                            </address>
+                            <div className="col-12 col-sm-11 offset-sm-1">
+                                <div className="btn-group" role="group">
+                                    <a role="button" className="btn btn-primary" target="_blank" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
+                                    <a role="button" className="btn btn-success" target="_blank" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                                    <a role="button" className="btn btn-info" target="_blank" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                                </div>
+                            </div>
                         </div>
+                        <div className="col-12 col-sm-6 ">
+
+                                <h5>Mapa de nuestra localización</h5>
+                                <RenderMap></RenderMap>
+
+
+
+
+                        </div>
+
                     </div>
+
+                    
+
+
+                    
                 </div>
 
                 <div className="row row-content">

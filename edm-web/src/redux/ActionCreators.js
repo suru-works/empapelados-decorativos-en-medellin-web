@@ -28,7 +28,7 @@ export const uploadFile = (data) => async (dispatch) => {
 
     try {
 
-        const res = await clienteAxios.post(baseBackUrl + data.type, data.file, { headers: headers });
+        const res = await clienteAxios.post(baseBackUrl + data.type + data.destination, data.file, { headers: headers });
         
         dispatch(uploadFileSuccess(res));
 
@@ -516,7 +516,7 @@ export const changePassword = (data) => (dispatch) => {
         body: JSON.stringify(data)
     })
         .then(response => {
-            if (response.ok) {
+            if (response.status == 200) {
                 return response;
             } else {
                 var error = new Error('Error ' + response.status + ': ' + response.statusText);
@@ -528,15 +528,15 @@ export const changePassword = (data) => (dispatch) => {
         })
         .then(response => response.json())
         .then(response => {
-            if (response.success) {
-                dispatch(restoreSuccess(response));
+            if (response.status == 200) {
+                dispatch(changePasswordSuccess(response));
             } else {
                 var error = new Error('Error ' + response.status);
                 error.response = response;
                 throw error;
             }
         })
-        .catch(error => dispatch(restoreFailed(error)));
+        .catch(error => dispatch(changePasswordFailed(error)));
 }
 
 //------------Feedback actions -----------------------------------------------------------------------------

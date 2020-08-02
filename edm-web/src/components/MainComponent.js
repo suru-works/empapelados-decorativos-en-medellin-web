@@ -68,7 +68,6 @@ class Main extends Component {
         const ContactPage = () => {
             return (
                 <Contact 
-                    mapsKey={this.props.maps.maps.key}
                     feedbackSubmitFunction={this.props.postFeedback}
                 />
             )

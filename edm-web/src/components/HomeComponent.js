@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 function RenderRandomLeader({ leader }) {
     if (leader) {
         return (
-            <div style={{ margin: '50px' }}>
+            <div >
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <h1 style={{textAlign: 'center'}}>Nuestros líderes</h1>
@@ -18,7 +18,7 @@ function RenderRandomLeader({ leader }) {
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-12">
-                        <Card style={{ width: '70vh', height: 'auto', margin: '0 auto' }}>
+                        <Card >
                             <CardImg src={baseFrontUrl + leader.imageUrl} />
                             <CardTitle className="d-flex justify-content-center mt-3 mb-0 pb-1">{leader.name}</CardTitle>
                             <CardBody className="d-flex justify-content-center mt-0 pt-1 mb-0 pb-1">
@@ -77,16 +77,39 @@ function Home(props) {
 
     else {
         return (
-            <div className="container">
-                <div className="row align-items-center justify-content-center">
-                    <ImageGallery items={images} showBullets={true} autoPlay={true} slideDuration={600} />
-                </div>
-                <div className="row col-12 align-items-center justify-content-center">
-                    <Link to='/galeria'>
-                        <Button className="primary-button">Ver más</Button>{' '}
-                    </Link>
-                </div>
-                <RenderRandomLeader leader={featuredLeader} />
+            <div className="container justify-content-center">
+
+                    <div className="col-12 row justify-content-center">
+                        <div className="col-lg-6 col-md-12 " style={{ padding: 30}}>
+                            <h1 className="text-center">Empapelados Decorativos en Medellin.</h1>
+                                <p className="text-center">Venta e instalación de empapelados decorativos, cortinas y pinturas.</p>
+                                <h3 className="text-center">Tenemos mas de 30 años de experiencia.</h3>
+                                <br></br>
+                        </div>
+                    </div>
+
+                    <div className="col-12 justify-content-center">
+                        <ImageGallery items={images} showBullets={true} autoPlay={true} slideDuration={600} />
+                    </div>
+                    
+                    <div className="col-12 justify-content-center">
+
+                        <Link to='/galeria' >
+                              
+                            <div className="d-flex justify-content-center">
+                                <Button className="primary-button">Ver más</Button>{' '}
+                            
+                            </div>
+                        </Link>
+                    </div>
+
+                    <div className="mt-3 col-12 col-lg-6 col-md-12 justify-content-center">
+
+                        <RenderRandomLeader leader={featuredLeader} />
+                    </div>
+
+                
+                
             </div>
         )
 
