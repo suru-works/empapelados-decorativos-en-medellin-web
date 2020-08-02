@@ -21,10 +21,6 @@ const encrypt = text => {
 
 const decrypt = data => {
   const decrypted = CryptoJS.AES.decrypt(data, process.env.CRYPTOJS_SECRET);
-  console.log('desencriptado');
-  console.log(decrypted);
-  console.log('em string');
-  console.log(decrypted.toString());
   return decrypted;
 };
 
@@ -43,10 +39,8 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
   const verifyToken = Math.floor((Math.random() * 100) + 54);
   req.body.verifyToken = verifyToken;
   req.body.verified = false;
-  console.log(req.body);
   User.register(new User({ username: req.body.username }), req.body.password, (err, user) => {
     if (err) {
-      console.log(err);
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
       res.json({ err: err });
@@ -125,7 +119,6 @@ router.post('/forgot', async function (req, res, next) {
     let user = await User.findOne({ username: data.username });
 
     if (user) {
-      console.log(data.username);
       var isTokenNotUnique = true;
       const now = new Date();
       now.setMinutes(now.getMinutes() + 10);
@@ -180,7 +173,6 @@ router.post('/forgot', async function (req, res, next) {
         msg: "User does not exist"
       });
     } else {
-      console.log(err);
       res.status(500);
       res.json({
         msg: "Unknown error"
@@ -197,11 +189,6 @@ router.post('/forgot/:token', async function (req, res, next) {
 
     const now = new Date();
     const exp = parseISOString(token[0]);
-
-    console.log('esta es la fecha actual');
-    console.log(now.toISOString());
-    console.log('esta es la fecha del token');
-    console.log(exp.toISOString());
     
 
     if (now > exp) {
@@ -216,6 +203,7 @@ router.post('/forgot/:token', async function (req, res, next) {
         await user.save();
         res.status(200);
         res.json({
+          status: 200,
           msg: "Password changed successfully"
         });
 
@@ -242,7 +230,6 @@ router.post('/forgot/:token', async function (req, res, next) {
       });
     }
     else {
-      console.log(err);
       res.status(500);
       res.json({
         msg: "Unknown error"

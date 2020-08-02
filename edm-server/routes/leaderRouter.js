@@ -18,7 +18,6 @@ leaderRouter.route('/')
 .get(cors.cors, (req, res, next) => {
     Leaders.find({})
     .then((leaders) => {
-        console.log(leaders);
         res.json(leaders);
     }, (err) => next(err))
     .catch((err) => next(err));

@@ -29,8 +29,6 @@ const subirArchivo = async (req,res,next) =>{
     const upload = multer({
         storage: fileStorage = multer.diskStorage({
             destination: (req, file, cb) => {
-                //cb(null, __dirname + '/../uploads')
-                console.log(process.env.MEDIA_URL);
                 cb(null, process.env.MEDIA_URL+'images/'+req.params.destination)
             },
             filename: (req, file, cb) => {
@@ -40,7 +38,6 @@ const subirArchivo = async (req,res,next) =>{
         })
     }).single('file');
     upload(req, res, async (error) =>{
-        console.log(req.file);
         res.json({archivo: req.file.filename});
     })
 }
@@ -51,7 +48,6 @@ const eliminarArchivo = async (req,res,next) => {
         fs.unlinkSync(process.env.MEDIA_URL+'images/'+req.params.destination+'/'+req.params.fileId);
         res.status(200).json({msg: 'eliminado correctamente'});        
     } catch (error) {
-        console.log(error);
         res.status(500).json({msg: 'Error al eliminar el archivo'});
     }
     
@@ -70,8 +66,6 @@ router.route("/image/:destination")
 router.route("/image/:destination/:fileId")
 .options(cors.corsWithOptions, (req,res) => {res.sendStatus(200)})
 .all((req, res, next) => {
-    console.log(req.params.destination);
-    console.log(req.params.fileId);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     next();
