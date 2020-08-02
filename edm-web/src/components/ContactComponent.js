@@ -42,7 +42,7 @@ const RenderMap = () => {
             <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
                 withMarker={true}
                 googleMapURL={mapUrl + `${result.key}`}
-                containerElement={<div style={{ height: `100%`, width:`100%`}} />}
+                containerElement={<div style={{ height: `400px`, width:`auto`}} />}
                 mapElement={<div style={{ height: `100%`, width:`100%` }} />}
                 mapType='roadmap'
                 loadingElement={<Loading />}
