@@ -1,12 +1,38 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
-import {Loading} from './LoadingComponent';
+import { Loading } from './LoadingComponent';
 import { productReset, postProduct, uploadFileReset } from '../redux/ActionCreators';
+
+import { useFormik } from "formik";
+import * as yup from "yup";
+
+const validationSchema = yup.object(
+
+    {
+        newName: yup
+            .string()
+            .min(4, "El nombre debe ser de mínimo 4 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+        newPrice: yup
+            .number()
+            .max(9999999999999999999999999, "La cifra debe ser de máximo 25 números")
+            .required("Este campo es obligatorio"),
+        newUnits: yup
+            .number()
+            .max(9999999999999999999999999, "La cifra debe ser de máximo 25 números")
+            .required("Este campo es obligatorio"),
+        newDescription: yup
+            .string()
+            .min(10, "La descripción debe ser de mínimo 10 caracteres")
+            .max(280, "La descripción debe ser de maximo 280 caracteres")
+            .required("Este campo es obligatorio"),
+    });
 
 const AddProductComponent = (props) => {
 
@@ -23,10 +49,10 @@ const AddProductComponent = (props) => {
     const fileSuccess = useSelector(state => state.uploadFile.result);
 
     const readyToPostProduct = () => {
-        if(fileSuccess){
+        if (fileSuccess) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
@@ -42,16 +68,17 @@ const AddProductComponent = (props) => {
 
     const doAddProduct = (productData) => dispatch(postProduct(productData));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const productSubmit = (values) => {
 
         if (fileSuccess) {
             const productData = {
-                price: price,
-                units: units,
-                featured: featured,
-                name: name,
-                description: description
+
+                name: values.newName,
+                price: values.newPrice,
+                units: values.newUnits,
+                description: values.newDescription,
+
+                featured: featured
 
             }
             if (productData.featured == 'on') {
@@ -65,6 +92,19 @@ const AddProductComponent = (props) => {
             doAddProduct(productData);
         }
     }
+
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            newName: '',
+            newPrice: '',
+            newUnits: '',
+            newDescription: ''
+        },
+        validationSchema,
+        onSubmit(values) {
+            productSubmit(values);
+        }
+    });
 
     if (error) {
         if (error.response) {
@@ -102,7 +142,8 @@ const AddProductComponent = (props) => {
             </Modal>
         );
     }
-    if (result) { {
+    if (result) {
+        {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
@@ -127,27 +168,35 @@ const AddProductComponent = (props) => {
 
                     <div className="d-flex space-around row">
 
-                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
+                        <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }}  >
                             <Dropzone type={'media/image'} destination={'/products'} />
                         </Card>
 
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1}}>
-                            <Card style={{ padding: 11}}>
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }}>
+                            <Card style={{ padding: 11 }}>
 
-                                <CardBody style={{ padding: 8}}>
+                                <CardBody style={{ padding: 8 }}>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
-                                    <Input type="text" id="name" name="name"
-                                        onChange={e => setName(e.target.value)}
-                                        required
+                                    <Input type="text" id="newName" name="newName" values={values.newName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                     />
+                                    {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
+
                                     <Label htmlFor="price">Precio</Label>
-                                    <Input type="number" id="price" name="price"
-                                        onChange={e => setPrice(e.target.value)} />
+                                    <Input type="number" id="newPrice" name="newPrice" values={values.newPrice}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.newPrice && errors.newPrice) ? (<Alert color="danger">{errors.newPrice}</Alert>) : null}
+
                                     <Label htmlFor="units">Unidades disponibles</Label>
-                                    <Input type="number" id="units" name="units"
-                                        onChange={e => setUnits(e.target.value)} />
+                                    <Input type="number" id="newUnits" name="newUnits" values={values.newUnits}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.newUnits && errors.newUnits) ? (<Alert color="danger">{errors.newUnits}</Alert>) : null}
+
                                     <FormGroup check>
                                         <Label check>
                                             <Input type="checkbox" id="featured" name="featured"
@@ -156,14 +205,17 @@ const AddProductComponent = (props) => {
                                                  Destacar
                                         </Label>
                                     </FormGroup>
+
                                     <Label htmlFor="description">Descripcion del producto</Label>
-                                    <Input type="textarea" id="description" name="description"
-                                        onChange={e => setDescription(e.target.value)} />
-                                    
+                                    <Input type="textarea"  id="newDescription"  name="newDescription"  values={values.newDescription}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    { (touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
+
                                     <div class="d-flex justify-content-center" >
                                         <Button type="submit" value="submit" className="secondary-button" disabled={!readyToPostProduct()}>Añadir</Button>
                                     </div>
-                                    
+
 
                                 </CardBody>
                             </Card>

@@ -1,20 +1,44 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import {Loading} from './LoadingComponent';
-import { productReset, postProduct, updateProduct, updateFileReset} from '../redux/ActionCreators';
+import { updateProduct, updateFileReset} from '../redux/ActionCreators';
+import { useFormik } from "formik";
+import * as yup from "yup";
 
+const validationSchema = yup.object(
+
+    {
+        newName: yup
+            .string()
+            .min(4, "El nombre debe ser de mínimo 4 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+        newPrice: yup
+            .number()
+            .max(9999999999999999999999999, "La cifra debe ser de máximo 25 números")
+            .required("Este campo es obligatorio"),
+        newUnits: yup
+            .number()
+            .max(9999999999999999999999999, "La cifra debe ser de máximo 25 números")
+            .required("Este campo es obligatorio"),
+        newDescription: yup
+            .string()
+            .min(10, "La descripción debe ser de mínimo 10 caracteres")
+            .max(280, "La descripción debe ser de maximo 280 caracteres")
+            .required("Este campo es obligatorio"),
+    });
 
 const EditProductComponent = (props) => {
     const [price, setPrice] = useState(props.product.price);
     const [units, setUnits] = useState(props.product.units);
     const [featured, setFeatured] = useState(props.product.featured);
     const [name, setName] = useState(props.product.name);
-    const [description, setDescription] = useState(props.product.description);
+    const [description, setDescription] = useState(props.product.description);  
 
     const error = useSelector(state => state.product.errMess);
     const result = useSelector(state => state.product.product);
@@ -39,15 +63,16 @@ const EditProductComponent = (props) => {
 
     const doUpdateProduct = (productData) => dispatch(updateProduct(productData));
 
-    const uploadChanges = (event) => {
-        event.preventDefault();
+    const uploadChanges = (values) => {
+        
         const productData = {
             productId: props.product._id,
-            price: price,
-            units: units,
-            featured: featured,
-            name: name,
-            description: description
+            name: values.newName,
+            price: values.newPrice,
+            units: values.newUnits,
+            description: values.newDescription,
+
+            featured: featured
 
         }
         if (productData.featured == 'on') {
@@ -66,8 +91,18 @@ const EditProductComponent = (props) => {
         doUpdateProduct(productData);
     }
 
-
-
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            newName: name,
+            newPrice: price,
+            newUnits: units,
+            newDescription: description
+        },
+        validationSchema,
+        onSubmit(values) {
+            uploadChanges(values);
+        }
+    });
 
     if (updateFileError) {
         if (updateFileError.response) {
@@ -163,18 +198,30 @@ const EditProductComponent = (props) => {
                             <Dropzone type={'media/image'} destination= {'/products'} updateFileData={updateFileData} />
                         </Card>
 
-                        <Form onSubmit={uploadChanges} className="col" style={{ padding: 1}} >
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1}} >
                             <Card style={{ padding: 11}}>
 
                                 <CardBody style={{ padding: 8}}>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
-                                    <Input type="text" id="name" name="name" value={name} onChange={event => setName(event.target.value)} required />
+                                    <Input type="text" id="newName" name="newName" value={values.newName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
+
                                     <Label htmlFor="price">Precio</Label>
-                                    <Input type="number" id="price" name="price" value={price} onChange={event => setPrice(event.target.value)} />
+                                    <Input type="number" id="newPrice" name="newPrice" value={values.newPrice}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.newPrice && errors.newPrice) ? (<Alert color="danger">{errors.newPrice}</Alert>) : null}
+                                    
                                     <Label htmlFor="units">Unidades disponibles</Label>
-                                    <Input type="number" id="units" name="units" value={units} onChange={event => setUnits(event.target.value)} />
+                                    <Input type="number" id="newUnits" name="newUnits" value={values.newUnits}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}/>
+                                    {(touched.newUnits && errors.newUnits) ? (<Alert color="danger">{errors.newUnits}</Alert>) : null}
+                                    
                                     <Label check>destacar</Label>
                                     <FormGroup check>
                                         <Label check>
@@ -184,7 +231,10 @@ const EditProductComponent = (props) => {
                                         </Label>
                                     </FormGroup>
                                     <Label htmlFor="description">Descripcion del producto</Label>
-                                    <Input type="textarea" id="description" name="description" value={description} onChange={event => setDescription(event.target.value)} />
+                                    <Input type="textarea" id="newDescription" name="newDescription" value={values.newDescription}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    {(touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
 
                                     <div class="d-flex justify-content-center" >
                                         <Button className="secondary-button" type="submit" value="submit"  >Guardar</Button>

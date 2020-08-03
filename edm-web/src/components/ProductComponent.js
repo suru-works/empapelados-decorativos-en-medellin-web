@@ -59,9 +59,6 @@ const CanIComment = (props) => {
         doFetch();
     }
 
-
-    
-
     const submit = (values) => {
         const commentData = {
             productId: props.productId,
@@ -122,11 +119,11 @@ const CanIComment = (props) => {
             return (
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                    <Input className="mb-1" type="text" id="newComment" className="form-control" name="newComment"  values={values.newComment}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    ></Input>
-                    { (touched.newComment && errors.newComment) ? (<Alert color="danger">{errors.newComment}</Alert>) : null}
+                        <Input className="mb-1" type="text" id="newComment" className="form-control" name="newComment"  values={values.newComment}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        ></Input>
+                        { (touched.newComment && errors.newComment) ? (<Alert color="danger">{errors.newComment}</Alert>) : null}
                     
                     </FormGroup>
                     <div className="d-flex justify-content-center">
@@ -202,7 +199,7 @@ function RenderDetailModal(props) {
                                     <CardText>  {props.product.description}  </CardText>
                                 </div>
                                 <CardText>  Comentarios:  </CardText>
-                                <div className="comment-size scroll mb-3">
+                                <div className="comment-size scroll mb-3" style={{ paddingRight: 30 }}>
 
                                     <ShowComments comments={props.product.comments}/>
 

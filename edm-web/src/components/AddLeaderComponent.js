@@ -1,12 +1,34 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
 import {Loading} from './LoadingComponent';
 import { leaderReset, postLeader, uploadFileReset } from '../redux/ActionCreators';
+import { useFormik } from "formik";
+
+import * as yup from "yup";
+
+const validationSchema = yup.object(
+    {
+        newName: yup
+            .string()
+            .min(4,"El nombre debe ser de mínimo 4 caracteres")
+            .max(25,"El nombre debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+        newDesignation: yup
+            .string()
+            .min(4,"El cargo debe ser de mínimo 4 caracteres")
+            .max(25,"El cargo debe ser de máximo 25 caracteres")
+            .required("Este campo es obligatorio"),
+        newDescription: yup
+            .string()
+            .min(10,"La descripción debe ser de mínimo 10 caracteres")
+            .max(280,"La descripción debe ser de maximo 280 caracteres")
+            .required("Este campo es obligatorio"),
+    });
 
 const AddLeaderComponent = (props) => {
 
@@ -40,27 +62,33 @@ const AddLeaderComponent = (props) => {
 
     const doAddLeader = (leaderData) => dispatch(postLeader(leaderData));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const leaderSubmit = (values) => {
 
         if (fileSuccess) {
             const leaderData = {
-                name: name,
-                designation: designation,
-                description: description
 
+                name: values.newName,
+                designation: values.newDesignation,
+                description: values.newDescription
             }
-            if (leaderData.featured == 'on') {
-                leaderData.featured = true;
-            }
-            else {
-                leaderData.featured = false;
-            }
+            
             leaderData.imageUrl = '/public/images/leaders/' + fileSuccess.data.archivo;
 
             doAddLeader(leaderData);
         }
     }
+
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            newName: '',
+            newDesignation: '',
+            newDescription: ''
+        },
+        validationSchema,
+        onSubmit(values) {
+            leaderSubmit(values);
+        }
+    });
 
     if (error) {
         if (error.response) {
@@ -134,24 +162,25 @@ const AddLeaderComponent = (props) => {
                                     <CardTitle> Ingresa los datos del lider </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
-                                    <Input type="text" id="name" name="name"
-                                        onChange={e => setName(e.target.value)}
-                                        required
+                                    <Input type="text"  id="newName"  name="newName"  values={values.newName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                     />
+                                    { (touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
                                     <Label htmlFor="designation">Cargo</Label>
-                                    <Input type="text" id="designation" name="designation"
-                                        onChange={e => setDesignation(e.target.value)}
-                                        required
+                                    <Input type="text"  id="newDesignation"  name="newDesignation"  values={values.newDesignation}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                     />
-
+                                    { (touched.newDesignation && errors.newDesignation) ? (<Alert color="danger">{errors.newDesignation}</Alert>) : null}
                                     <Label htmlFor="description">Descripción del lider</Label>
-                                    <Input type="textarea" id="description" name="description"
-                                        onChange={e => setDescription(e.target.value)} />
-                                    
+                                    <Input type="textarea"  id="newDescription"  name="newDescription"  values={values.newDescription}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                    { (touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
                                     <div class="d-flex justify-content-center" >
                                         <Button type="submit" value="submit" className="secondary-button" disabled={!readyToPostLeader()}>Añadir</Button>
                                     </div>
-                                    
 
                                 </CardBody>
                             </Card>
