@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from './LoadingComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    Button, Form, FormGroup, Input, Label, Tooltip
+    Button, Form, FormGroup, Input, Label, Tooltip, Alert
 } from 'reactstrap';
 import { useParams } from "react-router-dom";
 
@@ -13,17 +13,18 @@ import { useFormik } from "formik";
 
 import * as yup from "yup";
 
-const validationSchema = yup.object().shape(
+const validationSchema = yup.object(
     {
         password: yup
             .string()
-            .min(8)
-            .required(),
+            .min(8,"la contraseña debe ser de minimo 8 caracteres")
+            .max(40,"la contraseña debe ser de maximo 40 caracteres")
+            .required("Este campo es obligatorio"),
         confirm_password: yup
             .string()
-            .required()
+            .required("Este campo es obligatorio")
             .oneOf([yup.ref('password'), null], 'Las contraseñas deben de coincidir',),
-    })
+    });
 
 const ForgotComponent = (props) => {
     let params = useParams();
@@ -45,7 +46,7 @@ const ForgotComponent = (props) => {
 
     }
 
-    const { handleSubmit, handleChange, touched, values, errors } = useFormik({
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
             password: '',
             confirm_password: ''
@@ -121,16 +122,21 @@ const ForgotComponent = (props) => {
                         <FormGroup>
                             <Input type="password" id="password" className="form-control" name="password" label="Nueva contraseña" values={values.password}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
-                            <Tooltip placement="right" isOpen={ touched.password && errors.password ? true : false} target="password">
+                            { (touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+                            {/* <Tooltip placement="right" isOpen={ (touched.password && errors.password) ? true : false} target="password">
                                 {errors.confirm_password}
-                            </Tooltip>
+                            </Tooltip> */}
                             <Label htmlFor="password">Repite la contraseña</Label>
                             <Input type="password" id="confirm_password" className="form-control" name="confirm_password" value={values.confirm_password}
-                                onChange={handleChange} />
-                            <Tooltip placement="right" isOpen={ touched.confirm_password && errors.confirm_password ? true : false} target="confirm_password">
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                             />
+                             { (touched.confirm_password && errors.confirm_password) ? (<Alert color="danger">{errors.confirm_password}</Alert>) : null }
+                            {/* <Tooltip placement="right" isOpen={ (touched.confirm_password && errors.confirm_password) ? true : false} target="confirm_password">
                                 {errors.confirm_password}
-                            </Tooltip>
+                            </Tooltip> */}
                             
                         </FormGroup>
 
