@@ -14,7 +14,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-
 const RenderLoginComponent = (props) => {
 
     const validationSchema = yup.object(
@@ -204,11 +203,13 @@ const LoginComponent = (props) => {
             if (result.success) {
                 return (
                     <div>
-                        <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
-                        <ModalBody>
-                            <p>Ingreso exitoso</p>
-                        </ModalBody>
-                    </div>
+                        
+                            <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                            <ModalBody>
+                                <p>Ingreso exitoso</p>
+                            </ModalBody>
+
+                    </div >
                 );
             }
 

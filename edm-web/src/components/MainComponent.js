@@ -8,9 +8,13 @@ import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Forgot from './ForgotComponent';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated,postProduct, deleteProduct,
-        postLeader, deleteLeader } from '../redux/ActionCreators';
+import {
+    fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated, postProduct, deleteProduct,
+    postLeader, deleteLeader
+} from '../redux/ActionCreators';
 import { baseBackUrl } from '../shared/baseUrl';
+
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => {
     return {
@@ -67,7 +71,7 @@ class Main extends Component {
         }
         const ContactPage = () => {
             return (
-                <Contact 
+                <Contact
                     feedbackSubmitFunction={this.props.postFeedback}
                 />
             )
@@ -75,7 +79,7 @@ class Main extends Component {
 
         const AboutPage = () => {
             return (
-                <About 
+                <About
                     postLeader={this.props.postLeader}
                     leaders={this.props.leaders.leaders}
                     leadersLoading={this.props.leaders.isLoading}
@@ -94,17 +98,22 @@ class Main extends Component {
                     registerFunction={this.props.register}
                     logoutFunction={this.props.logout}
                 />
-                <Switch>
-                    <Route path="/inicio" component={HomePage} />
-                    <Route path="/restablecer-contraseña/:token" component={() => <Forgot/>} />
-                    <Route path="/galeria" component={GalleryPage} />
-                    <Route exact path='/acerca-de-nosotros' component={AboutPage} />
-                    <Route exact path='/contacto' component={ContactPage} />
-                    <Redirect to="/inicio"></Redirect>
-                </Switch>
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout={500}>
+                        <Switch location={this.props.location}>
+                            <Route path="/inicio" component={HomePage} />
+                            <Route path="/restablecer-contraseña/:token" component={() => <Forgot />} />
+                            <Route path="/galeria" component={GalleryPage} />
+                            <Route exact path='/acerca-de-nosotros' component={AboutPage} />
+                            <Route exact path='/contacto' component={ContactPage} />
+                            <Redirect to="/inicio"></Redirect>
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
+
                 <Footer />
 
-            </div>
+            </div >
         );
     }
 }
