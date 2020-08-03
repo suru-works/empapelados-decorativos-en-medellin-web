@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
+import { FormGroup, Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProductComponent from './EditProductComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
@@ -7,6 +7,9 @@ import { baseFrontUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 
 import { postcomment, commentReset, fetchProducts  } from '../redux/ActionCreators';
+import { useFormik } from "formik";
+
+import * as yup from "yup";
 
 function RenderOptions(props) {
     if (props.areEditOptionsActived) {
@@ -26,9 +29,18 @@ function RenderOptions(props) {
     }
 }
 
-const CanIComment = (props) => {
 
-    const [newComment, setNewComment] = useState(null);
+const validationSchema = yup.object(
+    {
+        newComment: yup
+            .string()
+            .min(2,"el comentario debe ser de minimo 2 caracteres")
+            .max(280,"el comentario debe ser de maximo 280 caracteres")
+            .required("Este campo es obligatorio"),
+    });
+
+
+const CanIComment = (props) => {
 
     const error = useSelector(state => state.comment.errMess);
     const result = useSelector(state => state.comment.comment);
@@ -50,15 +62,24 @@ const CanIComment = (props) => {
 
     
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const submit = (values) => {
         const commentData = {
             productId: props.productId,
-            comment: newComment
+            comment: values.newComment
         };
         doComment(commentData);
 
     }
+
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            newComment: ''
+        },
+        validationSchema,
+        onSubmit(values) {
+            submit(values);
+        }
+    });
 
     if (localStorage.getItem('token')) {
         if (error) {
@@ -66,7 +87,7 @@ const CanIComment = (props) => {
                 <div>
 
                     <div className="d-flex justify-content-center">
-                        <label><label>Hubo un error publicando el comentario</label></label>
+                        <label>Hubo un error publicando el comentario</label>
                     </div>
 
                     <div className="d-flex justify-content-center">
@@ -100,9 +121,16 @@ const CanIComment = (props) => {
         else {
             return (
                 <Form onSubmit={handleSubmit}>
-                    <Input className="mb-1" type="text" required onChange={e => setNewComment(e.target.value)}></Input>
+                    <FormGroup>
+                    <Input className="mb-1" type="text" id="newComment" className="form-control" name="newComment"  values={values.newComment}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    ></Input>
+                    { (touched.newComment && errors.newComment) ? (<Alert color="danger">{errors.newComment}</Alert>) : null}
+                    
+                    </FormGroup>
                     <div className="d-flex justify-content-center">
-                        <Button type="submit" className="primary-button" >Comentar</Button>
+                        <Button type="submit" value="submit" className="primary-button" >Comentar</Button>
                     </div>
                 </Form>
             );
