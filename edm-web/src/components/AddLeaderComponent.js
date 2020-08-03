@@ -133,7 +133,7 @@ const AddLeaderComponent = (props) => {
                 <ModalBody>
                     <p>Lider añadido correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
         );
     }

@@ -249,10 +249,10 @@ function RenderDeleteModal(props) {
                         </div>
                         <div className="row justify-content-center">
                             <div className="col-3">
-                                <Button onClick={() => props.handleDelete(props.product._id)}>Confirmar</Button>
+                                <Button className="secondary-button" onClick={() => props.handleDelete(props.product._id)}>Confirmar</Button>
                             </div>
                             <div className="col-3">
-                                <Button onClick={props.toggleDeleteModal}>Cancelar</Button>
+                                <Button className="primary-button" onClick={props.toggleDeleteModal}>Cancelar</Button>
                             </div>
                         </div>
                     </div>
