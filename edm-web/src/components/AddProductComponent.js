@@ -150,7 +150,7 @@ const AddProductComponent = (props) => {
                     <ModalBody>
                         <p>Producto añadido correctamente.</p>
                     </ModalBody>
-                    <Button onClick={toogleAndReset}>Aceptar</Button>
+                    <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
                 </Modal>
             );
         }
