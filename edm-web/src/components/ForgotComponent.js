@@ -120,7 +120,8 @@ const ForgotComponent = (props) => {
                     <Form onSubmit={handleSubmit}>
 
                         <FormGroup>
-                            <Input type="password" id="password" className="form-control" name="password" label="Nueva contraseña" values={values.password}
+                            <Label htmlFor="password">Nueva contraseña</Label>
+                            <Input type="password" id="password" className="form-control" name="password" values={values.password}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
