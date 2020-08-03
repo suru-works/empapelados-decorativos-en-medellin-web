@@ -43,7 +43,15 @@ function RenderRandomLeader({ leader }) {
 
 function Home(props) {
 
-    const images = props.products.map((item) => {
+    
+
+    function getFeaturedProducts(product) {
+        return product.featured;
+    }
+
+    const featuredProducts = props.products.filter(getFeaturedProducts);
+
+    const images = featuredProducts.map((item) => {
         return (
             {
                 original: baseFrontUrl + item.imageUrl,
@@ -103,13 +111,33 @@ function Home(props) {
                         </Link>
                     </div>
 
-                    <div className="mt-3 col-12 col-lg-6 col-md-12 justify-content-center">
+                    <div className="row">
 
-                        <RenderRandomLeader leader={featuredLeader} />
+                        <div className="mt-3 col-12 col-lg-6 col-md-12 justify-content-center">
+                            <RenderRandomLeader leader={featuredLeader} />
+                        </div>
+                        <div className="mt-3 col-12 col-lg-6 col-md-12 justify-content-center">
+
+                        <div style={{ padding: 30, marginTop: 70}}>
+                            <h1 className="text-center">"Excelente asesoría y atención al cliente"</h1>
+                                <p className="text-center">Ismael Restrepo.  1998 - 2020.</p>
+                                <h3 className="text-center">Habla con nosotros para saber mejor que necesitas</h3>
+                                <br></br>
+
+                            <Link to='/contacto' >
+                              
+                              <div className="d-flex justify-content-center">
+                                  <Button className="primary-button">Contáctanos</Button>{' '}
+                              
+                              </div>
+                          </Link>
+                            
+                        </div>
+                                                        
+                        </div>
+                        
                     </div>
 
-                
-                
             </div>
         )
 

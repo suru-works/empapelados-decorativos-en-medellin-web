@@ -39,10 +39,43 @@
 }
 
 .jumbotron {
-  padding:70px 30px 70px 30px;
+  padding:30px 30px 5px 30px !important;
   margin:0px auto;
   background-color: #bf360c !important;
   color:#ffffff;
+}
+
+.minijumbotron {
+  padding:15px 30px 15px 30px !important;
+  margin:0px auto;
+  background-color: #bf360c !important;
+  color:#ffffff;
+}
+
+.jumbo-button-1 {
+  float:right;
+  padding: 5px 5px 5px 5px;
+  background-color: #870000 !important;
+  color: #ffffff !important;
+  width: 60px;
+  height: 60px;
+  border-radius: 47% !important; 
+}
+
+.jumbo-button-2 {
+  position: absolute  !important;
+  padding: 5px 5px 5px 5px;
+  background-color: #870000 !important;
+  color: #ffffff !important;
+  width: 60px;
+  height: 60px;
+  border-radius: 47% !important;
+  bottom: 0px !important;
+  right: 30px !important;
+}
+
+.button-container {
+  position: relative  !important;
 }
 
 .primary-button {
