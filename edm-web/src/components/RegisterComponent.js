@@ -3,18 +3,40 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
     Button, Modal, ModalHeader, ModalBody,
-    Form, FormGroup, Input, Label
+    Form, FormGroup, Input, Labelm, Alert, Label
 } from 'reactstrap';
 
-import {Loading} from './LoadingComponent';
+
+import { Loading } from './LoadingComponent';
 import { register, registerReset } from '../redux/ActionCreators';
+
+import { useFormik } from "formik";
+
+import * as Yup from "yup";
+
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+
+const validationSchema = Yup.object(
+    {   
+        user: Yup
+        .string()
+        .email("Ingresa un correo electronico valido.")
+        .required("Este campo es obligatorio"),
+        password: Yup
+            .string()
+            .min(8, "la contraseña debe ser de minimo 8 caracteres")
+            .max(40, "la contraseña debe ser de maximo 40 caracteres")
+            .required("Este campo es obligatorio"),
+        name: Yup
+        .string(),
+        phoneNumber: Yup
+        .string()
+        .matches(phoneRegExp, 'Ingresa un telefono valido'),
+    });
 
 
 const RegisterComponent = (props) => {
-    const [user, setUser] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [name, setName] = useState(null);
-    const [phoneNumber, setPhoneNumber] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -29,10 +51,22 @@ const RegisterComponent = (props) => {
 
     const doRegister = data => dispatch(register(data));
 
-    const handleRegister = event => {
-        event.preventDefault();
-        doRegister({ username: user, password: password, admin: false, name: name, phoneNumber: phoneNumber });
+    const handleRegister = values => {
+        doRegister({ username: values.user, password: values.password, admin: false, name: values.name, phoneNumber: values.phoneNumber });
     }
+
+    const { handleSubmit, handleChange, handleBlur, touched, values, errors } = useFormik({
+        initialValues: {
+            user: '',
+            password: '',
+            name: '',
+            phoneNumber: ''
+        },
+        validationSchema,
+        onSubmit(values) {
+            handleRegister(values);
+        }
+    });
 
     if (error) {
         return (
@@ -44,18 +78,18 @@ const RegisterComponent = (props) => {
             </Modal>
         );
     }
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
                 <ModalBody>
-                    <Loading/>
+                    <Loading />
                 </ModalBody>
             </Modal>
         );
     }
     if (result) {
-        if(result.success){
+        if (result.success) {
             return (
                 <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                     <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
@@ -65,47 +99,58 @@ const RegisterComponent = (props) => {
                 </Modal>
             );
         }
-        
+
 
     }
     else {
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
+                <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
 
-                    <ModalBody>
-                        <Form onSubmit={handleRegister}>
-                            <FormGroup>
-                                <Label htmlFor="user">Correo electrónico</Label>
-                                <Input type="user" id="user" name="user"
-                                     onChange={e => setUser(e.target.value)} />
-                            </FormGroup>
+                <ModalBody>
+                    <Form onSubmit={handleRegister}>
+                        <FormGroup>
+                            <Label htmlFor="user">Correo electrónico</Label>
+                            <Input type="user" id="user" name="user" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.user && errors.user) ? (<Alert color="danger">{errors.user}</Alert>) : null}
 
-                            <FormGroup>
-                                <Label htmlFor="password">Contraseña*</Label>
-                                <Input type="password" id="password" name="password"
-                                    onChange={e => setPassword(e.target.value)} />
-                            </FormGroup>
+                        </FormGroup>
 
-                            <FormGroup>
-                                <Label htmlFor="name">Nombre</Label>
-                                <Input type="text" id="name" name="name"
-                                    onChange={e => setName(e.target.value)} />
-                            </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="password">Contraseña*</Label>
+                            <Input type="password" id="password" name="password" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.password && errors.password) ? (<Alert color="danger">{errors.password}</Alert>) : null}
+                        </FormGroup>
 
-                            <FormGroup>
-                                <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
-                                <Input type="tel" id="phoneNumber" name="phoneNumber"
-                                    onChange={e => setPhoneNumber(e.target.value)}
-                                    pattern="^\+[1-9]{1}[0-9]{3,14}$"
-                                />
-                            </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="name">Nombre</Label>
+                            <Input type="text" id="name" name="name" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.name && errors.name) ? (<Alert color="danger">{errors.name}</Alert>) : null}
+                        </FormGroup>
 
-                            <div className="d-flex justify-content-center">
-                                <Button type="submit" value="submit" className="primary-button">Registrarse</Button>
-                            </div>
-                        </Form>
-                    </ModalBody>
+                        <FormGroup>
+                            <Label htmlFor="phoneNumber">Número de teléfono (ejemplo: +573002312301)</Label>
+                            <Input type="tel" id="phoneNumber" name="phoneNumber" className="form-control" values={values}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {(touched.phoneNumber && errors.phoneNumber) ? (<Alert color="danger">{errors.phoneNumber}</Alert>) : null}
+                        </FormGroup>
+
+                        <div className="d-flex justify-content-center">
+                            <Button type="submit" value="submit" className="primary-button">Registrarse</Button>
+                        </div>
+                    </Form>
+                </ModalBody>
             </Modal>
         );
     }
