@@ -606,7 +606,7 @@ export const changePassword = (data) => (dispatch) => {
         body: JSON.stringify(data)
     })
         .then(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 return response;
             } else {
                 var error = new Error('Error ' + response.status + ': ' + response.statusText);
@@ -618,7 +618,7 @@ export const changePassword = (data) => (dispatch) => {
         })
         .then(response => response.json())
         .then(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 dispatch(changePasswordSuccess(response));
             } else {
                 var error = new Error('Error ' + response.status);

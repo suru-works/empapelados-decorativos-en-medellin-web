@@ -1,5 +1,5 @@
-import React, { Component, useEffect } from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody, Form, Input } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardImg, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody} from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import EditLeaderComponent from './EditLeaderComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
@@ -25,7 +25,7 @@ function RenderOptions(props) {
 }
 
 function RenderDetailModal(props) {
-    if (props.type == 'options') {
+    if (props.type === 'options') {
         return (
             <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
 
@@ -34,7 +34,7 @@ function RenderDetailModal(props) {
                 <ModalBody>
 
                     <div className="d-flex space-around row">
-                        
+
                         <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
                             <CardImg src={baseFrontUrl + props.leader.imageUrl} alt={props.leader.name} />
                         </Card>
@@ -47,7 +47,7 @@ function RenderDetailModal(props) {
                                     <CardText>  Cargo: {props.leader.designation}  </CardText>
                                     <CardText>  {props.leader.description}  </CardText>
                                 </div>
-                                
+
                             </CardBody>
                         </Card>
 
@@ -63,18 +63,73 @@ function RenderDeleteModal(props) {
     const dispatch = useDispatch();
 
     const error = useSelector(state => state.leader.errMess);
+    const success = useSelector(state => state.leader.leader);
+    const loading = useSelector(state => state.leader.isLoading);
 
     const resetTypeAndToggle = () => {
         dispatch({ type: 'LEADER_RESET' });
         props.toggleDeleteModal();
     }
 
-    /* useEffect(() => {
-        this.setState({
-            leaderDeleteError: error
-        })
-    }, [error]) */
-    if (props.type == 'options') {
+    if (success) {
+        return (
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
+
+                <ModalHeader toggle={props.toggleDeleteModal}>{props.leader.name}</ModalHeader>
+
+                <ModalBody>
+
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col">
+                                <p className="text-center">Se ha eliminado el lider correctamente.</p>
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="col-3">
+                                <Button className="primary-button" onClick={props.reloadData}>Aceptar</Button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else if (loading) {
+        return (
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
+
+                <ModalHeader toggle={props.toggleDeleteModal}>{props.leader.name}</ModalHeader>
+
+                <ModalBody>
+
+                    <Loading />
+                </ModalBody>
+            </Modal>
+        );
+
+    }
+    else if (error) {
+        if (error.status === 401) {
+            return (
+                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
+            );
+        }
+        return (
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
+
+                <ModalHeader toggle={resetTypeAndToggle}>{props.leader.name}</ModalHeader>
+
+                <ModalBody>
+
+                    <p>Ha ocurrido un error eliminando el lider.</p>
+                    <Button className="primary-button" onClick={resetTypeAndToggle}>Aceptar</Button>
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
@@ -101,50 +156,6 @@ function RenderDeleteModal(props) {
                 </ModalBody>
             </Modal>
 
-        );
-    }
-    else if (error == null) {
-        return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
-
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.leader.name}</ModalHeader>
-
-                <ModalBody>
-
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col">
-                                <p className="text-center">Se ha eliminado el lider correctamente.</p>
-                            </div>
-                        </div>
-                        <div className="row justify-content-center">
-                            <div className="col-3">
-                                <Button onClick={props.reloadData}>Aceptar</Button>
-                            </div>
-                        </div>
-                    </div>
-
-                </ModalBody>
-            </Modal>
-        );
-    }
-    else if (error) {
-        if (error.status == 401) {
-            return (
-                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
-            );
-        }
-        return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
-
-                <ModalHeader toggle={resetTypeAndToggle}>{props.leader.name}</ModalHeader>
-
-                <ModalBody>
-
-                    <p>Ha ocurrido un error eliminando el lider.</p>
-                    <Button onClick={resetTypeAndToggle}>Aceptar</Button>
-                </ModalBody>
-            </Modal>
         );
     }
 }

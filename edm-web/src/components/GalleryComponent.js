@@ -1,11 +1,8 @@
-import React, { Component, useEffect } from 'react';
-import { useSelector } from 'react-redux'
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, { Component } from 'react';
+import { Breadcrumb, BreadcrumbItem, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Product from './ProductComponent';
 import AddProduct from './AddProductComponent';
-import { Loading } from './LoadingComponent';
-import { baseFrontUrl } from '../shared/baseUrl';
 
 
 
@@ -114,7 +111,10 @@ class Gallery extends Component {
                     );
                 }
                 catch (err) {
-                    console.log(err);
+                    return(
+                        <Label>No se encontraron productos</Label>
+                    );
+                    
                 }
 
             });

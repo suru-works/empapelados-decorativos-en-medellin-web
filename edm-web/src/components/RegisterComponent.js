@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import {
     Button, Modal, ModalHeader, ModalBody,
-    Form, FormGroup, Input, Labelm, Alert, Label
+    Form, FormGroup, Input, Alert, Label
 } from 'reactstrap';
 
 
@@ -108,7 +107,7 @@ const RegisterComponent = (props) => {
                 <ModalHeader toggle={toogleAndReset}>Registro</ModalHeader>
 
                 <ModalBody>
-                    <Form onSubmit={handleRegister}>
+                    <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Label htmlFor="user">Correo electrónico</Label>
                             <Input type="user" id="user" name="user" className="form-control" values={values}

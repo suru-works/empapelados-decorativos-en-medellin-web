@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Button, Modal, ModalHeader, ModalBody
@@ -30,7 +29,7 @@ const LogOutComponent = (props) => {
 
     if (error) {
         if(error.response){
-            if(error.response.status==401){
+            if(error.response.status===401){
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset}/>
                 );

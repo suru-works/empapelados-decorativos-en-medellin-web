@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { Loading } from './LoadingComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    Button, Form, FormGroup, Input, Label, Tooltip, Alert
+    Button, Form, FormGroup, Input, Label, Alert
 } from 'reactstrap';
 import { useParams } from "react-router-dom";
 

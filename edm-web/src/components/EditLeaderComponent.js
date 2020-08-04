@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
-import {Loading} from './LoadingComponent';
-import { leaderReset, postLeader, updateLeader, updateFileReset} from '../redux/ActionCreators';
+import { Loading } from './LoadingComponent';
+import { leaderReset, updateLeader, updateFileReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -14,26 +13,26 @@ const validationSchema = yup.object(
     {
         newName: yup
             .string()
-            .min(4,"El nombre debe ser de mínimo 4 caracteres")
-            .max(25,"El nombre debe ser de máximo 25 caracteres")
+            .min(4, "El nombre debe ser de mínimo 4 caracteres")
+            .max(25, "El nombre debe ser de máximo 25 caracteres")
             .required("Este campo es obligatorio"),
         newDesignation: yup
             .string()
-            .min(4,"El cargo debe ser de mínimo 4 caracteres")
-            .max(25,"El cargo debe ser de máximo 25 caracteres")
+            .min(4, "El cargo debe ser de mínimo 4 caracteres")
+            .max(25, "El cargo debe ser de máximo 25 caracteres")
             .required("Este campo es obligatorio"),
         newDescription: yup
             .string()
-            .min(10,"La descripción debe ser de mínimo 10 caracteres")
-            .max(280,"La descripción debe ser de maximo 280 caracteres")
+            .min(10, "La descripción debe ser de mínimo 10 caracteres")
+            .max(280, "La descripción debe ser de maximo 280 caracteres")
             .required("Este campo es obligatorio"),
     });
 
 const EditLeaderComponent = (props) => {
-    
-    const [name, setName] = useState(props.leader.name);
-    const [description, setDescription] = useState(props.leader.description);
-    const [designation, setDesignation] = useState(props.leader.designation);
+
+    const [name] = useState(props.leader.name);
+    const [description] = useState(props.leader.description);
+    const [designation] = useState(props.leader.designation);
 
     const error = useSelector(state => state.leader.errMess);
     const result = useSelector(state => state.leader.leader);
@@ -59,20 +58,19 @@ const EditLeaderComponent = (props) => {
 
     const doUpdateLeader = (leaderData) => dispatch(updateLeader(leaderData));
 
-    const uploadChanges = (event) => {
-        event.preventDefault();
+    const uploadChanges = (values) => {
         const leaderData = {
             leaderId: props.leader._id,
-            
+
             name: values.newName,
             designation: values.newDesignation,
             description: values.newDescription
         }
 
-        if(updateFileResult){
+        if (updateFileResult) {
             leaderData.imageUrl = '/public/images/leaders/' + updateFileResult.data.archivo;
         }
-        else{
+        else {
             leaderData.imageUrl = props.leader.imageUrl;
         }
 
@@ -94,7 +92,7 @@ const EditLeaderComponent = (props) => {
 
     if (updateFileError) {
         if (updateFileError.response) {
-            if (updateFileError.response.status == 401) {
+            if (updateFileError.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -122,7 +120,7 @@ const EditLeaderComponent = (props) => {
 
     if (error) {
         if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -157,19 +155,15 @@ const EditLeaderComponent = (props) => {
         );
     }
     if (result) {
-        {
-            return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
-                    <ModalBody>
-                        <p>Lider actualizado correctamente.</p>
-                    </ModalBody>
-                    <Button onClick={toogleAndReset}>Aceptar</Button>
-                </Modal>
-            );
-        }
-
-
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar un lider</ModalHeader>
+                <ModalBody>
+                    <p>Lider actualizado correctamente.</p>
+                </ModalBody>
+                <Button onClick={toogleAndReset}>Aceptar</Button>
+            </Modal>
+        );
     }
     else {
         return (
@@ -182,14 +176,14 @@ const EditLeaderComponent = (props) => {
 
                     <div className="d-flex space-around row">
 
-                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
-                            <Dropzone type={'media/image'} destination= {'/leaders'} updateFileData={updateFileData} />
+                        <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }}  >
+                            <Dropzone type={'media/image'} destination={'/leaders'} updateFileData={updateFileData} />
                         </Card>
 
-                        <Form onSubmit={uploadChanges} className="col" style={{ padding: 1}} >
-                            <Card style={{ padding: 11}}>
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+                            <Card style={{ padding: 11 }}>
 
-                                <CardBody style={{ padding: 8}}>
+                                <CardBody style={{ padding: 8 }}>
                                     <CardTitle> Ingresa los datos del lider </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
@@ -197,7 +191,7 @@ const EditLeaderComponent = (props) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                     {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
-                                    
+
                                     <Label htmlFor="designation">Cargo</Label>
                                     <Input type="text" id="newDesignation" name="newDesignation" value={values.newDesignation}
                                         onChange={handleChange}
@@ -209,7 +203,7 @@ const EditLeaderComponent = (props) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                     {(touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
-                                    
+
                                     <div class="d-flex justify-content-center" >
                                         <Button className="secondary-button" type="submit" value="submit"  >Guardar</Button>
                                     </div>
@@ -217,8 +211,8 @@ const EditLeaderComponent = (props) => {
                                 </CardBody>
 
                             </Card>
-                            
-                            
+
+
                         </Form>
 
                     </div>

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Carousel, CarouselItem, CarouselIndicators, CarouselControl, Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
+import React from 'react';
+import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import { baseFrontUrl } from '../shared/baseUrl';
-import { NavLink, Link } from 'react-router-dom';
-import ImageGallery from 'react-image-gallery';      //Si esta linea no sirve pegue en el cmd:     npm install react-image-gallery
+import { Link } from 'react-router-dom';
+import ImageGallery from 'react-image-gallery';
 import '../styles.css'; // Tell webpack that HomeComponent.js uses these styles
 import { Loading } from './LoadingComponent';
 import { useSelector } from 'react-redux';

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import SessionExpiredComponent from './SessionExpiredComponent';
-import {Loading} from './LoadingComponent';
-import { updateProduct, updateFileReset} from '../redux/ActionCreators';
+import { Loading } from './LoadingComponent';
+import { updateProduct, updateFileReset } from '../redux/ActionCreators';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -34,11 +33,11 @@ const validationSchema = yup.object(
     });
 
 const EditProductComponent = (props) => {
-    const [price, setPrice] = useState(props.product.price);
-    const [units, setUnits] = useState(props.product.units);
+    const [price] = useState(props.product.price);
+    const [units] = useState(props.product.units);
     const [featured, setFeatured] = useState(props.product.featured);
-    const [name, setName] = useState(props.product.name);
-    const [description, setDescription] = useState(props.product.description);  
+    const [name] = useState(props.product.name);
+    const [description] = useState(props.product.description);
 
     const error = useSelector(state => state.product.errMess);
     const result = useSelector(state => state.product.product);
@@ -64,7 +63,7 @@ const EditProductComponent = (props) => {
     const doUpdateProduct = (productData) => dispatch(updateProduct(productData));
 
     const uploadChanges = (values) => {
-        
+
         const productData = {
             productId: props.product._id,
             name: values.newName,
@@ -75,16 +74,16 @@ const EditProductComponent = (props) => {
             featured: featured
 
         }
-        if (productData.featured == 'on') {
+        if (productData.featured === 'on') {
             productData.featured = true;
         }
         else {
             productData.featured = false;
         }
-        if(updateFileResult){
+        if (updateFileResult) {
             productData.imageUrl = '/public/images/products/' + updateFileResult.data.archivo;
         }
-        else{
+        else {
             productData.imageUrl = props.product.imageUrl;
         }
 
@@ -106,7 +105,7 @@ const EditProductComponent = (props) => {
 
     if (updateFileError) {
         if (updateFileError.response) {
-            if (updateFileError.response.status == 401) {
+            if (updateFileError.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -134,7 +133,7 @@ const EditProductComponent = (props) => {
 
     if (error) {
         if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -169,20 +168,20 @@ const EditProductComponent = (props) => {
         );
     }
     if (result) {
-        {
-            return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
-                    <ModalBody>
-                        <p>Producto actualizado correctamente.</p>
-                    </ModalBody>
-                    <Button onClick={toogleAndReset}>Aceptar</Button>
-                </Modal>
-            );
-        }
 
-
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Actualizar un producto</ModalHeader>
+                <ModalBody>
+                    <p>Producto actualizado correctamente.</p>
+                </ModalBody>
+                <Button onClick={toogleAndReset}>Aceptar</Button>
+            </Modal>
+        );
     }
+
+
+
     else {
         return (
 
@@ -194,14 +193,14 @@ const EditProductComponent = (props) => {
 
                     <div className="d-flex space-around row">
 
-                        <Card className="col-12 col-lg-6  inline-block" style={{  padding: 12}}  >
-                            <Dropzone type={'media/image'} destination= {'/products'} updateFileData={updateFileData} />
+                        <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }}  >
+                            <Dropzone type={'media/image'} destination={'/products'} updateFileData={updateFileData} />
                         </Card>
 
-                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1}} >
-                            <Card style={{ padding: 11}}>
+                        <Form onSubmit={handleSubmit} className="col" style={{ padding: 1 }} >
+                            <Card style={{ padding: 11 }}>
 
-                                <CardBody style={{ padding: 8}}>
+                                <CardBody style={{ padding: 8 }}>
                                     <CardTitle> Ingresa los datos del producto </CardTitle>
 
                                     <Label htmlFor="name">Nombre</Label>
@@ -215,13 +214,13 @@ const EditProductComponent = (props) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                     {(touched.newPrice && errors.newPrice) ? (<Alert color="danger">{errors.newPrice}</Alert>) : null}
-                                    
+
                                     <Label htmlFor="units">Unidades disponibles</Label>
                                     <Input type="number" id="newUnits" name="newUnits" value={values.newUnits}
                                         onChange={handleChange}
-                                        onBlur={handleBlur}/>
+                                        onBlur={handleBlur} />
                                     {(touched.newUnits && errors.newUnits) ? (<Alert color="danger">{errors.newUnits}</Alert>) : null}
-                                    
+
                                     <Label check>destacar</Label>
                                     <FormGroup check>
                                         <Label check>
@@ -241,11 +240,11 @@ const EditProductComponent = (props) => {
                                     </div>
 
                                 </CardBody>
-                                
+
 
                             </Card>
-                            
-                            
+
+
                         </Form>
 
                     </div>

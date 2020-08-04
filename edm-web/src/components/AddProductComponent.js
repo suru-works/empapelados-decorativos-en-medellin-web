@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Alert, Card, CardBody, CardTitle, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,11 +35,7 @@ const validationSchema = yup.object(
 
 const AddProductComponent = (props) => {
 
-    const [price, setPrice] = useState(null);
-    const [units, setUnits] = useState(null);
     const [featured, setFeatured] = useState(null);
-    const [name, setName] = useState(null);
-    const [description, setDescription] = useState(null);
 
     const error = useSelector(state => state.product.errMess);
     const result = useSelector(state => state.product.product);
@@ -81,7 +76,7 @@ const AddProductComponent = (props) => {
                 featured: featured
 
             }
-            if (productData.featured == 'on') {
+            if (productData.featured === 'on') {
                 productData.featured = true;
             }
             else {
@@ -108,7 +103,7 @@ const AddProductComponent = (props) => {
 
     if (error) {
         if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -143,20 +138,20 @@ const AddProductComponent = (props) => {
         );
     }
     if (result) {
-        {
-            return (
-                <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
-                    <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
-                    <ModalBody>
-                        <p>Producto añadido correctamente.</p>
-                    </ModalBody>
-                    <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
-                </Modal>
-            );
-        }
 
-
+        return (
+            <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
+                <ModalHeader toggle={toogleAndReset}>Añadir un producto</ModalHeader>
+                <ModalBody>
+                    <p>Producto añadido correctamente.</p>
+                </ModalBody>
+                <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
+            </Modal>
+        );
     }
+
+
+
     else {
         return (
 
@@ -201,16 +196,16 @@ const AddProductComponent = (props) => {
                                         <Label check>
                                             <Input type="checkbox" id="featured" name="featured"
                                                 onChange={e => setFeatured(e.target.value)} />
-                                                {' '}
+                                            {' '}
                                                  Destacar
                                         </Label>
                                     </FormGroup>
 
                                     <Label htmlFor="description">Descripcion del producto</Label>
-                                    <Input type="textarea"  id="newDescription"  name="newDescription"  values={values.newDescription}
+                                    <Input type="textarea" id="newDescription" name="newDescription" values={values.newDescription}
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
-                                    { (touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
+                                    {(touched.newDescription && errors.newDescription) ? (<Alert color="danger">{errors.newDescription}</Alert>) : null}
 
                                     <div class="d-flex justify-content-center" >
                                         <Button type="submit" value="submit" className="secondary-button" disabled={!readyToPostProduct()}>Añadir</Button>

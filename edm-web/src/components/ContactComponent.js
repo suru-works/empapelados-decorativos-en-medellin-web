@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Loading } from './LoadingComponent';
 
 const required = (val) => val && val.length;
@@ -127,9 +127,9 @@ class Contact extends Component {
                             </address>
                             <div className="col-12 col-sm-11 offset-sm-1">
                                 <div className="btn-group" role="group">
-                                    <a role="button" className="btn btn-primary" target="_blank" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
-                                    <a role="button" className="btn btn-success" target="_blank" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
-                                    <a role="button" className="btn btn-info" target="_blank" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
+                                    <a role="button" className="btn btn-primary" target="_blank" rel="noopener noreferrer" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
+                                    <a role="button" className="btn btn-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                                    <a role="button" className="btn btn-info" target="_blank" rel="noopener noreferrer" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
                                 </div>
                             </div>
                         </div>

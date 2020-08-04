@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron, Button } from 'reactstrap';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { baseFrontUrl } from '../shared/baseUrl';
 import {Loading} from './LoadingComponent';
 import LoginComponent from './LoginComponent.js';
@@ -173,9 +173,6 @@ class Header extends Component {
     }
 
     render() {
-        const colors = {
-            primary: '#870000'
-        };
 
         return (
             <div>

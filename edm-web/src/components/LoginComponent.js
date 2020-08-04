@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import {
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label, Alert

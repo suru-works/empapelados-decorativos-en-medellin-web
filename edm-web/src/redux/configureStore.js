@@ -1,6 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
 import { Products } from './products';
 import { Product } from './product';
 import { Maps } from './maps';
@@ -31,12 +30,14 @@ import { Comment } from './comment';
             changePassword: ChangePassword,
             comment: Comment
         }),
-       compose(applyMiddleware(thunk),
+       compose(applyMiddleware(thunk)
 
-            typeof window === 'object' &&
-                typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+            
         )
     );
+
+    /* typeof window === 'object' &&
+                typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f */
 
     return store;
 } 

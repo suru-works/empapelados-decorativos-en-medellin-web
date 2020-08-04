@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import { FormGroup, Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Button, Modal, ModalHeader, ModalBody, FormFeedback, Form, Input } from 'reactstrap';
+import React, { Component} from 'react';
+import { FormGroup, Alert, Card, CardImg, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProductComponent from './EditProductComponent';
 import SessionExpiredComponent from './SessionExpiredComponent';
@@ -119,7 +119,7 @@ const CanIComment = (props) => {
             return (
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Input className="mb-1" type="text" id="newComment" className="form-control" name="newComment"  values={values.newComment}
+                        <Input className="mb-1 form-control" type="text" id="newComment" name="newComment"  values={values.newComment}
                             onChange={handleChange}
                             onBlur={handleBlur}
                         ></Input>
@@ -149,7 +149,7 @@ const CanIComment = (props) => {
 
 const ShowComments = (props) => {
 
-    if (props.comments.length == 0 ) {
+    if (props.comments.length === 0 ) {
         return( 
             <CardText>Este producto aún no tiene comentarios, se el primero en opinar!</CardText>
         );
@@ -175,7 +175,7 @@ const ShowComments = (props) => {
 }
 
 function RenderDetailModal(props) {
-    if (props.type == 'options') {
+    if (props.type === 'options') {
         return (
             <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
 
@@ -233,7 +233,7 @@ function RenderDeleteModal(props) {
             productDeleteError: error
         })
     }, [error]) */
-    if (props.type == 'options') {
+    if (props.type === 'options') {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
@@ -288,7 +288,7 @@ function RenderDeleteModal(props) {
         );
     }
     else if (error) {
-        if (error.status == 401) {
+        if (error.status === 401) {
             return (
                 <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
             );

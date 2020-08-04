@@ -1,41 +1,10 @@
-import React, {useState}from 'react';
-import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
+import React, { useState } from 'react';
+import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
-import { baseFrontUrl } from '../shared/baseUrl';
-import { useSelector } from 'react-redux';
 import Leader from './LeaderComponent';
 import AddLeader from './AddLeaderComponent';
-import EditLeader from './EditLeaderComponent';
 
-const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-};
-
-const leaderBorder = {
-    border: '1px solid #000000',
-    margin: '20px'
-};
-
-const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-};
-
-const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-};
 
 function RenderAdminOptions(props) {
 
@@ -73,22 +42,22 @@ function RenderAdminOptions(props) {
 function About(props) {
 
     const [isAddLeaderModalOpen, setIsAddLeaderModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [areEditOptionsActived, setAreEditOptionsActived] = useState(false);
 
     const toggleAddLeaderModal = () => {
         setIsAddLeaderModalOpen(!isAddLeaderModalOpen);
+    
+    }
+
+    const toggleDeleteModal = () => {
+        setIsDeleteModalOpen(!isDeleteModalOpen);
     }
 
     const openEditOptions = () => {
         setAreEditOptionsActived(!areEditOptionsActived);
     }
 
-    
-    const reloadData = () => {
-        reloadData();
-    }
-
-    const leaders = useSelector(state => state.leaders.leaders);
 
     const leaderList = props.leaders.map((leader) => {
         try {
@@ -99,20 +68,21 @@ function About(props) {
                     deleteLeader={props.deleteLeader}
                     leadersErrMess={props.leadersErrMess}
                     reloadData={props.reloadData}
+                    toggleDeleteModal={toggleDeleteModal}
                 />
             );
         }
         catch (err) {
-            console.log(err);
+            return (
+                <Label>No se encontraron lideres</Label>
+            );
+
         }
-
-
-
     });
 
     return (
         <div className="container">
-            
+
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>

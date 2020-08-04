@@ -9,10 +9,9 @@ import Contact from './ContactComponent';
 import Forgot from './ForgotComponent';
 import { connect } from 'react-redux';
 import {
-    fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, authenticated, postProduct, deleteProduct,
+    fetchProducts, fetchLeaders, fetchMapsKey, login, register, logout, postFeedback, postProduct, deleteProduct,
     postLeader, deleteLeader
 } from '../redux/ActionCreators';
-import { baseBackUrl } from '../shared/baseUrl';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 

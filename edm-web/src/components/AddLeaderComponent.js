@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Card, CardImg, CardBody, CardTitle, CardText, CardImgOverlay, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import React from 'react';
+import { Alert, Card, CardBody, CardTitle,  Modal, ModalHeader, ModalBody, Form, Input, Label, Button } from 'reactstrap';
 
 import Dropzone from './DropzoneComponent';
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,11 +30,6 @@ const validationSchema = yup.object(
     });
 
 const AddLeaderComponent = (props) => {
-
-    const [name, setName] = useState(null);
-    const [designation, setDesignation] = useState(null);
-    const [description, setDescription] = useState(null);
-
     const error = useSelector(state => state.leader.errMess);
     const result = useSelector(state => state.leader.leader);
     const loading = useSelector(state => state.leader.isLoading);
@@ -92,7 +86,7 @@ const AddLeaderComponent = (props) => {
 
     if (error) {
         if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 return (
                     <SessionExpiredComponent isOpen={props.isOpen} toggle={toogleAndReset} />
                 );
@@ -126,7 +120,7 @@ const AddLeaderComponent = (props) => {
             </Modal>
         );
     }
-    if (result) { {
+    if (result) { 
         return (
             <Modal isOpen={props.isOpen} toggle={toogleAndReset}>
                 <ModalHeader toggle={toogleAndReset}>Añadir un lider</ModalHeader>
@@ -136,9 +130,6 @@ const AddLeaderComponent = (props) => {
                 <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
         );
-    }
-
-
     }
     else {
         return (

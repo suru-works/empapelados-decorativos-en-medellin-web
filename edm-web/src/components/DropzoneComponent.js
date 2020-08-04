@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
@@ -6,15 +6,15 @@ import { uploadFile, updateFile } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
 import { baseFrontUrl } from '../shared/baseUrl';
 
-const thumbsContainer = {
+/* const thumbsContainer = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 16
-};
+}; */
 
 //Afecta la foto al dar click sobre EDITAR el producto, actualmente estira lo que puede la altura y acomoda el ancho
-const thumb = {
+/* const thumb = {
     display: 'inline-flex',
     borderRadius: 2,
     border: '1px solid #eaeaea',
@@ -24,14 +24,14 @@ const thumb = {
     height: 100,
     padding: 4,
     boxSizing: 'border-box'
-};
+}; */
 
-const thumbInner = {
+/* const thumbInner = {
     display: 'flex',
     minWidth: 0,
     overflow: 'hidden'
 };
-
+ */
 //Afecta la foto normal al dar click sobre el producto, actualmente estira lo que puede la altura y acomoda el ancho
 const img = {
     display: 'block',
@@ -90,7 +90,7 @@ const Dropzone = (props) => {
     
 //Este estilo se activa solo al EDITAR un producto
     const thumbs = () => {
-        if(props.updateFileData && fileForPreview.length==0){
+        if(props.updateFileData && fileForPreview.length===0){
             return(
                 
                         <img className='detail-size' 
@@ -116,10 +116,10 @@ const Dropzone = (props) => {
     
 
 
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDrop })
+    const { getRootProps, getInputProps } = useDropzone({ onDrop })
     if (error) {
         if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 localStorage.removeItem("token");
                 localStorage.removeItem("admin");
                 localStorage.removeItem("username");
