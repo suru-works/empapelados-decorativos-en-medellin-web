@@ -285,6 +285,11 @@ function RenderDeleteModal(props) {
             </Modal>
         );
     }
+    else if (loading){
+        return (
+            <Loading />
+        );
+    }
     else {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
