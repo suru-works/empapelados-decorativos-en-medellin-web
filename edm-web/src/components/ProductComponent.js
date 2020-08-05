@@ -168,7 +168,9 @@ const ShowComments = (props) => {
         });
         
         return (
-            oneComment
+            <div>
+                {oneComment}
+            </div>
         );
     }
 
@@ -232,7 +234,7 @@ function RenderDeleteModal(props) {
 
     const finishTheFigth = () => {
         resetTypeAndToggle();
-        dispatch();
+        dispatch(fetchProducts());
     }
 
     /* useEffect(() => {
@@ -257,7 +259,7 @@ function RenderDeleteModal(props) {
                         </div>
                         <div className="row justify-content-center">
                             <div className="col-3">
-                                <Button onClick={resetTypeAndToggle}>Aceptar</Button>
+                                <Button className="primary-button" onClick={finishTheFigth}>Aceptar</Button>
                             </div>
                         </div>
                     </div>
