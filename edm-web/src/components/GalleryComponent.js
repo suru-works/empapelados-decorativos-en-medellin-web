@@ -10,8 +10,7 @@ import { Container as FloatingButtonContainer, Button as FloatingButton, Link as
 
 function RenderAdminOptions(props) {
 
-
-    if (localStorage.getItem('admin')) {
+    if (localStorage.getItem('admin') === 'true') {
         return (
             <FloatingButtonContainer>
 

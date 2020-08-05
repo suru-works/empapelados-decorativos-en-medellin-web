@@ -220,12 +220,19 @@ function RenderDetailModal(props) {
 
 function RenderDeleteModal(props) {
     const dispatch = useDispatch();
-
+ 
     const error = useSelector(state => state.product.errMess);
+    const loading = useSelector(state => state.product.isLoading);
+    const success = useSelector(state => state.product.product);
 
     const resetTypeAndToggle = () => {
         dispatch({ type: 'PRODUCT_RESET' });
         props.toggleDeleteModal();
+    }
+
+    const finishTheFigth = () => {
+        resetTypeAndToggle();
+        dispatch();
     }
 
     /* useEffect(() => {
@@ -233,7 +240,52 @@ function RenderDeleteModal(props) {
             productDeleteError: error
         })
     }, [error]) */
-    if (props.type === 'options') {
+    
+    if (success) {
+        return (
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
+
+                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
+
+                <ModalBody>
+
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col">
+                                <p className="text-center">Se ha eliminado el producto correctamente.</p>
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="col-3">
+                                <Button onClick={resetTypeAndToggle}>Aceptar</Button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else if (error) {
+        if (error.status === 401) {
+            return (
+                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
+            );
+        }
+        return (
+            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
+
+                <ModalHeader toggle={resetTypeAndToggle}>{props.product.name}</ModalHeader>
+
+                <ModalBody>
+
+                    <p>Ha ocurrido un error eliminando el producto.</p>
+                    <Button onClick={resetTypeAndToggle}>Aceptar</Button>
+                </ModalBody>
+            </Modal>
+        );
+    }
+    else {
         return (
             <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
 
@@ -260,50 +312,6 @@ function RenderDeleteModal(props) {
                 </ModalBody>
             </Modal>
 
-        );
-    }
-    else if (error == null) {
-        return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={props.toggleDeleteModal}>
-
-                <ModalHeader toggle={props.toggleDeleteModal}>{props.product.name}</ModalHeader>
-
-                <ModalBody>
-
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col">
-                                <p className="text-center">Se ha eliminado el producto correctamente.</p>
-                            </div>
-                        </div>
-                        <div className="row justify-content-center">
-                            <div className="col-3">
-                                <Button onClick={props.reloadData}>Aceptar</Button>
-                            </div>
-                        </div>
-                    </div>
-
-                </ModalBody>
-            </Modal>
-        );
-    }
-    else if (error) {
-        if (error.status === 401) {
-            return (
-                <SessionExpiredComponent isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle} />
-            );
-        }
-        return (
-            <Modal className="modal-md" isOpen={props.isDeleteModalOpen} toggle={resetTypeAndToggle}>
-
-                <ModalHeader toggle={resetTypeAndToggle}>{props.product.name}</ModalHeader>
-
-                <ModalBody>
-
-                    <p>Ha ocurrido un error eliminando el producto.</p>
-                    <Button onClick={resetTypeAndToggle}>Aceptar</Button>
-                </ModalBody>
-            </Modal>
         );
     }
 }

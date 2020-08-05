@@ -9,7 +9,7 @@ import AddLeader from './AddLeaderComponent';
 function RenderAdminOptions(props) {
 
 
-    if (localStorage.getItem('admin')) {
+    if (localStorage.getItem('admin') === 'true') {
         return (
             <FloatingButtonContainer>
 
