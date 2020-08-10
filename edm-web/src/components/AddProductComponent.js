@@ -36,6 +36,7 @@ const validationSchema = yup.object(
 const AddProductComponent = (props) => {
 
     const [featured, setFeatured] = useState(null);
+    const [category, setCategory] = useState("empapelado");
 
     const error = useSelector(state => state.product.errMess);
     const result = useSelector(state => state.product.product);
@@ -69,10 +70,10 @@ const AddProductComponent = (props) => {
             const productData = {
 
                 name: values.newName,
+                category: category,
                 price: values.newPrice,
                 units: values.newUnits,
                 description: values.newDescription,
-
                 featured: featured
 
             }
@@ -179,6 +180,13 @@ const AddProductComponent = (props) => {
                                         onBlur={handleBlur}
                                     />
                                     {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
+
+                                    <Label htmlFor="category">Categoría</Label>
+                                    <Input type="select" id="category" name="category" value={category} onChange={(event) => setCategory(event.target.value)}>
+                                        <option value="empapelado">Empapelado</option>
+                                        <option value="jardin_sintetico">Jardín Sintético</option>
+                                        <option value="tela">Tela</option>
+                                    </Input>
 
                                     <Label htmlFor="price">Precio</Label>
                                     <Input type="number" id="newPrice" name="newPrice" values={values.newPrice}

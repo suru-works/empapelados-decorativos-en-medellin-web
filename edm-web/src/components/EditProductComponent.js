@@ -38,6 +38,7 @@ const EditProductComponent = (props) => {
     const [featured, setFeatured] = useState(props.product.featured);
     const [name] = useState(props.product.name);
     const [description] = useState(props.product.description);
+    const [category, setCategory] = useState(props.product.category);
 
     const error = useSelector(state => state.product.errMess);
     const result = useSelector(state => state.product.product);
@@ -70,7 +71,7 @@ const EditProductComponent = (props) => {
             price: values.newPrice,
             units: values.newUnits,
             description: values.newDescription,
-
+            category: category,
             featured: featured
 
         }
@@ -175,7 +176,7 @@ const EditProductComponent = (props) => {
                 <ModalBody>
                     <p>Producto actualizado correctamente.</p>
                 </ModalBody>
-                <Button onClick={toogleAndReset}>Aceptar</Button>
+                <Button className="primary-button" onClick={toogleAndReset}>Aceptar</Button>
             </Modal>
         );
     }
@@ -208,6 +209,13 @@ const EditProductComponent = (props) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur} />
                                     {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
+
+                                    <Label htmlFor="category">Categoría</Label>
+                                    <Input type="select" id="category" name="category" value={category} onChange={(event) => setCategory(event.target.value)}>
+                                        <option value="empapelado">Empapelado</option>
+                                        <option value="jardin_sintetico">Jardín Sintético</option>
+                                        <option value="tela">Tela</option>
+                                    </Input>
 
                                     <Label htmlFor="price">Precio</Label>
                                     <Input type="number" id="newPrice" name="newPrice" value={values.newPrice}

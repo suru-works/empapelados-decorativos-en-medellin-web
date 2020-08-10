@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Label } from 'reactstrap';
+import React, { useState } from 'react';
+import { Breadcrumb, BreadcrumbItem, Label, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Product from './ProductComponent';
 import AddProduct from './AddProductComponent';
@@ -43,10 +43,9 @@ function RenderAdminOptions(props) {
 }
 
 
-class Gallery extends Component {
+const Gallery = (props) => {
 
-
-    constructor(props) {
+    /*constructor(props) {
         super(props);
         this.state = {
             isAddProductModalOpen: false,
@@ -54,105 +53,119 @@ class Gallery extends Component {
         }
         this.toggleAddProductModal = this.toggleAddProductModal.bind(this);
         this.openEditOptions = this.openEditOptions.bind(this);
-    }
+    }*/
 
+    const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+    const [areEditOptionsActived, setAreEditOptionsActived] = useState(false);
+    const [category, setCategory] = useState('empapelado');
 
-    toggleAddProductModal() {
-        this.setState({
+    const toggleAddProductModal = () => {
+        /*this.setState({
             isAddProductModalOpen: !this.state.isAddProductModalOpen
-        });
+        });*/
+        if (isAddProductModalOpen) {
+            setIsAddProductModalOpen(false);
+        } else {
+            setIsAddProductModalOpen(true);
+        }
     }
 
-    openEditOptions() {
-        this.setState({
+    const openEditOptions = () => {
+        /*this.setState({
             areEditOptionsActived: !this.state.areEditOptionsActived
-        });
+        });*/
+        if (areEditOptionsActived) {
+            setAreEditOptionsActived(false);
+        } else {
+            setAreEditOptionsActived(true);
+        }
     }
+    if (!(props.products.length > 0)) {
+        return (
+            <div className="container">
 
-    render() {
-        if (!(this.props.products.length > 0)) {
-            return (
-                <div className="container">
-
-                    <div className="row">
-                        <Breadcrumb>
-                            <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>Galería</BreadcrumbItem>
-                        </Breadcrumb>
-                        <div className="col-12">
-                            <h3>Galería de productos</h3>
-                            <hr />
-                        </div>
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Galería</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Galería de productos</h3>
+                        <hr />
                     </div>
-
-                    <div className="row col-12">
-                        <p> No se encontraron productos en oferta. </p>
-
-                    </div>
-
-                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal} reloadData={this.props.reloadData}></AddProduct>
-
-                    <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
                 </div>
-            );
-        }
-        else {
-            const galeria = this.props.products.map((product) => {
-                try {
 
-                    return (
-                        <Product product={product} key={product._id}
-                            areEditOptionsActived={this.state.areEditOptionsActived}
-                            deleteProduct={this.props.deleteProduct}
-                            productsErrMess={this.props.productsErrMess}
-                            reloadData={this.props.reloadData}
-                        />
-                    );
-                }
-                catch (err) {
-                    return(
-                        <Label>No se encontraron productos</Label>
-                    );
-                    
-                }
+                <div className="row col-12">
+                    <p> No se encontraron productos en oferta. </p>
 
-            });
+                </div>
 
-            return (
+                <AddProduct isOpen={isAddProductModalOpen} toggle={toggleAddProductModal} reloadData={props.reloadData}></AddProduct>
 
-                <div className="container justify-content-center">
+                <RenderAdminOptions toggleAddProductModal={toggleAddProductModal} openEditOptions={openEditOptions}></RenderAdminOptions>
+            </div>
+        );
+    }
+    else {
+        const galeria = props.products.filter(product => product.category == category).map((product) => {
+            try {
 
-                    <div className="row">
-                        <Breadcrumb>
-                            <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>Galería</BreadcrumbItem>
-                        </Breadcrumb>
-                        <div className="col-12">
-                            <h3>Galería de productos</h3>
-                            <hr />
-                        </div>
+                return (
+                    <Product product={product} key={product._id}
+                        areEditOptionsActived={areEditOptionsActived}
+                        deleteProduct={props.deleteProduct}
+                        productsErrMess={props.productsErrMess}
+                        reloadData={props.reloadData}
+                    />
+                );
+            }
+            catch (err) {
+                return (
+                    <Label>No se encontraron productos</Label>
+                );
+
+            }
+
+        });
+
+        return (
+
+            <div className="container justify-content-center">
+
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/inicio">Inicio</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Galería</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Galería de productos</h3>
+                        <hr />
                     </div>
+                </div>
 
-                    <div className="row">
-           
-                                {galeria}
-                        
-                    </div>
+                <div className="row justify-content-center">
+                    <Button className={category == "empapelado" ? "primary-button" : "secondary-button"} onClick={() => setCategory("empapelado")}>Empapelados</Button>
+                    <Button className={category == "jardin_sintetico" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("jardin_sintetico")}>Jardines Sintéticos</Button>
+                    <Button className={category == "tela" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("tela")}>Telas</Button>
+                </div>
 
-                    
+                <div className="row">
 
-                    <AddProduct isOpen={this.state.isAddProductModalOpen} toggle={this.toggleAddProductModal} reloadData={this.props.reloadData}></AddProduct>
-
-                    <RenderAdminOptions toggleAddProductModal={this.toggleAddProductModal} openEditOptions={this.openEditOptions}></RenderAdminOptions>
+                    {galeria}
 
                 </div>
 
 
 
-            )
-        }
+                <AddProduct isOpen={isAddProductModalOpen} toggle={toggleAddProductModal} reloadData={props.reloadData}></AddProduct>
+
+                <RenderAdminOptions toggleAddProductModal={toggleAddProductModal} openEditOptions={openEditOptions}></RenderAdminOptions>
+
+            </div>
 
 
+
+        )
     }
 
 }
