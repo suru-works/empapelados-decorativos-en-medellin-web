@@ -6,6 +6,56 @@ import ImageGallery from 'react-image-gallery';
 import '../styles.css'; // Tell webpack that HomeComponent.js uses these styles
 import { Loading } from './LoadingComponent';
 import { useSelector } from 'react-redux';
+import Map from './MapComponent';
+
+
+const RenderMap = () => {
+    const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=`;
+
+    
+    const error = useSelector(state => state.maps.errMess);
+    const result = useSelector(state => state.maps.maps);
+    const loading = useSelector(state => state.maps.isLoading);
+
+    if (error) {
+        return (
+            <label>Error cargando el mapa</label>
+        );
+
+    }
+    else if (loading) {
+        return (
+            <Loading></Loading>
+        );
+
+    }
+    else if (result) {
+        return (
+
+
+            <Map zoom={15} center={{ lat: 6.182236, lng: -75.5735974 }}
+                withMarker={true}
+                googleMapURL={mapUrl + `${result.key}`}
+                containerElement={<div style={{ height: `400px`, width:`auto`}} />}
+                mapElement={<div style={{ height: `100%`, width:`100%` }} />}
+                mapType='roadmap'
+                loadingElement={<Loading />}
+
+            />
+
+
+        );
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
+
+}
+
+
+
 
 function RenderRandomLeader({ leader }) {
     if (leader) {
@@ -36,7 +86,14 @@ function RenderRandomLeader({ leader }) {
         );
     } else {
         return (
-            <div></div>
+            <div>
+                <div className="row justify-content-center">
+                    <div className="col-12 ">
+                        <h1 style={{textAlign: 'center'}}>Donde encontrarnos:</h1>
+                            <RenderMap></RenderMap>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
@@ -89,9 +146,8 @@ function Home(props) {
 
                     <div className="col-12 row justify-content-center">
                         <div className="col-lg-6 col-md-12 " style={{ padding: 30}}>
-                            <h1 className="text-center">Empapelados Decorativos en Medellin.</h1>
-                                <p className="text-center">Venta e instalación de empapelados decorativos, cortinas y pinturas.</p>
-                                <h3 className="text-center">Tenemos mas de 30 años de experiencia.</h3>
+                            <h1 className="text-center">Servicio garantizado, seriedad y compromiso</h1>
+                                <h3 className="text-center">denos el gusto de atenderlo, y cambie la apariencia por ese estilo que siempre soñó.</h3>
                                 <br></br>
                         </div>
                     </div>
@@ -120,7 +176,7 @@ function Home(props) {
 
                         <div style={{ padding: 30, marginTop: 70}}>
                             <h1 className="text-center">"Excelente asesoría y atención al cliente"</h1>
-                                <p className="text-center">Ismael Restrepo.  1998 - 2020.</p>
+                                <p className="text-center">Ismael Restrepo.  2020.</p>
                                 <h3 className="text-center">Habla con nosotros para saber mejor que necesitas</h3>
                                 <br></br>
 

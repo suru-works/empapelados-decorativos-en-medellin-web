@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Row, Label, Col, Card, CardBody, CardHeader, UncontrolledCollapse } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Row, Label, Col, Card, CardBody, CardText, CardHeader, UncontrolledCollapse } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import Map from './MapComponent';
@@ -18,7 +18,7 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 const RenderMap = () => {
     const mapUrl = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=`;
 
-    
+
     const error = useSelector(state => state.maps.errMess);
     const result = useSelector(state => state.maps.maps);
     const loading = useSelector(state => state.maps.isLoading);
@@ -39,11 +39,11 @@ const RenderMap = () => {
         return (
 
 
-            <Map zoom={15} center={{ lat: 6.306256, lng: -75.572548 }}
+            <Map zoom={15} center={{ lat: 6.182236, lng: -75.5735974 }}
                 withMarker={true}
                 googleMapURL={mapUrl + `${result.key}`}
-                containerElement={<div style={{ height: `400px`, width:`auto`}} />}
-                mapElement={<div style={{ height: `100%`, width:`100%` }} />}
+                containerElement={<div style={{ height: `400px`, width: `auto` }} />}
+                mapElement={<div style={{ height: `100%`, width: `100%` }} />}
                 mapType='roadmap'
                 loadingElement={<Loading />}
 
@@ -120,9 +120,10 @@ class Contact extends Component {
                             <h5>Nuestra dirección</h5>
 
                             <address>
-                                Cra. 76b #107a-34,<br />
-                                Santander, Medellín, Antioquia<br />
-                                <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
+                                Calle 20 sur # 37 - 228.<br />
+                                Sector los yarumos, Poblado, Medellín, Antioquia<br />
+                                <i className="fa fa-mobile fa-lg"></i>: 319 582 31 66<br />
+                                <i className="fa fa-mobile fa-lg"></i>: 301 207 15 91<br />
                                 <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
                             </address>
                             <div className="col-12 col-sm-11 offset-sm-1">
@@ -135,8 +136,8 @@ class Contact extends Component {
                         </div>
                         <div className="col-12 col-sm-6 ">
 
-                                <h5>Mapa de nuestra localización</h5>
-                                <RenderMap></RenderMap>
+                            <h5>Mapa de nuestra localización</h5>
+                            <RenderMap></RenderMap>
 
                         </div>
 
@@ -151,28 +152,36 @@ class Contact extends Component {
                         <Card style={{ marginBottom: '1rem' }}>
                             <CardHeader id="toggler0"><h4>¿Cuales son los métodos de pago?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler0'>
-                                <CardBody></CardBody>
+                                <CardBody>
+                                    <CardText>El metodo de pago sera pactado directamente con el asesor.</CardText>
+                                </CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
                             <CardHeader id="toggler1"><h4>¿Cómo es el envío?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler1'>
-                                <CardBody></CardBody>
+                                <CardBody>
+                                    <CardText>Tenemos mensajeros disponibles para actuar en nuesta area de cobertura, pero por lo general el mismo instalador se encargara de llevar el producto.</CardText>
+                                </CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
                             <CardHeader id="toggler2"><h4>¿Como son las instalaciones?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler2'>
-                                <CardBody></CardBody>
+                                <CardBody>
+                                    <CardText>Enviaremos a un instalador experto cuando compres nuestro producto</CardText>
+                                </CardBody>
                             </UncontrolledCollapse>
                         </Card>
 
                         <Card style={{ marginBottom: '1rem' }}>
                             <CardHeader id="toggler3"><h4>Vivo fuera de la ciudad de Medellín, ¿cuales son las areas de cobertura del servicio?</h4></CardHeader>
                             <UncontrolledCollapse toggler='#toggler3'>
-                                <CardBody></CardBody>
+                                <CardBody>
+                                    <CardText>Por lo general prestamos nuestro servicio en el departamento de Antioquia, pero se puede pactar para prestar el servicio en lugares mas alejados.</CardText>
+                                </CardBody>
                             </UncontrolledCollapse>
                         </Card>
                     </div>

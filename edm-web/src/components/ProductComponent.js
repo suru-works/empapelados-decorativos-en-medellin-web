@@ -178,45 +178,87 @@ const ShowComments = (props) => {
 
 function RenderDetailModal(props) {
     if (props.type === 'options') {
-        return (
-            <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
-
-                <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
-
-                <ModalBody>
-
-                    <div className="d-flex space-around row">
-
-                        <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
-                            <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
-                        </Card>
-
-                        <Card className="col" style={{ padding: 12 }} >
-
-                            <CardBody style={{ padding: 8 }}>
-                                <CardTitle className="text-danger"> Detalles del producto </CardTitle>
-                                <div className="info-size scroll">
-                                    <CardText>  Precio: {props.product.price}  </CardText>
-                                    <CardText>  Unidades: {props.product.units}  </CardText>
-                                    <CardText>  {props.product.description}  </CardText>
-                                </div>
-                                <CardText>  Comentarios:  </CardText>
-                                <div className="comment-size scroll mb-3" style={{ paddingRight: 30 }}>
-
-                                    <ShowComments comments={props.product.comments}/>
-
-                                </div>
-
-                                <CanIComment productId={props.product._id}/>
-
-                            </CardBody>
-                        </Card>
-
-                    </div>
-
-                </ModalBody>
-            </Modal>
-        );
+        if (localStorage.getItem('admin') === 'true') {
+            return (
+                <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
+    
+                    <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
+    
+                    <ModalBody>
+    
+                        <div className="d-flex space-around row">
+    
+                            <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
+                                <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                            </Card>
+    
+                            <Card className="col" style={{ padding: 12 }} >
+    
+                                <CardBody style={{ padding: 8 }}>
+                                    <CardTitle className="text-danger"> Detalles del producto </CardTitle>
+                                    <div className="info-size scroll">
+                                        <CardText>  Precio: {props.product.price}  </CardText>
+                                        <CardText>  Unidades: {props.product.units}  </CardText>
+                                        <CardText>  {props.product.description}  </CardText>
+                                    </div>
+                                    <CardText>  Comentarios:  </CardText>
+                                    <div className="comment-size scroll mb-3" style={{ paddingRight: 30 }}>
+    
+                                        <ShowComments comments={props.product.comments}/>
+    
+                                    </div>
+    
+                                    <CanIComment productId={props.product._id}/>
+    
+                                </CardBody>
+                            </Card>
+    
+                        </div>
+    
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        else{
+            return (
+                <Modal className="modal-lg" isOpen={props.isDetailsModalOpen} toggle={props.toggleDetailsModal}>
+    
+                    <ModalHeader toggle={props.toggleDetailsModal}>{props.product.name}</ModalHeader>
+    
+                    <ModalBody>
+    
+                        <div className="d-flex space-around row">
+    
+                            <Card className="col-12 col-lg-6  inline-block" style={{ padding: 12 }} >
+                                <CardImg src={baseFrontUrl + props.product.imageUrl} alt={props.product.name} />
+                            </Card>
+    
+                            <Card className="col" style={{ padding: 12 }} >
+    
+                                <CardBody style={{ padding: 8 }}>
+                                    <CardTitle className="text-danger"> Detalles del producto </CardTitle>
+                                    <div className="info-size scroll">
+                                        <CardText>  {props.product.description}  </CardText>
+                                    </div>
+                                    <CardText>  Comentarios:  </CardText>
+                                    <div className="comment-size scroll mb-3" style={{ paddingRight: 30 }}>
+    
+                                        <ShowComments comments={props.product.comments}/>
+    
+                                    </div>
+    
+                                    <CanIComment productId={props.product._id}/>
+    
+                                </CardBody>
+                            </Card>
+    
+                        </div>
+    
+                    </ModalBody>
+                </Modal>
+            );
+        }
+        
     }
 }
 

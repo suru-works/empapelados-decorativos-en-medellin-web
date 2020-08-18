@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Label } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Label, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Container as FloatingButtonContainer, Button as FloatingButton, Link as FloatingButtonLink, lightColors, darkColors } from 'react-floating-action-button';
 import Leader from './LeaderComponent';
@@ -39,6 +39,61 @@ function RenderAdminOptions(props) {
     }
 }
 
+
+const LeadersBoard = (props) => {
+
+
+    if (props.leaders.length > 0) {
+
+        const leaderList = props.leaders.map((leader) => {
+            try {
+
+                return (
+                    <Leader leader={leader} key={leader._id}
+                        areEditOptionsActived={props.areEditOptionsActived}
+                        deleteLeader={props.deleteLeader}
+                        leadersErrMess={props.leadersErrMess}
+                        reloadData={props.reloadData}
+                        toggleDeleteModal={props.toggleDeleteModal}
+                    />
+                );
+            }
+            catch (err) {
+                return (
+                    <Label>No se encontraron lideres</Label>
+                );
+
+            }
+        });
+
+        return (
+            <div className="row row-content">
+                <div className="col-12">
+                    <h2>Lideres de nuestra compa­ñia</h2>
+                </div>
+                {leaderList}
+            </div>
+        );
+    }
+    else {
+        return (
+            <div>
+                <div className="row row-content">
+                    <div className="col-12">
+                        <h2>Nuestra experiencia y responsabilidad es de las mejores en el pais, animate y contactanos!</h2>
+                    </div>
+                </div>
+                <div className="d-flex justify-content-center">
+                    <Link to='/contacto'>
+                        <Button style={{ width: '17vh', height: 'auto' }} className="primary-button">Contactanos</Button>
+                    </Link>
+                </div>
+            </div>
+
+        );
+    }
+}
+
 function About(props) {
 
     const [isAddLeaderModalOpen, setIsAddLeaderModalOpen] = useState(false);
@@ -47,7 +102,7 @@ function About(props) {
 
     const toggleAddLeaderModal = () => {
         setIsAddLeaderModalOpen(!isAddLeaderModalOpen);
-    
+
     }
 
     const toggleDeleteModal = () => {
@@ -59,26 +114,9 @@ function About(props) {
     }
 
 
-    const leaderList = props.leaders.map((leader) => {
-        try {
 
-            return (
-                <Leader leader={leader} key={leader._id}
-                    areEditOptionsActived={areEditOptionsActived}
-                    deleteLeader={props.deleteLeader}
-                    leadersErrMess={props.leadersErrMess}
-                    reloadData={props.reloadData}
-                    toggleDeleteModal={toggleDeleteModal}
-                />
-            );
-        }
-        catch (err) {
-            return (
-                <Label>No se encontraron lideres</Label>
-            );
 
-        }
-    });
+
 
     return (
         <div className="container">
@@ -97,8 +135,8 @@ function About(props) {
             <div className="row row-content">
                 <div className="col-12 col-md-6">
                     <h2>Nuestra Historia</h2>
-                    <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
-                    <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
+                    <p>Nuestra empresa inicio en 1990, en Medellin Antioquia y rapidamente se convirtio en una empresa reconocida, Empapelados Decorativos en Medellin ha acompañado a los hogares Colombianos con excelencia y gran calidad de productos, ademas de que siempre vela por que el cliente quede satisfecho. Nuestro fundador Albeiro, siempre esta atento a cualquier duda.</p>
+                    <p>Al ser fundada, la empresa inicio como distribuidora de acrilicos decorativos, pero ahora tiene una gran gama de productos, como lo son acrilicos, jardines sinteticos, telas y cortinas.</p>
                 </div>
 
                 <div className="col-12 col-md-5">
@@ -115,12 +153,7 @@ function About(props) {
                 </div>
             </div>
 
-            <div className="row row-content">
-                <div className="col-12">
-                    <h2>Lideres de nuestra compa­ñia</h2>
-                </div>
-                {leaderList}
-            </div>
+            <LeadersBoard leaders={props.leaders} areEditOptionsActived={areEditOptionsActived} deleteLeader={props.deleteLeader} leadersErrMess={props.leadersErrMess} reloadData={props.reloadData} toggleDeleteModal={toggleDeleteModal} />
 
             <AddLeader isOpen={isAddLeaderModalOpen} toggle={toggleAddLeaderModal} reloadData={props.reloadData} ></AddLeader>
 

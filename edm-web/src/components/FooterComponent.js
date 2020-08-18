@@ -19,9 +19,10 @@ function Footer(props) {
                     <div className="col-7 col-sm-5">
                         <h5>Nuestra Dirección</h5>
                         <address>
-                            Cra. 76b #107a-34,<br />
-                            Santander, Medellín, Antioquia<br />
-                            <i className="fa fa-mobile fa-lg"></i>: 312 211 09 79<br />
+                            Calle 20 sur # 37 - 228.<br />
+                                Sector los yarumos, Poblado, Medellín, Antioquia<br />
+                            <i className="fa fa-mobile fa-lg"></i>: 319 582 31 66<br />
+                            <i className="fa fa-mobile fa-lg"></i>: 301 207 15 91<br />
                             <i className="fa fa-envelope fa-lg"></i>: yepesalbeiro800@gmail.com
                         </address>
                     </div>

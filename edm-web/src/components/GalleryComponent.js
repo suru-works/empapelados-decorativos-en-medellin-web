@@ -107,7 +107,7 @@ const Gallery = (props) => {
         );
     }
     else {
-        const galeria = props.products.filter(product => product.category == category).map((product) => {
+        const galeria = props.products.filter(product => product.category === category).map((product) => {
             try {
 
                 return (
@@ -144,9 +144,9 @@ const Gallery = (props) => {
                 </div>
 
                 <div className="row justify-content-center">
-                    <Button className={category == "empapelado" ? "primary-button" : "secondary-button"} onClick={() => setCategory("empapelado")}>Empapelados</Button>
-                    <Button className={category == "jardin_sintetico" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("jardin_sintetico")}>Jardines Sintéticos</Button>
-                    <Button className={category == "tela" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("tela")}>Telas</Button>
+                    <Button className={category === "empapelado" ? "primary-button" : "secondary-button"} onClick={() => setCategory("empapelado")}>Papeles de colgadura</Button>
+                    <Button className={category === "jardin_sintetico" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("jardin_sintetico")}>Jardines Artificiales</Button>
+                    <Button className={category === "tela" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("tela")}>Telas decorativas</Button>
                 </div>
 
                 <div className="row">
