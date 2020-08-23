@@ -135,8 +135,8 @@ function About(props) {
             <div className="row row-content">
                 <div className="col-12 col-md-6">
                     <h2>Nuestra Historia</h2>
-                    <p>Nuestra empresa inicio en 1990, en Medellin Antioquia y rapidamente se convirtio en una empresa reconocida, Empapelados Decorativos en Medellin ha acompañado a los hogares Colombianos con excelencia y gran calidad de productos, ademas de que siempre vela por que el cliente quede satisfecho. Nuestro fundador Albeiro, siempre esta atento a cualquier duda.</p>
-                    <p>Al ser fundada, la empresa inicio como distribuidora de acrilicos decorativos, pero ahora tiene una gran gama de productos, como lo son acrilicos, jardines sinteticos, telas y cortinas.</p>
+                    <p>Nuestra empresa inicio en 1990, en Medellin Antioquia y rapidamente se convirtio en una empresa reconocida, Empapelados Decorativos en Medellin ha acompañado a los hogares Colombianos con excelencia y gran calidad de productos, ademas de que siempre vela por que el cliente quede satisfecho. Nuestro fundador y empleados, siempre estaran atentos a cualquier duda.</p>
+                    <p>Al ser fundada, la empresa inicio como distribuidora de papel tapiz, pero ahora tiene una gran gama de productos, como lo son papeles de colgadura, jardines sinteticos, telas y cortinas.</p>
                 </div>
 
                 <div className="col-12 col-md-5">
