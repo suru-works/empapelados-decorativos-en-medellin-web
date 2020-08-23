@@ -77,7 +77,7 @@ productRouter.route('/:productId/comments')
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    
+    //console.log(req.body);
     req.body.user = req.user._id;
     Products.findByIdAndUpdate(req.params.productId, {
         $push: {

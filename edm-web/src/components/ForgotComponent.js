@@ -52,7 +52,7 @@ const ForgotComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log(values);
+            //console.log(values);
             submit(values);
         }
     });

@@ -27,6 +27,12 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        enum: ['jardin_sintetico', 'tela', 'empapelado'],
+        default: 'empapelado',
+        required: true
+    },
     price: {
         type: Currency,
         required: true

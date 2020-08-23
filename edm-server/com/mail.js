@@ -22,9 +22,11 @@ async function mail(options) {
   },
   function (err, info) {
     if(err)
-      console.log(err)
+      //console.log(err)
+      let x = err
     else
-      console.log(info);
+      //console.log(info);
+      let x = info
  });
 
   //console.log("Message sent: %s", info.messageId);

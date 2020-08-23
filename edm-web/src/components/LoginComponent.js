@@ -103,7 +103,7 @@ const RenderRestoreComponent = (props) => {
 
 
     const handleRestore = values => {
-        console.log(values);
+        //console.log(values);
 
 
         doRestorePassword({ username: values.user });
@@ -117,7 +117,7 @@ const RenderRestoreComponent = (props) => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log(values);
+            //console.log(values);
             handleRestore(values);
         }
     });
