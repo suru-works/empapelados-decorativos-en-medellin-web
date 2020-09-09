@@ -129,7 +129,7 @@ class Contact extends Component {
                             <div className="col-12 col-sm-11 offset-sm-1">
                                 <div className="btn-group" role="group">
                                     <a role="button" className="btn btn-primary" target="_blank" rel="noopener noreferrer" href="tel:+573122110979"><i className="fa fa-phone"></i> Call</a>
-                                    <a role="button" className="btn btn-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/message/CBUKWJUSEK5AE1"><i className="fa fa-whatsapp"></i> Whatsapp </a>
+                                    <a role="button" className="btn btn-success" target="_blank" rel="noopener noreferrer" href="https://wa.me/573122110979"><i className="fa fa-whatsapp"></i> Whatsapp </a>
                                     <a role="button" className="btn btn-info" target="_blank" rel="noopener noreferrer" href="mailto:yepesalbeiro800@gmail.com"><i className="fa fa-envelope-o"></i> Email</a>
                                 </div>
                             </div>

@@ -34,7 +34,7 @@ function Footer(props) {
                             <a className="btn btn-social-icon btn-facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/Empapelados-decorativos-112685423470018" style={{ margin: 5 }}><i className="fa fa-facebook"></i></a>
                             <a className="btn btn-social-icon btn-instagram" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/empapelados_decorativos/" style={{ margin: 5 }}><i className="fa fa-instagram"></i></a>
                             <a className="btn btn-social-icon btn-google" target="_blank" rel="noopener noreferrer" href="mailto:" style={{ margin: 5 }}><i className="fa fa-envelope-o"></i></a>
-                            <a className="btn btn-social-icon btn-whatsapp " aria-hidden="true" rel="noopener noreferrer" target="_blank" href="mailto:" style={{ margin: 5 }}><i className="fa fa-whatsapp"></i></a>
+                            <a className="btn btn-social-icon btn-whatsapp " aria-hidden="true" rel="noopener noreferrer" target="_blank" href="https://wa.me/573122110979" style={{ margin: 5 }}><i className="fa fa-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>
