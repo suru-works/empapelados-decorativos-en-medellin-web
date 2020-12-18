@@ -21,13 +21,11 @@ async function mail(options) {
     html: options.html, // html body
   },
   function (err, info) {
-    var x = null;
     if(err)
-      //console.log(err)
-      x = err;
+      console.log(err);
     else
-      //console.log(info);
-      x = info;
+      console.log(info);
+      
  });
 
   //console.log("Message sent: %s", info.messageId);

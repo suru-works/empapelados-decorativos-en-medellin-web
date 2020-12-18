@@ -104,8 +104,6 @@ const RenderRestoreComponent = (props) => {
 
     const handleRestore = values => {
         //console.log(values);
-
-
         doRestorePassword({ username: values.user });
     }
 

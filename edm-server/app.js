@@ -33,7 +33,7 @@ connect.then((db) => {
 var app = express();
 
 // HTTPS
-app.all('*', (req, res, next) => {
+/* app.all('*', (req, res, next) => {
   if (req.secure) {
     return next();
   } else {
@@ -41,7 +41,7 @@ app.all('*', (req, res, next) => {
     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
     
   }
-});
+}); */
 
 
 
