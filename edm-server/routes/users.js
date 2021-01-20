@@ -15,7 +15,7 @@ const forgotView = require('../view/forgotView');
 
 
 const encrypt = text => {
-  const encrypted = CryptoJS.AES.encrypt(text+'', process.env.CRYPTOJS_SECRET);
+  const encrypted = CryptoJS.AES.encrypt(text + '', process.env.CRYPTOJS_SECRET);
   return encrypted;
 };
 
@@ -145,10 +145,12 @@ router.post('/forgot', async function (req, res, next) {
       const forgotHTML = forgotView.forgotView(data);
       //sending email for user verification
       mailData = {
-        serverService: 'gmail',
+        host: process.env.EMAIL_SERVER,
+        port: process.env.EMAIL_SERVER_PORT,
+        //serverService: 'gmail',
         serverMail: process.env.AUTH_EMAIL_USER,
         serverPassword: process.env.AUTH_EMAIL_PASSWORD,
-        sender: '"Empapelados decorativos en medellin"',
+        sender: '"Empapelados decorativos en medellin" <' + process.env.AUTH_EMAIL_USER + '>',
         receivers: data.username,
         subject: 'restablecer contraseña',
         text: '',
@@ -189,7 +191,7 @@ router.post('/forgot/:token', async function (req, res, next) {
 
     const now = new Date();
     const exp = parseISOString(token[0]);
-    
+
 
     if (now > exp) {
       var err = new Error("The recovery token has expired");

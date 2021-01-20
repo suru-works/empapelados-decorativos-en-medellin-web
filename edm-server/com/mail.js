@@ -5,11 +5,14 @@ async function mail(options) {
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    service: options.serverService,
+    host: options.host,
+    port: options.port,
+    /* service: options.serverService, */
     auth: {
       user: options.serverMail, // generated ethereal user
       pass: options.serverPassword, // generated ethereal password
     },
+    tls: {rejectUnauthorized: false},
   });
 
   // send mail with defined transport object
