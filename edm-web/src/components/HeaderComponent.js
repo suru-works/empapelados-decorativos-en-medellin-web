@@ -29,7 +29,7 @@ const Jumbo = () => {
                     <div className="row row-header">
                         <div className="col-12 col-sm-6">
                             <h1>Empapelados Decorativos en Medellin.</h1>
-                            <p>Venta e instalación de empapelados decorativos, cortinas y pinturas.</p>
+                            <p>Venta e instalación de empapelados decorativos, jardines sintéticos y vinilos personalizados.</p>
                             <h3>Tenemos mas de 30 años de experiencia.</h3>
                             <br></br>
 
