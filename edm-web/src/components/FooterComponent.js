@@ -9,16 +9,16 @@ function Footer(props) {
                     <div className="col-4 col-sm-2">
                         <h5>Navegar</h5>
                         <ul className="list-unstyled">
-                            <li><Link to="/inicio" className="link"> Inicio </Link></li>
-                            <li><Link to="/galeria" className="link"> Galeria </Link></li>
-                            <li><Link to="/acerca-de-nosotros" className="link"> Acerca de Nosotros </Link></li>
-                            <li><Link to="/contacto" className="link"> Contactenos </Link></li>
+                            <li><Link to="/inicio" className="link" style={{color: '#FFFFFF' }}> Inicio </Link></li>
+                            <li><Link to="/galeria" className="link" style={{color: '#FFFFFF' }}> Galeria </Link></li>
+                            <li><Link to="/acerca-de-nosotros" className="link" style={{color: '#FFFFFF' }}> Acerca de Nosotros </Link></li>
+                            <li><Link to="/contacto" className="link" style={{color: '#FFFFFF' }}> Contactenos </Link></li>
                         </ul>
                     </div>
 
                     <div className="col-7 col-sm-5">
                         <h5>Nuestra Dirección</h5>
-                        <address>
+                        <address style={{color: '#FFFFFF' }}>
                             Calle 20 sur # 37 - 228.<br />
                                 Sector los yarumos, Poblado, Medellín, Antioquia<br />
                             <i className="fa fa-mobile fa-lg"></i>: 319 582 31 66<br />
@@ -29,7 +29,7 @@ function Footer(props) {
 
                     <div className="col-12 col-sm-4">
                         <div className="text-center">
-                            <h5>Conectate con Nosotros</h5>
+                            <h5>Conéctate con Nosotros</h5>
                             <br></br>
                             <a className="btn btn-social-icon btn-facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/Empapelados-decorativos-112685423470018" style={{ margin: 5 }}><i className="fa fa-facebook"></i></a>
                             <a className="btn btn-social-icon btn-instagram" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/empapelados_decorativos/" style={{ margin: 5 }}><i className="fa fa-instagram"></i></a>

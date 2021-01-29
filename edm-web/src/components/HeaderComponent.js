@@ -36,7 +36,7 @@ const Jumbo = () => {
                             <div className="col-12">
 
                                 <Link to='/acerca-de-nosotros'>
-                                    <Button style={{ backgroundColor: '#f9683a', color: '#ffffff' }} variant="contained">
+                                    <Button style={{ backgroundColor: '#819ca9', color: '#ffffff' }} variant="contained">
                                         Aprende más
                                     </Button>
                                 </Link>
@@ -147,7 +147,7 @@ class Header extends Component {
                         <span style={{ color: '#ffffff' }}>{localStorage.username}</span>
                     </NavItem>
                     <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLogoutModal}>
+                        <Button outline style={{ margin: 10, borderColor: '#819ca9', color: '#819ca9' }} onClick={this.toggleLogoutModal}>
                             <span className="fa fa-sign-in"></span> Cerrar sesión
                         </Button>
                     </NavItem>
@@ -157,13 +157,13 @@ class Header extends Component {
             return (
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#f9683a', color: '#f9683a' }} onClick={this.toggleLoginModal}>
+                        <Button outline style={{ margin: 10, borderColor: '#819ca9', color: '#819ca9' }} onClick={this.toggleLoginModal}>
                             <span className="fa fa-sign-in"></span> Iniciar sesión
                         </Button>
                     </NavItem>
 
                     <NavItem>
-                        <Button variant="contained" style={{ margin: 10, backgroundColor: '#f9683a', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
+                        <Button variant="contained" style={{ margin: 10, backgroundColor: '#819ca9', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
                             <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
                         </Button>
                     </NavItem>
