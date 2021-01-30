@@ -156,17 +156,19 @@ class Header extends Component {
         } else {
             return (
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <Button outline style={{ margin: 10, borderColor: '#819ca9', color: '#819ca9' }} onClick={this.toggleLoginModal}>
-                            <span className="fa fa-sign-in"></span> Iniciar sesión
-                        </Button>
-                    </NavItem>
 
                     <NavItem>
                         <Button variant="contained" style={{ margin: 10, backgroundColor: '#819ca9', color: '#ffffff' }} color="secondary" onClick={this.toggleRegisterModal}>
                             <span className="fa fa-user-circle-o" aria-hidden="true"></span>  Regístrate
                         </Button>
                     </NavItem>
+
+                    <NavItem>
+                        <Button outline style={{ margin: 10, borderColor: '#819ca9', color: '#819ca9' }} onClick={this.toggleLoginModal}>
+                            <span className="fa fa-sign-in"></span> Iniciar sesión
+                        </Button>
+                    </NavItem>
+                    
                 </Nav>
             );
         }
