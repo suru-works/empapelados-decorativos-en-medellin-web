@@ -29,7 +29,7 @@ const productSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['jardin_sintetico', 'tela', 'empapelado'],
+        enum: ['vinilo_personalizado','jardin_sintetico', 'tela', 'empapelado'],
         default: 'empapelado',
         required: true
     },

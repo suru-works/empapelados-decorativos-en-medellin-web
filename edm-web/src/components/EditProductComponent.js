@@ -71,7 +71,7 @@ const EditProductComponent = (props) => {
             price: values.newPrice,
             units: values.newUnits,
             description: values.newDescription,
-            category: category,
+            category: values.category,
             featured: featured
 
         }
@@ -96,7 +96,8 @@ const EditProductComponent = (props) => {
             newName: name,
             newPrice: price,
             newUnits: units,
-            newDescription: description
+            newDescription: description,
+            category: category
         },
         validationSchema,
         onSubmit(values) {
@@ -211,10 +212,12 @@ const EditProductComponent = (props) => {
                                     {(touched.newName && errors.newName) ? (<Alert color="danger">{errors.newName}</Alert>) : null}
 
                                     <Label htmlFor="category">Categoría</Label>
-                                    <Input type="select" id="category" name="category" value={category} onChange={(event) => setCategory(event.target.value)}>
-                                        <option value="empapelado">Empapelado</option>
+                                    <Input type="select" id="category" name="category" value={values.category} onChange={handleChange}
+                                        onBlur={handleBlur}>
+                                        <option value="empapelado">Papel de colgadura</option>
                                         <option value="jardin_sintetico">Jardín Sintético</option>
                                         <option value="tela">Tela</option>
+                                        <option value="vinilo_personalizado">Vinilo personalizado</option>
                                     </Input>
 
                                     <Label htmlFor="price">Precio</Label>

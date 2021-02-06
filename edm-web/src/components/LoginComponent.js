@@ -75,8 +75,8 @@ const RenderLoginComponent = (props) => {
                     </FormGroup>
 
                     <div className="d-flex justify-content-center">
-                        <Button type="submit" value="submit" className="primary-button">Ingresar</Button>
                         <Button onClick={props.switchRestore} className="secondary-button">Olvidé mi contraseña</Button>
+                        <Button type="submit" value="submit" className="primary-button">Ingresar</Button>
                     </div>
                 </Form>
             </ModalBody>
@@ -200,11 +200,11 @@ const LoginComponent = (props) => {
             if (result.success) {
                 return (
                     <div>
-                        
-                            <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
-                            <ModalBody>
-                                <p>Ingreso exitoso</p>
-                            </ModalBody>
+
+                        <ModalHeader toggle={toogleAndReset}>Ingresar</ModalHeader>
+                        <ModalBody>
+                            <p>Ingreso exitoso</p>
+                        </ModalBody>
 
                     </div >
                 );

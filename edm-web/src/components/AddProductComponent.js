@@ -183,9 +183,10 @@ const AddProductComponent = (props) => {
 
                                     <Label htmlFor="category">Categoría</Label>
                                     <Input type="select" id="category" name="category" value={category} onChange={(event) => setCategory(event.target.value)}>
-                                        <option value="empapelado">Empapelado</option>
+                                        <option value="empapelado">Papel de colgadura</option>
                                         <option value="jardin_sintetico">Jardín Sintético</option>
                                         <option value="tela">Tela</option>
+                                        <option value="vinilo_personalizado">Vinilo personalizado</option>
                                     </Input>
 
                                     <Label htmlFor="price">Precio</Label>

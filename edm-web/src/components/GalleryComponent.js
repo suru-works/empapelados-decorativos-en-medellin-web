@@ -147,6 +147,7 @@ const Gallery = (props) => {
                     <Button className={category === "empapelado" ? "primary-button" : "secondary-button"} onClick={() => setCategory("empapelado")}>Papeles de colgadura</Button>
                     <Button className={category === "jardin_sintetico" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("jardin_sintetico")}>Jardines Artificiales</Button>
                     <Button className={category === "tela" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("tela")}>Telas decorativas</Button>
+                    <Button className={category === "vinilo_personalizado" ? "primary-button" : "secondary-button"}  onClick={() => setCategory("vinilo_personalizado")}>Vinilo personalizado</Button>
                 </div>
 
                 <div className="row">
